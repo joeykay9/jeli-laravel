@@ -49,4 +49,31 @@ class LoginController extends Controller
 
         return redirect()->route('login');
     }
+
+    public function logout(Request $request){
+        $customer = Auth::guard('api')->user();
+
+        if ($customer) {
+            $user->api_token = null;
+            $user->save();
+        }
+
+        return response()->json(['data' => 'User logged out.'], 200);
+    }
+
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        if ($this->attemptLogin($request)) {
+            $customer = $this->guard()->user();
+            $customer->generateToken();
+
+            return response()->json([
+                'data' => $customer->toArray(),
+            ]);
+        }
+
+        return $this->sendFailedLoginResponse($request);
+    }
 }

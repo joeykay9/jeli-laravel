@@ -3,11 +3,12 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Customer extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +16,7 @@ class Customer extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'email', 'jelion', 'password',
+        'first_name', 'last_name', 'phone', 'email', 'jelion', 'password',
     ];
 
     /**
@@ -26,4 +27,17 @@ class Customer extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    //Customer created
+    public function moments() {
+
+        return $this->hasMany(Moment::class);
+    }
+
+    public function generateToken(){
+        $this->api_token = str_random(60);
+        $this->save();
+
+        return $this->api_token;
+    }
 }

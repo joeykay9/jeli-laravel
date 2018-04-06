@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Vendor;
+use App\Mail\Welcome;
 use App\Notifications\BusinessResetPasswordNotification;
 
 class Business extends Authenticatable
@@ -36,8 +37,16 @@ class Business extends Authenticatable
         return $this->hasMany(Vendor::class);
     }
 
+    public function services() {
+
+        return $this->hasMany(Service::class);
+    }
+
     public function createVendor(Vendor $vendor){
         $this->vendors()->save($vendor);
+
+        //Send new JeliVendor an email with login link
+        \Mail::to($vendor)->send(new VendorWelcome($vendor));
     }
 
     /**

@@ -18,8 +18,9 @@ class CreateBusinessesTable extends Migration
             $table->string('name');
             $table->string('country');
             $table->string('location');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->string('email')->unique();
+            $table->string('logo');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

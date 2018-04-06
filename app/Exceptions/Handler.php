@@ -70,6 +70,10 @@ class Handler extends ExceptionHandler
                 $login = 'admin.login';
                 break;
 
+            case 'api':
+                $login = 'response';
+                break;
+
             case 'business':
                 $login = 'business.login';
                 break;
@@ -81,6 +85,10 @@ class Handler extends ExceptionHandler
             default:
                 $login = 'login';
                 break;
+        }
+
+        if($login == 'response') {
+            return response()->json(['error' => 'Unauthenticated'], 401);
         }
 
         return $request->expectsJson()

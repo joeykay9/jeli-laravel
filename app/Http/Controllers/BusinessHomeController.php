@@ -49,8 +49,6 @@ class BusinessHomeController extends Controller
         );
 
         return redirect()->back();
-
-        //Send new JeliVendor an email with login link
     }
 
     public function destroyVendor(Vendor $vendor){

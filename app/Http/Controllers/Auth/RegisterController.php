@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -49,7 +50,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'email' => 'required|string|email|max:255|unique:customers',
             'jelion' => 'required|string|max:255',
@@ -66,11 +68,24 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return Customer::create([
-            'name' => $data['name'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'phone' =>$data['phone'],
             'email' => $data['email'],
             'jelion' => $data['jelion'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function registered(Request $request, $customer)
+    {
+        if($request->wantsJson()) {
+            $token = $customer->createToken('Jeli Personal Access Client', [''])->accessToken;
+
+            return response()->json(['token' => $token], 201);
+        }
+
+        return false;
+        //HTTP Status code 201: Object created
     }
 }
