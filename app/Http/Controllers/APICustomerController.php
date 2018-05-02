@@ -30,15 +30,17 @@ class APICustomerController extends Controller
             'otp' => 'required|integer|between:100000,999999',
         ]);
 
-        $otp = $request->otp;
+        if(! $customer->status) {
+            $otp = $request->otp;
 
-        if(! $otp == $customer->otp ) {
-            return response()->json(['success' => false, 'error' => 'Wrong pin entered']);
+            if($otp != $customer->otp) {
+                return response()->json(['success' => false, 'error' => 'Wrong pin entered']);
+            }
+
+            //Change status to verified:1
+            $customer->status = 1;
+            $customer->save();
         }
-
-        //Change status to verified:1
-        $customer->status = 1;
-        $customer->save();
 
         return response()->json([
             'success' => true,
