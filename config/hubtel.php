@@ -5,8 +5,8 @@
 
 return [
     'account' => [
-        'key' => env('HUBTEL_API_KEY'),
-        'secret' => env('HUBTEL_API_SECRET'),
+        'key' => env('HUBTEL_API_KEY', 'hxkmagyr'),
+        'secret' => env('HUBTEL_API_SECRET', 'dxbmrlyi'),
     ],
     
 ];
