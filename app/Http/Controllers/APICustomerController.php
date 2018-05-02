@@ -55,7 +55,7 @@ class APICustomerController extends Controller
      */
     public function requestNewOTP(Customer $customer) {
 
-        $customer->otp = $this->genereateOTP();
+        $customer->otp = $this->generateOTP();
         $customer->save();
 
         //Send email with OTP to customer
