@@ -15,26 +15,52 @@ use App\Customer;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::group([
+
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', 'APIAuthController@login');
+    Route::post('logout', 'APIAuthController@logout');
+    Route::post('refresh', 'APIAuthController@refresh');
+    Route::post('me', 'APIAuthController@me');
+
+});
+
+Route::group([
+
+	'prefix' => 'customers'
+
+], function () {
+	//Return all customers
+	Route::middleware('auth:api')->get('/', 'APICustomerController@index');
+	//Register a customer
+	Route::post('/', 'APICustomerController@store');
+	//Will use this for viewing a contact's Jeli details
+	Route::middleware('auth:api')->get('/{customer}', 'APICustomerController@show');
+	//Update Jeli Customer details
+	Route::middleware('auth:api')->put('/{customer}', 'APICustomerController@update');
+	Route::get('/{customer}/otp', 'APICustomerController@requestNewOTP');
+	Route::post('/{customer}/otp', 'APICustomerController@verifyOTP');
 });
 
 
-//Return all customers
-Route::get('customers', 'APICustomerController@index');
-//Will use this for logging in or for viewing a contact's Jeli details
-Route::get('customers/{customer}', 'APICustomerController@show');
-//Update Jeli Customer details
-Route::put('customers/{customer}', 'APICustomerController@update');
-//Register Jeli Customer
-Route::post('register', 'Auth\RegisterController@register');
-//Login Jeli Customer
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout');
+Route::group([
+	
+	'middleware' => 'auth:api'
 
-
-Route::group(['middleware' => 'auth:api'], function() {
+], function() {
 	//Return all businesses
 	Route::get('businesses', 'APIBusinessController@index');
 	Route::get('businesses/{business}', 'APIBusinessController@show');
+
+	//Moment
+	Route::get('moments', 'MomentController@index'); //Get all moments a user belongs to
+	Route::post('moments', 'MomentController@create'); //Store a moment
+	Route::get('moments/{moment}', 'MomentController@show'); //Show a specfic moment
 });

@@ -31,6 +31,6 @@ class CustomerWelcome extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.customer.welcome');
+        return $this->markdown('emails.customer.welcome');
     }
 }
