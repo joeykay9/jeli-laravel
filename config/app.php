@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://jeligh.000webhostapp.com'),
+    'url' => env('APP_URL', 'https://jeligh.herokuapp.com'),
 
     /*
     |--------------------------------------------------------------------------
