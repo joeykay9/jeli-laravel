@@ -41,15 +41,18 @@ class APICustomerController extends Controller
             }
 
             //Change status to verified:1
-            $customer->verified = tru;
-
-            dd($customer->verified);
+            $customer->verified = true;
             $customer->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Customer has been verified'
+            ], 200);
         }
 
         return response()->json([
-            'success' => true,
-            'message' => 'Customer has been verified'
+            'success' => false,
+            'message' => 'Customer has already been verified'
         ], 200);
         //After PIN is verified login request is made
         //So check if PIN has been verified in login request
