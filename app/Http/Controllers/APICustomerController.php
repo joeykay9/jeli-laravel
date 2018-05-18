@@ -30,15 +30,18 @@ class APICustomerController extends Controller
             'otp' => 'required|integer|between:100000,999999',
         ]);
 
-        if(! $customer->status) {
+        if(! $customer->verified) {
             $otp = $request->otp;
 
             if($otp != $customer->otp) {
-                return response()->json(['success' => false, 'error' => 'Wrong pin entered']);
+                return response()->json([
+                    'success' => false, 
+                    'error' => 'Wrong pin entered'
+                ]);
             }
 
             //Change status to verified:1
-            $customer->status = 1;
+            $customer->verified = true;
             $customer->save();
         }
 
@@ -93,13 +96,30 @@ class APICustomerController extends Controller
     public function store(Request $request)
     {
         //Validate Request with following rules
-        $this->validate(request(), [
-            'first_name' => 'string|max:255',
-            'last_name' => 'string|max:255',
-            'phone' => 'required|string|max:20|unique:customers',
-            'email' => 'string|email|max:255|unique:customers',
-            'password' => 'required|confirmed',
-        ]);
+        $credentials = $request->all();
+
+        $rules = [
+            'first_name' => 'nullable|string|max:50',
+            'last_name' => 'nullable|string|max:50',
+            'phone' => 'bail|required|string|max:15|unique:customers', //should be required from the app
+            'email' => 'bail|nullable|string|email|max:50|unique:customers', //Email already exists
+            'password' => 'required|confirmed', //should be required from the app
+        ];
+
+        $messages = [
+            'required' => 'The :attribute field is required.',
+            'phone.max' => 'Please provide a valid :attribute number.',
+            'email' => 'Please provide a valid email address.',
+        ];
+
+        $validator = Validator::make($credentials, $rules, $messages);
+        
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
 
         //Generate One Time PIN
         $this->generateOTP();
@@ -152,7 +172,50 @@ class APICustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        $customer->update($request->all);
+        if(! $customer->active) {
+
+            if($request->filled('jelion')) {
+                $customer->jelion = $request->jelion;
+                $customer->active = true;
+                $customer->save();
+
+                return response()->json($customer, 200);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Please provide a jelion'
+            ], 401);
+        }
+
+        $credentials = $request->all();
+
+        //Validate update request
+        $rules = [
+            'first_name' => 'nullable|string|max:50',
+            'last_name' => 'nullable|string|max:50',
+            'phone' => 'bail|nullable|string|max:15|unique:customers',
+            'email' => 'bail|nullable|string|email|max:50|unique:customers', //Email already exists
+        ];
+
+        $messages = [
+            'phone.max' => 'Please provide a valid :attribute number.',
+            'phone.unique' => ':attribute number has already been taken.',
+            'email' => 'Please provide a valid email address.',
+            'email.unique' => 'Email has already been taken'
+        ];
+
+        $validator = Validator::make($credentials, $rules, $messages);
+        
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
+
+        //Update Customer's details
+        $customer->update($credentials);
 
         return response()->json($customer, 200);
         //HTTP status code 200: OK
@@ -167,21 +230,5 @@ class APICustomerController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 15
-        ]);
     }
 }

@@ -49,18 +49,20 @@ Route::group([
 	Route::post('/{customer}/otp', 'APICustomerController@verifyOTP');
 });
 
-
 Route::group([
 	
 	'middleware' => 'auth:api'
 
 ], function() {
+	//Moment
+	Route::get('moments', 'MomentController@index'); //Get all moments a user belongs to
+	Route::post('moments', 'MomentController@store'); //Store a moment
+	Route::get('moments/{moment}', 'MomentController@show'); //Show a specfic moment
+	Route::put('moments/{moment}', 'MomentController@update'); //Update a specfic moment
+	Route::delete('moments/{moment}', 'MomentController@destroy'); //Delete a specfic moment
+	//HTML forms do not support PUT, PATCH, or DELETE actions
+
 	//Return all businesses
 	Route::get('businesses', 'APIBusinessController@index');
 	Route::get('businesses/{business}', 'APIBusinessController@show');
-
-	//Moment
-	Route::get('moments', 'MomentController@index'); //Get all moments a user belongs to
-	Route::post('moments', 'MomentController@create'); //Store a moment
-	Route::get('moments/{moment}', 'MomentController@show'); //Show a specfic moment
 });

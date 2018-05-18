@@ -26,16 +26,6 @@ class APIAuthController extends Controller
      */
     public function login(Request $request)
     {
-        $customer = Customer::where('phone', $request->phone)->first();
-
-        if(! $customer->status) {
-            //Customer has not been verified
-            return response()->json([
-                    'success' => false,
-                    'error' => 'Customer has not been verified'
-                ], 401); //401: Unauthorized
-        }
-
         $credentials = $request->only('phone', 'password');
 
         $rules = [
@@ -43,13 +33,28 @@ class APIAuthController extends Controller
             'password' => 'required',
         ];
 
-        $validator = Validator::make($credentials, $rules);
+        $messages = [
+            'phone.required' => 'The :attribute number field is required.',
+            'password' => 'The :attribute field is required.',
+        ];
+
+        $validator = Validator::make($credentials, $rules, $messages);
 
         if($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'error' => $validator->messages()
-            ]);
+                'error' => $validator->messages()->all()
+            ], 422);
+        }
+
+        $customer = Customer::where('phone', $request->phone)->first();
+
+        if(! $customer->verified) {
+            //Customer has not been verified
+            return response()->json([
+                    'success' => false,
+                    'error' => 'Customer has not been verified'
+                ], 401); //401: Unauthorized
         }
 
         try {
@@ -117,7 +122,7 @@ class APIAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            //'expires_in' => auth()->factory()->getTTL(),
             'data' => $details
         ], 200);
     }

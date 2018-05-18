@@ -34,7 +34,7 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $visible = [
-        'id', 'first_name', 'last_name', 'phone', 'email', 'jelion',
+        'id', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'verified', 'active'
     ];
 
     // public function getRouteKeyName(){
@@ -66,12 +66,15 @@ class Customer extends Authenticatable implements JWTSubject
 
     //RELATIONSHIPS
     //Customer created
-    public function moments() {
-
+    public function createdMoments() {
         return $this->hasMany(Moment::class);
     }
 
+    public function moments() {
+        return $this->belongsToMany(Moment::class)->withTimestamps();
+    }
+
     public function createMoment(Moment $moment){
-        $this->moments()->save($moment);
+        $this->createdMoments()->save($moment);
     }
 }

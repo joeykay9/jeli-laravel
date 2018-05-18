@@ -23,7 +23,8 @@ class CreateCustomersTable extends Migration
             // $table->string('logo');
             $table->string('password');
             $table->integer('otp')->nullable();
-            $table->boolean('status')->default(0);
+            $table->boolean('verified')->default(0);
+            $table->boolean('active')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

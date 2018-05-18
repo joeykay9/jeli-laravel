@@ -15,17 +15,16 @@ class CreateMomentsTable extends Migration
     {
         Schema::create('moments', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('customer_id');
             $table->string('category');
             $table->string('title');
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->timestamps();
         });
 
         Schema::create('customer_moment', function (Blueprint $table) {
             $table->integer('customer_id');
             $table->integer('moment_id');
-            $table->string('category');
-            $table->date('joined_at');
             $table->timestamps();
             $table->primary(['customer_id', 'moment_id']);
         });

@@ -18,7 +18,8 @@ class MomentController extends Controller
      */
     public function index()
     {
-        return auth('api')->user()->moments();
+        //Return JSON array of JSON Moment objects
+        return auth('api')->user()->moments;
     }
 
     /**
@@ -34,14 +35,16 @@ class MomentController extends Controller
     		'title' => 'required'
     	]);
 
-        auth('api')->user()->createMoment(
+        auth('api')->user()->createMoment($moment = 
             new Moment(request(['category', 'title']))
         );
 
+        //Store in pivot table
+        auth()->user()->moments()->attach($moment);
+
     	return response()->json([
-    		'category' => request('category'),
-    		'title' => request('title'),
-    	]);
+    		'data' => $moment,
+    	], 201);
     }
 
     /**
@@ -59,22 +62,34 @@ class MomentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Service  $service
+     * @param  \App\Moment  $moment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Service $service)
+    public function update(Request $request, Moment $moment)
     {
-        //
+        //Validate the request
+        $input = $request->all();
+
+        //Update the moment
+        $moment->update($input);
+
+        //Return the updated moment
+        return $moment;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Service  $service
+     * @param  \App\Moment  $moment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Service $service)
+    public function destroy(Moment $moment)
     {
-        //
+        $moment->forceDelete();
+
+        return response()->json([
+            "success" => true,
+            "message" => "Moment has been successfully deleted"
+        ]);
     }
 }
