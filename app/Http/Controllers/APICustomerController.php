@@ -41,7 +41,7 @@ class APICustomerController extends Controller
             }
 
             //Change status to verified:1
-            $customer->verified = 1;
+            $customer->verified = true;
 
             dd($customer->verified);
             $customer->save();
