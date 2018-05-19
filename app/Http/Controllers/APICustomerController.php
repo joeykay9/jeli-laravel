@@ -26,9 +26,17 @@ class APICustomerController extends Controller
      */
     public function verifyOTP(Request $request, Customer $customer) {
 
-        $this->validate(request(), [
+        $credentials = $request->only('otp');
+
+        $rules = [
             'otp' => 'required|integer|between:100000,999999',
-        ]);
+        ];
+
+        $messages = [
+            'between' => 'The OTP must be six digits'
+        ];
+
+        $validator = Validator::make($credentials, $rules, $messages);
 
         if(! $customer->verified) {
             $otp = $request->otp;
