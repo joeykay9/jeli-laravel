@@ -19,6 +19,21 @@ class APICustomerController extends Controller
         return $this->OTP;
     }
 
+    protected function trimPhoneNumber($number){
+
+        $countryCode = substr($number, 0,4);
+
+        if($countryCode == '+233') {
+            if(substr($number, 4,1) == '0'){
+                $trimmed = $countryCode . substr($number, 5, 9);
+
+                return $trimmed;
+            }
+        }
+
+        return $number;
+    }
+
     /**
      * Verify OTP sent by customer via SMS
      *
@@ -110,6 +125,7 @@ class APICustomerController extends Controller
     {
         //Validate Request with following rules
         $credentials = $request->all();
+        $credentials['phone'] = $this->trimPhoneNumber($request->phone);
 
         $rules = [
             'first_name' => 'nullable|string|max:50',
@@ -141,7 +157,7 @@ class APICustomerController extends Controller
         $customer = Customer::create([
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
-            'phone' =>$request['phone'],
+            'phone' =>$credentials['phone'],
             'email' => $request['email'],
             'jelion' => $request['jelion'],
             'password' => bcrypt($request['password']),
