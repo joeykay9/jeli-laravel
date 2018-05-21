@@ -19,6 +19,21 @@ class APIAuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
+    protected function trimPhoneNumber($number){
+
+        $countryCode = substr($number, 0,4);
+
+        if($countryCode == '+233') {
+            if(substr($number, 4,1) == '0'){
+                $trimmed = $countryCode . substr($number, 5, 9);
+
+                return $trimmed;
+            }
+        }
+
+        return $number;
+    }
+
     /**
      * Get a JWT via given credentials.
      *
@@ -27,6 +42,7 @@ class APIAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('phone', 'password');
+        $credentials['phone'] = $this->trimPhoneNumber($request->phone);
 
         $rules = [
             'phone' => 'required|string|max:20',

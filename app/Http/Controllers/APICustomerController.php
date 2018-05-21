@@ -60,7 +60,7 @@ class APICustomerController extends Controller
                 return response()->json([
                     'success' => false, 
                     'error' => 'Wrong pin entered'
-                ]);
+                ], 401);
             }
 
             //Change status to verified:1
@@ -101,7 +101,7 @@ class APICustomerController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'New verification code has been sent'
+            'message' => 'New verification code has been sent',
         ], 200);
     }
 
