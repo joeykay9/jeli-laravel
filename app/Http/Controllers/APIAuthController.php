@@ -65,6 +65,13 @@ class APIAuthController extends Controller
 
         $customer = Customer::where('phone', $credentials['phone'])->first();
 
+        if(! $customer) {
+            return response()->json([
+                    'success' => false,
+                    'error' => 'Please check your credentials'
+                ], 401); //401: Unauthorized
+        }
+
         if(! $customer->verified) {
             //Customer has not been verified
             return response()->json([
