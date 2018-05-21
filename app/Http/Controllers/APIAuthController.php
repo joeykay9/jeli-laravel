@@ -6,6 +6,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Validator;
 use App\Customer;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class APIAuthController extends Controller
 {
@@ -19,21 +20,6 @@ class APIAuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
-    protected function trimPhoneNumber($number){
-
-        $countryCode = substr($number, 0,4);
-
-        if($countryCode == '+233') {
-            if(substr($number, 4,1) == '0'){
-                $trimmed = $countryCode . substr($number, 5, 9);
-
-                return $trimmed;
-            }
-        }
-
-        return $number;
-    }
-
     /**
      * Get a JWT via given credentials.
      *
@@ -42,10 +28,10 @@ class APIAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('phone', 'password');
-        $credentials['phone'] = $this->trimPhoneNumber($request->phone);
+        $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
 
         $rules = [
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|phone:AUTO,GH',
             'password' => 'required',
         ];
 

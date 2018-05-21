@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Mail\CustomerWelcome;
 use App\Customer;
 use App\Notifications\SendOTPNotification;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class APICustomerController extends Controller
 {
@@ -17,21 +18,6 @@ class APICustomerController extends Controller
         $this->OTP = mt_rand(100000, 999999);
 
         return $this->OTP;
-    }
-
-    protected function trimPhoneNumber($number){
-
-        $countryCode = substr($number, 0,4);
-
-        if($countryCode == '+233') {
-            if(substr($number, 4,1) == '0'){
-                $trimmed = $countryCode . substr($number, 5, 9);
-
-                return $trimmed;
-            }
-        }
-
-        return $number;
     }
 
     /**
@@ -125,7 +111,7 @@ class APICustomerController extends Controller
     {
         //Validate Request with following rules
         $credentials = $request->all();
-        $credentials['phone'] = $this->trimPhoneNumber($request->phone);
+        $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
 
         $rules = [
             'first_name' => 'nullable|string|max:50',
