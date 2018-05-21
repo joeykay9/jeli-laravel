@@ -63,7 +63,7 @@ class APIAuthController extends Controller
             ], 422);
         }
 
-        $customer = Customer::where('phone', $request->phone)->first();
+        $customer = Customer::where('phone', $credentials['phone'])->first();
 
         if(! $customer->verified) {
             //Customer has not been verified
