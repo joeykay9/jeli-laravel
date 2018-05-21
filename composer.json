@@ -12,6 +12,7 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "league/flysystem-cached-adapter": "~1.0",
         "norris1z/hubtel-laravel-sms-channel": "^1.2",
+        "propaganistas/laravel-phone": "^4.0",
         "tymon/jwt-auth": "1.0.0-rc.2"
     },
     "require-dev": {

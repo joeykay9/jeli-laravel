@@ -1,16 +1,21 @@
 <?php
 
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+// $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
-$host = $url["host"];
-$username = $url["user"];
-$password = $url["pass"];
-$database = substr($url["path"], 1);
+// $host = $url["host"];
+// $username = $url["user"];
+// $password = $url["pass"];
+// $database = substr($url["path"], 1);
 
 // $host = '127.0.0.1';
 // $username = 'root';
 // $password = '';
 // $database = 'jeli';
+
+$host = 'ec2-23-23-130-158.compute-1.amazonaws.com';
+$username = 'hkpnmqeaelhiuy';
+$password = '2b9a32ab15e73a8617f1124fc37c446b7cbed2a4a6648d924bda3006f9115c08';
+$database = 'd2b1mgrh1li7pj';
 
 return [
 
@@ -68,11 +73,11 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => env('DB_HOST', 'ec2-23-23-130-158.compute-1.amazonaws.com'),
+            'host' => env('DB_HOST', $host),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'd2b1mgrh1li7pj'),
-            'username' => env('DB_USERNAME', 'hkpnmqeaelhiuy'),
-            'password' => env('DB_PASSWORD', '2b9a32ab15e73a8617f1124fc37c446b7cbed2a4a6648d924bda3006f9115c08'),
+            'database' => env('DB_DATABASE', $database),
+            'username' => env('DB_USERNAME', $username),
+            'password' => env('DB_PASSWORD', $password),
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',

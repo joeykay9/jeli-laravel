@@ -130,7 +130,7 @@ class APICustomerController extends Controller
         $rules = [
             'first_name' => 'nullable|string|max:50',
             'last_name' => 'nullable|string|max:50',
-            'phone' => 'bail|required|string|max:15|unique:customers', //should be required from the app
+            'phone' => 'bail|phone:AUTO,GH|required|string|max:15|unique:customers', //should be required from the app
             'email' => 'bail|nullable|string|email|max:50|unique:customers', //Email already exists
             'password' => 'required|confirmed', //should be required from the app
         ];
