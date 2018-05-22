@@ -153,7 +153,7 @@ class APICustomerController extends Controller
         ]);
 
         //Send email with OTP to customer
-        if($request->fiiled('email')) {
+        if($request->filled('email')) {
             \Mail::to($customer)->send(new CustomerWelcome($customer));
         }
 
@@ -161,7 +161,10 @@ class APICustomerController extends Controller
         $customer->notify(new SendOTPNotification($customer->otp));
 
         try {
-            if (! $token = auth()->attempt($credentials['phone', 'password'])) {
+            if (! $token = auth()->attempt([
+                'phone' => $credentials['phone'],
+                'password' => $credentials['password'],
+            ])) {
             
                 return response()->json([
                     'success' => false,
@@ -270,7 +273,7 @@ class APICustomerController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'message' => 'Verification code has been sent.'
+            'message' => 'Verification code has been sent.',
             //'expires_in' => auth()->factory()->getTTL(),
             'data' => $details
         ], 200);
