@@ -45,7 +45,7 @@ class APIAuthController extends Controller
         if($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'error' => $validator->messages()->all()
+                'errors' => $validator->messages()->all()
             ], 422);
         }
 
@@ -54,7 +54,7 @@ class APIAuthController extends Controller
         if(! $customer) {
             return response()->json([
                     'success' => false,
-                    'error' => 'Please check your credentials'
+                    'errors' => ['Please check your credentials']
                 ], 401); //401: Unauthorized
         }
 
@@ -62,7 +62,7 @@ class APIAuthController extends Controller
             //Customer has not been verified
             return response()->json([
                     'success' => false,
-                    'error' => 'Customer has not been verified'
+                    'errors' => ['Customer has not been verified']
                 ], 401); //401: Unauthorized
         }
 
@@ -71,13 +71,13 @@ class APIAuthController extends Controller
             
                 return response()->json([
                     'success' => false,
-                    'error' => 'Please check your credentials'
+                    'errors' => ['Please check your credentials']
                 ], 401);
             }
         } catch (JWTException $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Failed to login, please try again.'
+                'errors' => ['Failed to login, please try again.']
             ], 500);
         }
 

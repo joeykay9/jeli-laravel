@@ -45,7 +45,7 @@ class APICustomerController extends Controller
             if($otp != $customer->otp) {
                 return response()->json([
                     'success' => false, 
-                    'error' => 'Wrong pin entered'
+                    'errors' => ['Wrong pin entered']
                 ], 401);
             }
 
@@ -61,8 +61,8 @@ class APICustomerController extends Controller
 
         return response()->json([
             'success' => false,
-            'message' => 'Customer has already been verified'
-        ], 200);
+            'errors' => ['Customer has already been verified']
+        ], 401);
         //After PIN is verified login request is made
         //So check if PIN has been verified in login request
     }
@@ -199,7 +199,7 @@ class APICustomerController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Please provide a jelion'
+                'errors' => ['Please provide a jelion']
             ], 401);
         }
 
