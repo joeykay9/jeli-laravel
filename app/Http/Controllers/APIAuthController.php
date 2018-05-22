@@ -28,7 +28,10 @@ class APIAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('phone', 'password');
-        $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+
+        if($request->filled('phone')) {
+            $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+        }
 
         $rules = [
             'phone' => 'required|phone:AUTO,GH',

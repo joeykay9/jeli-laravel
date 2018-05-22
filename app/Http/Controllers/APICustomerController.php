@@ -111,7 +111,9 @@ class APICustomerController extends Controller
     {
         //Validate Request with following rules
         $credentials = $request->all();
-        $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+            if($request->filled('email')) {
+                $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+            }
 
         $rules = [
             'first_name' => 'nullable|string|max:50',
@@ -151,7 +153,7 @@ class APICustomerController extends Controller
         ]);
 
         //Send email with OTP to customer
-        if($request->email){
+        if($request->fiiled('email')) {
             \Mail::to($customer)->send(new CustomerWelcome($customer));
         }
 
