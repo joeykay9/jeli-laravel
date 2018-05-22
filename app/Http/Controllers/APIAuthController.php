@@ -57,7 +57,7 @@ class APIAuthController extends Controller
         if(! $customer) {
             return response()->json([
                     'success' => false,
-                    'errors' => ['Please check your credentials']
+                    'errors' => ['Incorrect email or password. Please check your credentials.']
                 ], 401); //401: Unauthorized
         }
 
