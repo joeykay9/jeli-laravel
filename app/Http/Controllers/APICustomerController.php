@@ -111,7 +111,7 @@ class APICustomerController extends Controller
     {
         //Validate Request with following rules
         $credentials = $request->all();
-            if($request->filled('email')) {
+            if($request->filled('phone')) {
                 $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
             }
 
