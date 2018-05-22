@@ -160,13 +160,22 @@ class APICustomerController extends Controller
         //Send OTP to Customers phone via SMS
         $customer->notify(new SendOTPNotification($customer->otp));
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Verification code has been sent'
-        ], 201, //HTTP status code 201: Object created
-        [ 
-            'Location' => '/customers/'. $customer->id,
-        ]);
+        try {
+            if (! $token = auth()->attempt($credentials['phone', 'password'])) {
+            
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['Please check your credentials']
+                ], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['Failed to login, please try again.']
+            ], 500);
+        }
+
+        return $this->respondWithToken($token, $customer);
     }
 
     /**
@@ -247,5 +256,23 @@ class APICustomerController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token, $details = "")
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'message' => 'Verification code has been sent.'
+            //'expires_in' => auth()->factory()->getTTL(),
+            'data' => $details
+        ], 200);
     }
 }
