@@ -6,10 +6,22 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Validator;
 use App\Customer;
+use App\Otp;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use App\Notifications\SendOTPNotification;
+use App\Mail\CustomerWelcome;
 
 class APIAuthController extends Controller
 {
+
+    protected $OTP;
+
+    protected function generateOTP() {
+        $this->OTP = mt_rand(100000, 999999);
+
+        return $this->OTP;
+    }
+
     /**
      * Create a new AuthController instance.
      *
@@ -17,7 +29,7 @@ class APIAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'forgotPassword']]);
     }
 
     /**
@@ -123,6 +135,91 @@ class APIAuthController extends Controller
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
+    }
+
+    public function forgotPassword(Request $request) {
+        //Validate Request
+        $credentials = $request->only('phone');
+
+        if($request->filled('phone')) {
+            $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+        }
+
+        $rules = [
+            'phone' => 'bail|required|phone:AUTO,GH'
+        ];
+
+         $messages = [
+            'phone.required' => 'The :attribute number field is required.'
+        ];
+
+        $validator = Validator::make($credentials, $rules, $messages);
+
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
+
+        //Generate OTP
+        $otp = new Otp;
+
+        //Get Customer
+        $customer = Customer::where('phone', $credentials['phone'])->first();
+
+        if(! $customer) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['Your phone number was not found.'],
+            ], 401);
+        }
+
+        $customer->otp()->update($otp->toArray());
+
+        //Send email with OTP to customer
+        if($customer->email){
+            \Mail::to($customer)->send(new CustomerWelcome($otp));
+        }
+
+        //Send OTP via E-mail and or SMS to verify phone number
+        $customer->notify(new SendOTPNotification($otp));
+
+        //Return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Verification code has been sent.'
+        ], 200,
+        [ 
+            'Location' => '/customers/'. $customer->id,
+        ]);
+    }
+
+    public function resetPassword(Request $request, Customer $customer) {
+        //Validate the request
+        $password = $request->all();
+
+        $rules = [
+            'password' => 'required|confirmed'
+        ];
+
+        $validator = Validator::make($password, $rules);
+
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
+
+        $customer->fill([
+            'password' => Hash::make($request->password);
+        ])->save();
+
+        return response()->json([
+                'success' => true,
+                'message' => 'Your password has been reset.'
+            ], 200);
     }
 
     /**

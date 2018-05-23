@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Customer;
+use App\Otp;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -12,16 +13,16 @@ class CustomerWelcome extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $customer;
+    public $otp;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Customer $customer)
+    public function __construct(Otp $otp)
     {
-        $this->customer = $customer;
+        $this->otp = $otp;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Hubtel\HubtelChannel;
 use NotificationChannels\Hubtel\HubtelMessage;
+use App\Otp;
 
 class SendOTPNotification extends Notification
 {
@@ -16,9 +17,9 @@ class SendOTPNotification extends Notification
      *
      * @return void
      */
-    public function __construct($otp)
+    public function __construct(Otp $otp)
     {
-        $this->otp = $otp;
+        $this->otp = $otp->otp;
     }
 
     /**

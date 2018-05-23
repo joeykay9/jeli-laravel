@@ -22,7 +22,6 @@ class CreateCustomersTable extends Migration
             $table->string('jelion')->nullable();
             // $table->string('logo');
             $table->string('password');
-            $table->integer('otp')->nullable();
             $table->boolean('verified')->default(0);
             $table->boolean('active')->default(0);
             $table->rememberToken();

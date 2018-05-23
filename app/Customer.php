@@ -16,7 +16,7 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'phone', 'email', 'jelion', 'password', 'verified', 'active', 'otp',
+        'first_name', 'last_name', 'phone', 'email', 'jelion', 'password', 'verified', 'active',
     ];
 
     /**
@@ -72,6 +72,10 @@ class Customer extends Authenticatable implements JWTSubject
 
     public function moments() {
         return $this->belongsToMany(Moment::class)->withTimestamps();
+    }
+
+    public function otp() {
+        return $this->hasOne(Otp::class);
     }
 
     public function createMoment(Moment $moment){

@@ -7,90 +7,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Mail\CustomerWelcome;
 use App\Customer;
+use App\Otp;
 use App\Notifications\SendOTPNotification;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class APICustomerController extends Controller
 {
-    protected $OTP;
-
-    protected function generateOTP() {
-        $this->OTP = mt_rand(100000, 999999);
-
-        return $this->OTP;
-    }
-
-    /**
-     * Verify OTP sent by customer via SMS
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function verifyOTP(Request $request, Customer $customer) {
-
-        $credentials = $request->only('otp');
-
-        $rules = [
-            'otp' => 'required|integer|between:100000,999999',
-        ];
-
-        $messages = [
-            'between' => 'The OTP must be six digits'
-        ];
-
-        $validator = Validator::make($credentials, $rules, $messages);
-
-        if(! $customer->verified) {
-            $otp = $request->otp;
-
-            if($otp != $customer->otp) {
-                return response()->json([
-                    'success' => false, 
-                    'errors' => ['Wrong pin entered']
-                ], 401);
-            }
-
-            //Change status to verified:1
-            $customer->verified = true;
-            $customer->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Customer has been verified'
-            ], 200);
-        }
-
-        return response()->json([
-            'success' => false,
-            'errors' => ['Customer has already been verified']
-        ], 401);
-        //After PIN is verified login request is made
-        //So check if PIN has been verified in login request
-    }
-
-    /**
-     * Generate new OTP and send to customer via SMS
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function requestNewOTP(Customer $customer) {
-
-        $customer->otp = $this->generateOTP();
-        $customer->save();
-
-        //Send email with OTP to customer
-        if($customer->email){
-            \Mail::to($customer)->send(new CustomerWelcome($customer));
-        }
-
-        //Send new one time pin via SMS
-        $customer->notify(new SendOTPNotification($customer->otp));
-
-        return response()->json([
-            'success' => true,
-            'message' => 'New verification code has been sent',
-        ], 200);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -139,7 +61,7 @@ class APICustomerController extends Controller
         }
 
         //Generate One Time PIN
-        $this->generateOTP();
+        $otp = new Otp;
 
         //Create customer entry in database
         $customer = Customer::create([
@@ -149,16 +71,18 @@ class APICustomerController extends Controller
             'email' => $request['email'],
             'jelion' => $request['jelion'],
             'password' => bcrypt($request['password']),
-            'otp' => $this->OTP,
         ]);
+
+        //Create otp entry in database
+        $customer->otp()->save($otp);
 
         //Send email with OTP to customer
         if($request->filled('email')) {
-            \Mail::to($customer)->send(new CustomerWelcome($customer));
+            \Mail::to($customer)->send(new CustomerWelcome($otp));
         }
 
         //Send OTP to Customers phone via SMS
-        $customer->notify(new SendOTPNotification($customer->otp));
+        $customer->notify(new SendOTPNotification($otp));
 
         try {
             if (! $token = auth()->attempt([
@@ -178,7 +102,7 @@ class APICustomerController extends Controller
             ], 500);
         }
 
-        return $this->respondWithToken($token, $customer);
+        return $this->respondWithToken($token, $customer->id);
     }
 
     /**
@@ -268,14 +192,14 @@ class APICustomerController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token, $details = "")
+    protected function respondWithToken($token, $id = "")
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'message' => 'Verification code has been sent.',
             //'expires_in' => auth()->factory()->getTTL(),
-            'data' => $details
+            'id' => $id
         ], 200);
     }
 }

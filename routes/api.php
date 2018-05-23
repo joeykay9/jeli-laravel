@@ -29,7 +29,7 @@ Route::group([
     Route::post('logout', 'APIAuthController@logout');
     Route::post('refresh', 'APIAuthController@refresh');
     Route::post('me', 'APIAuthController@me');
-
+    Route::post('forgot_password', 'APIAuthController@forgotPassword');
 });
 
 Route::group([
@@ -45,8 +45,8 @@ Route::group([
 	Route::middleware('auth:api')->get('/{customer}', 'APICustomerController@show');
 	//Update Jeli Customer details
 	Route::middleware('auth:api')->put('/{customer}', 'APICustomerController@update');
-	Route::middleware('auth:api')->get('/{customer}/otp', 'APICustomerController@requestNewOTP');
-	Route::middleware('auth:api')->post('/{customer}/otp', 'APICustomerController@verifyOTP');
+	Route::get('/{customer}/otp', 'OtpController@requestNewOTP');
+	Route::post('/{customer}/otp', 'OtpController@verifyOTP');
 });
 
 Route::group([

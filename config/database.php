@@ -7,11 +7,6 @@
 // $password = $url["pass"];
 // $database = substr($url["path"], 1);
 
-// $host = '127.0.0.1';
-// $username = 'root';
-// $password = '';
-// $database = 'jeli';
-
 $host = 'ec2-23-23-130-158.compute-1.amazonaws.com';
 $username = 'hkpnmqeaelhiuy';
 $password = '2b9a32ab15e73a8617f1124fc37c446b7cbed2a4a6648d924bda3006f9115c08';
@@ -80,7 +75,7 @@ return [
             'password' => env('DB_PASSWORD', $password),
             'charset' => 'utf8',
             'prefix' => '',
-            'schema' => 'public',
+            'schema' => env('DB_SCHEMA', 'public'),
             'sslmode' => 'prefer',
         ],
 
