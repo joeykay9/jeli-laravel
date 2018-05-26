@@ -73,7 +73,7 @@ class APIAuthController extends Controller
                 ], 401); //401: Unauthorized
         }
 
-        if(! $customer->verified) {
+        if(! $customer->otp->verified) {
             //Customer has not been verified
             return response()->json([
                     'success' => false,
@@ -171,8 +171,8 @@ class APIAuthController extends Controller
         if(! $customer) {
             return response()->json([
                 'success' => false,
-                'errors' => ['Your phone number was not found.'],
-            ], 401);
+                'errors' => ['Account does not exist.'],
+            ], 404);
         }
 
         $customer->otp()->update($otp->toArray());
@@ -213,7 +213,7 @@ class APIAuthController extends Controller
         }
 
         $customer->fill([
-            'password' => Hash::make($request->password);
+            'password' => Hash::make($request->password)
         ])->save();
 
         return response()->json([

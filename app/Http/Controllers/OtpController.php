@@ -30,7 +30,7 @@ class OtpController extends Controller
 
         $validator = Validator::make($credentials, $rules, $messages);
 
-        if(! $customer->verified) {
+        if(! $customer->otp->verified) {
             $otp = $customer->otp->otp;
 
             if($request->otp != $otp) {
@@ -41,13 +41,14 @@ class OtpController extends Controller
             }
 
             //Change status to verified:1
-            $customer->verified = true;
-            $customer->save();
+            $customer->otp->verified = true;
+            $customer->otp->save();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Customer has been verified',
-                'data' => $customer
+                'verified' => $customer->otp->verified,
+                'data' => $customer,
             ], 200);
         }
 

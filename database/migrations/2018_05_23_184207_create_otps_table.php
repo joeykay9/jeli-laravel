@@ -17,6 +17,7 @@ class CreateOtpsTable extends Migration
             $table->increments('id');
             $table->integer('customer_id');
             $table->integer('otp');
+            $table->boolean('verified')->default(0);
             $table->timestamps();
         });
     }

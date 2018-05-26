@@ -44,7 +44,7 @@ Route::group([
 	//Will use this for viewing a contact's Jeli details
 	Route::middleware('auth:api')->get('/{customer}', 'APICustomerController@show');
 	//Update Jeli Customer details
-	Route::middleware('auth:api')->put('/{customer}', 'APICustomerController@update');
+	Route::middleware('auth:api')->patch('/{customer}', 'APICustomerController@update');
 	Route::get('/{customer}/otp', 'OtpController@requestNewOTP');
 	Route::post('/{customer}/otp', 'OtpController@verifyOTP');
 });
