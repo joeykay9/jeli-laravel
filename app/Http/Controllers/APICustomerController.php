@@ -10,6 +10,7 @@ use App\Customer;
 use App\Otp;
 use App\Notifications\SendOTPNotification;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use GuzzleHttp\Exception\ClientException;
 
 class APICustomerController extends Controller
 {
@@ -82,7 +83,14 @@ class APICustomerController extends Controller
         }
 
         //Send OTP to Customers phone via SMS
-        $customer->notify(new SendOTPNotification($otp));
+        try {
+            $customer->notify(new SendOTPNotification($otp));
+        } catch (ClientException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
+            ], 500);
+        }
 
         try {
             if (! $token = auth()->attempt([
