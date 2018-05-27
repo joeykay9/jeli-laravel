@@ -78,7 +78,7 @@ class APIAuthController extends Controller
 
             //Send OTP to Customers phone via SMS
             try {
-                
+
                 $customer->notify(new SendOTPNotification($otp));
 
             } catch (ClientException $e) {
@@ -88,15 +88,30 @@ class APIAuthController extends Controller
                 ], 500);
             }
 
+            try {
+                if (! $token = auth()->attempt($credentials)) {
+                
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['Please check your credentials']
+                    ], 401);
+                }
+            } catch (JWTException $e) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['Failed to login, please try again.']
+                ], 500);
+            }
+
             //Customer has not been verified
             return response()->json([
-                    'success' => false,
-                    'errors' => ['Customer has not been verified']
-                ], 204,
-                [ 
-                    'Location' => '/customers/'. $customer->id,
-                ]);
-        }
+                    'access_token' => $token,
+                    'token_type' => 'bearer',
+                    'message' => 'Verification code has been sent.',
+                    //'expires_in' => auth()->factory()->getTTL(),
+                    'id' => $customer->id
+                ], 200);
+            }
 
         try {
             if (! $token = auth()->attempt($credentials)) {
