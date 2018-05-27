@@ -10,6 +10,7 @@ use App\Otp;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Notifications\SendOTPNotification;
 use App\Mail\CustomerWelcome;
+use GuzzleHttp\Exception\ClientException;
 
 class APIAuthController extends Controller
 {
@@ -74,6 +75,19 @@ class APIAuthController extends Controller
         }
 
         if(! $customer->otp->verified) {
+
+            //Send OTP to Customers phone via SMS
+            try {
+                
+                $customer->notify(new SendOTPNotification($otp));
+
+            } catch (ClientException $e) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
+                ], 500);
+            }
+
             //Customer has not been verified
             return response()->json([
                     'success' => false,
