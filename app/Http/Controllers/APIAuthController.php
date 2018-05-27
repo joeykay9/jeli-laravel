@@ -78,7 +78,7 @@ class APIAuthController extends Controller
             return response()->json([
                     'success' => false,
                     'errors' => ['Customer has not been verified']
-                ], 401, //401: Unauthorized
+                ], 204,
                 [ 
                     'Location' => '/customers/'. $customer->id,
                 ]);

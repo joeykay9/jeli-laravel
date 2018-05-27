@@ -113,6 +113,33 @@ class APICustomerController extends Controller
         return $this->respondWithToken($token, $customer->id);
     }
 
+    public function activate(Request $request, Customer $customer){
+
+        if(! $customer->active) { // If customer's account is not activated
+            if($request->filled('jelion')) { // If request contains filled jelion field
+
+                $credentials = $request->only('jelion');
+
+                //Update jelion
+                $customer->jelion = $credentials;
+                $customer->active = true; //Set active flag to true
+                $customer->save();
+
+                return response()->json($customer, 201);
+            }
+
+            return response()->json([
+                'success' => false,
+                'errors' => ['Please provide a jelion']
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Account has already been activated'
+        ], 401);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -133,22 +160,6 @@ class APICustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        if(! $customer->active) {
-
-            if($request->filled('jelion')) {
-                $customer->jelion = $request->jelion;
-                $customer->active = true;
-                $customer->save();
-
-                return response()->json($customer, 200);
-            }
-
-            return response()->json([
-                'success' => false,
-                'errors' => ['Please provide a jelion']
-            ], 401);
-        }
-
         $credentials = $request->all();
 
         //Validate update request
