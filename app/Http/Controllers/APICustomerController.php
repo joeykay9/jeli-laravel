@@ -82,17 +82,9 @@ class APICustomerController extends Controller
             \Mail::to($customer)->send(new CustomerWelcome($otp));
         }
 
-        //Send OTP to Customers phone via SMS
         try {
-            $customer->notify(new SendOTPNotification($otp));
-        } catch (ClientException $e) {
-            return response()->json([
-                'success' => false,
-                'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
-            ], 500);
-        }
+            // $customer->notify(new SendOTPNotification($otp));
 
-        try {
             if (! $token = auth()->attempt([
                 'phone' => $credentials['phone'],
                 'password' => $credentials['password'],
@@ -107,6 +99,11 @@ class APICustomerController extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => ['Failed to login, please try again.']
+            ], 500);
+        } catch (ClientException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
             ], 500);
         }
 
