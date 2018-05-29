@@ -83,7 +83,7 @@ class APICustomerController extends Controller
         }
 
         try {
-            // $customer->notify(new SendOTPNotification($otp));
+            //$customer->notify(new SendOTPNotification($otp));
 
             if (! $token = auth()->attempt([
                 'phone' => $credentials['phone'],

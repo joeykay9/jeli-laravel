@@ -78,8 +78,9 @@ class APIAuthController extends Controller
 
             //Send OTP to Customers phone via SMS
             try {
-
-                $customer->notify(new SendOTPNotification($otp));
+                $otp = new Otp;
+                $customer->otp()->update($otp->toArray());
+                //$customer->notify(new SendOTPNotification($otp));
 
             } catch (ClientException $e) {
                 return response()->json([
@@ -107,7 +108,7 @@ class APIAuthController extends Controller
             return response()->json([
                     'access_token' => $token,
                     'token_type' => 'bearer',
-                    'message' => 'Verification code has been sent.',
+                    'message' => 'Verification code has been sent, please verify your account.',
                     //'expires_in' => auth()->factory()->getTTL(),
                     'id' => $customer->id
                 ], 200);
