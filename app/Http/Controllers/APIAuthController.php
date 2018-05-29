@@ -110,7 +110,7 @@ class APIAuthController extends Controller
                     'token_type' => 'bearer',
                     'message' => 'Verification code has been sent, please verify your account.',
                     //'expires_in' => auth()->factory()->getTTL(),
-                    'id' => $customer->id
+                    'data' => $customer
                 ], 200);
             }
 
