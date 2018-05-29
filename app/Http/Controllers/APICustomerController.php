@@ -118,7 +118,7 @@ class APICustomerController extends Controller
                 $credentials = $request->only('jelion');
 
                 //Update jelion
-                $customer->jelion = $credentials;
+                $customer->jelion = $credentials['jelion'];
                 $customer->active = true; //Set active flag to true
                 $customer->save();
 
