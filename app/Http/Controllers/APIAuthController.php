@@ -109,6 +109,7 @@ class APIAuthController extends Controller
                     'access_token' => $token,
                     'token_type' => 'bearer',
                     'message' => 'Verification code has been sent, please verify your account.',
+                    'verified' => $customer->otp->verified,
                     //'expires_in' => auth()->factory()->getTTL(),
                     'data' => $customer
                 ], 200);
@@ -264,6 +265,7 @@ class APIAuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
+            'verified' => $details->otp->verified,
             //'expires_in' => auth()->factory()->getTTL(),
             'data' => $details
         ], 200);
