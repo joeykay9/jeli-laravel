@@ -132,8 +132,8 @@ class APICustomerController extends Controller
         }
 
         return response()->json([
-            'success' => true,
-            'message' => 'Account has already been activated'
+            'success' => false,
+            'errors' => ['Account has already been activated']
         ], 401);
     }
 
