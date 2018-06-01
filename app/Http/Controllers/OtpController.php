@@ -76,7 +76,7 @@ class OtpController extends Controller
         }
 
         //Send new one time pin via SMS
-        //customer->notify(new SendOTPNotification($newOtp));
+        customer->notify(new SendOTPNotification($newOtp));
 
         return response()->json([
             'success' => true,

@@ -26,7 +26,7 @@ class APIAuthController extends Controller
     /**
      * Create a new AuthController instance.
      *
-     * @return void
+     * @return vpopmail_del_domain(domain)
      */
     public function __construct()
     {
@@ -80,7 +80,7 @@ class APIAuthController extends Controller
             try {
                 $otp = new Otp;
                 $customer->otp()->update($otp->toArray());
-                //$customer->notify(new SendOTPNotification($otp));
+                $customer->notify(new SendOTPNotification($otp));
 
             } catch (ClientException $e) {
                 return response()->json([
