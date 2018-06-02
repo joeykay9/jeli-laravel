@@ -207,6 +207,8 @@ class APIAuthController extends Controller
         $otp = new Otp;
 
         $customer->otp()->update($otp->toArray());
+        $customer->otp->verified = false;
+        $customer->otp->save();
 
         //Send email with OTP to customer
         if($customer->email){
