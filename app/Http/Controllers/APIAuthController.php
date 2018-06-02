@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
-use Validator;
+use Validator, Hash;
 use App\Customer;
 use App\Otp;
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -30,7 +30,7 @@ class APIAuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'forgotPassword']]);
+        $this->middleware('auth:api', ['except' => ['login', 'forgotPassword', 'resetPassword']]);
     }
 
     /**
@@ -193,9 +193,6 @@ class APIAuthController extends Controller
             ], 422);
         }
 
-        //Generate OTP
-        $otp = new Otp;
-
         //Get Customer
         $customer = Customer::where('phone', $credentials['phone'])->first();
 
@@ -206,6 +203,9 @@ class APIAuthController extends Controller
             ], 404);
         }
 
+        //Generate OTP
+        $otp = new Otp;
+
         $customer->otp()->update($otp->toArray());
 
         //Send email with OTP to customer
@@ -214,27 +214,45 @@ class APIAuthController extends Controller
         }
 
         //Send OTP via E-mail and or SMS to verify phone number
-        $customer->notify(new SendOTPNotification($otp));
+        try {
 
-        //Return response
-        return response()->json([
-            'success' => true,
-            'message' => 'Verification code has been sent.'
-        ], 200,
-        [ 
-            'Location' => '/customers/'. $customer->id,
-        ]);
+            $customer->notify(new SendOTPNotification($otp));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Verification code has been sent.'
+            ], 200,
+            [ 
+                'Location' => '/customers/'. $customer->id,
+            ]);
+
+        } catch (ClientException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
+            ], 500);
+        }
     }
 
-    public function resetPassword(Request $request, Customer $customer) {
+    public function resetPassword(Request $request) {
         //Validate the request
-        $password = $request->all();
+        $credentials = $request->all();
+
+        if($request->filled('phone')) {
+            $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+        }
 
         $rules = [
+            'phone' => 'required|phone:AUTO,GH',
             'password' => 'required|confirmed'
         ];
 
-        $validator = Validator::make($password, $rules);
+        $messages = [
+            'phone.required' => 'The :attribute number field is required.',
+            'password' => 'The :attribute field is required.',
+        ];
+
+        $validator = Validator::make($credentials, $rules, $messages);
 
         if($validator->fails()) {
             return response()->json([
@@ -243,14 +261,36 @@ class APIAuthController extends Controller
             ], 422);
         }
 
-        $customer->fill([
-            'password' => Hash::make($request->password)
-        ])->save();
+        $customer = Customer::where('phone', $credentials['phone'])->first();
 
-        return response()->json([
-                'success' => true,
-                'message' => 'Your password has been reset.'
-            ], 200);
+        if(! $customer) { //I don't expect this condition to ever be true
+            return response()->json([
+                'success' => false,
+                'errors' => ['Account does not exist.'],
+            ], 404);
+        }
+
+        //update password
+        $customer->password = Hash::make($request->password);
+        $customer->save();
+
+        //Log customer in
+        try {
+                if (! $token = auth()->attempt($credentials)) {
+                
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['Please check your credentials']
+                    ], 401);
+                }
+        } catch (JWTException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['Failed to login, please try again.']
+            ], 500);
+        }
+
+        return $this->respondWithToken($token, $customer);
     }
 
     /**

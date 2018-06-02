@@ -30,6 +30,7 @@ Route::group([
     Route::post('refresh', 'APIAuthController@refresh');
     Route::post('me', 'APIAuthController@me');
     Route::post('forgot_password', 'APIAuthController@forgotPassword');
+    Route::post('reset_password', 'APIAuthController@resetPassword');
 });
 
 Route::group([
