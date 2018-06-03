@@ -292,7 +292,7 @@ class APIAuthController extends Controller
             ], 500);
         }
 
-        return $this->respondWithToken($token, $customer);
+        return $this->respondWithToken($token, $customer, 201);
     }
 
     /**
@@ -302,7 +302,7 @@ class APIAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token, $details = "")
+    protected function respondWithToken($token, $details = "", $code = 200)
     {
         return response()->json([
             'access_token' => $token,
@@ -310,6 +310,6 @@ class APIAuthController extends Controller
             'verified' => $details->otp->verified,
             //'expires_in' => auth()->factory()->getTTL(),
             'data' => $details
-        ], 200);
+        ], $code);
     }
 }
