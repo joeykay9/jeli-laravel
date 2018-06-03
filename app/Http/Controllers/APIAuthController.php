@@ -225,7 +225,7 @@ class APIAuthController extends Controller
                 'message' => 'Verification code has been sent.'
             ], 200,
             [ 
-                'Location' => '/customers/'. $customer->id,
+                'Location' => $customer->id,
             ]);
 
         } catch (ClientException $e) {
