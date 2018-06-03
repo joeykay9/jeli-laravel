@@ -80,7 +80,7 @@ class APIAuthController extends Controller
             try {
                 $otp = new Otp;
                 $customer->otp()->update($otp->toArray());
-                //$customer->notify(new SendOTPNotification($otp));
+                $customer->notify(new SendOTPNotification($otp));
 
             } catch (ClientException $e) {
                 return response()->json([
@@ -218,7 +218,7 @@ class APIAuthController extends Controller
         //Send OTP via E-mail and or SMS to verify phone number
         try {
 
-            //$customer->notify(new SendOTPNotification($otp));
+            $customer->notify(new SendOTPNotification($otp));
 
             return response()->json([
                 'success' => true,
