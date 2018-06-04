@@ -80,16 +80,13 @@ class APIAuthController extends Controller
             try {
                 $otp = new Otp;
                 $customer->otp()->update($otp->toArray());
+
+                if($customer->email) {
+                    \Mail::to($customer)->send(new CustomerWelcome($otp));
+                }
+
                 $customer->notify(new SendOTPNotification($otp));
 
-            } catch (ClientException $e) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
-                ], 500);
-            }
-
-            try {
                 if (! $token = auth()->attempt($credentials)) {
                 
                     return response()->json([
@@ -97,6 +94,12 @@ class APIAuthController extends Controller
                         'errors' => ['Please check your credentials']
                     ], 401);
                 }
+
+            } catch (ClientException $e) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
+                ], 500);
             } catch (JWTException $e) {
                 return response()->json([
                     'success' => false,
@@ -113,7 +116,7 @@ class APIAuthController extends Controller
                     //'expires_in' => auth()->factory()->getTTL(),
                     'data' => $customer
                 ], 200);
-            }
+        }
 
         try {
             if (! $token = auth()->attempt($credentials)) {
