@@ -8,5 +8,5 @@ Verify your account with the digits below and begin to make moments possible.
 @endcomponent
 
 Thanks,<br>
-{{ config('app.name') }}
+The {{ config('app.name') }} Team.
 @endcomponent
