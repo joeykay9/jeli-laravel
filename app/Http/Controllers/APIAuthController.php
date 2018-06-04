@@ -85,7 +85,7 @@ class APIAuthController extends Controller
                     \Mail::to($customer)->send(new CustomerWelcome($otp));
                 }
 
-                $customer->notify(new SendOTPNotification($otp));
+                //$customer->notify(new SendOTPNotification($otp));
 
                 if (! $token = auth()->attempt($credentials)) {
                 
@@ -206,22 +206,24 @@ class APIAuthController extends Controller
             ], 404);
         }
 
-        //Generate OTP
-        $otp = new Otp;
-
-        $customer->otp()->update($otp->toArray());
-        $customer->otp->verified = false;
-        $customer->otp->save();
-
-        //Send email with OTP to customer
-        if($customer->email){
-            \Mail::to($customer)->send(new CustomerWelcome($otp));
-        }
+        
 
         //Send OTP via E-mail and or SMS to verify phone number
         try {
 
-            $customer->notify(new SendOTPNotification($otp));
+            //Generate OTP
+            $otp = new Otp;
+
+            $customer->otp()->update($otp->toArray());
+            $customer->otp->verified = false;
+            $customer->otp->save();
+
+            //Send email with OTP to customer
+            if($customer->email){
+                \Mail::to($customer)->send(new CustomerWelcome($otp));
+            }
+
+            //$customer->notify(new SendOTPNotification($otp));
 
             return response()->json([
                 'success' => true,
