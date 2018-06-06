@@ -59,6 +59,8 @@ Route::group([
 	Route::middleware('auth:api')->patch('/{customer}/activate', 'APICustomerController@activate');
 });
 
+Route::post('update_test_avatar', 'CustomerAvatarController@update');
+
 Route::group([
 	
 	'middleware' => 'auth:api'

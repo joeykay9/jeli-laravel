@@ -40,19 +40,26 @@ class APIAuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->only('phone', 'password');
+        $credentials = $request->only('username', 'password');
 
-        if($request->filled('phone')) {
-            $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+        if($request->filled('username')) {
+            if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
+
+                $rules = [
+                    'username' => 'required|email',
+                    'password' => 'required',
+                ];
+            } else {
+                $credentials['username'] = (string) PhoneNumber::make($request->username, 'GH');
+
+                $rules = [
+                    'username' => 'required|phone:AUTO,GH',
+                    'password' => 'required',
+                ];
+            }
         }
 
-        $rules = [
-            'phone' => 'required|phone:AUTO,GH',
-            'password' => 'required',
-        ];
-
         $messages = [
-            'phone.required' => 'The :attribute number field is required.',
             'password' => 'The :attribute field is required.',
         ];
 
@@ -65,12 +72,16 @@ class APIAuthController extends Controller
             ], 422);
         }
 
-        $customer = Customer::where('phone', $credentials['phone'])->first();
+        if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
+            $customer = Customer::where('email', $credentials['username'])->first();
+        } else {
+            $customer = Customer::where('phone', $credentials['username'])->first();
+        }
 
         if(! $customer) {
             return response()->json([
                     'success' => false,
-                    'errors' => ['Incorrect email or password. Please check your credentials.']
+                    'errors' => ['Incorrect username or password. Please check your credentials.']
                 ], 401); //401: Unauthorized
         }
 
@@ -86,13 +97,28 @@ class APIAuthController extends Controller
                 }
 
                 //$customer->notify(new SendOTPNotification($otp));
-
-                if (! $token = auth()->attempt($credentials)) {
+                if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
+                    if (! $token = auth()->attempt([
+                        'email' => $credentials['username'], 
+                        'password' => $credentials['password'],
+                    ])) {
                 
-                    return response()->json([
-                        'success' => false,
-                        'errors' => ['Please check your credentials']
-                    ], 401);
+                        return response()->json([
+                            'success' => false,
+                            'errors' => ['Please check your credentials']
+                        ], 401);
+                    }
+                } else {
+                    if (! $token = auth()->attempt([
+                        'phone' => $credentials['username'], 
+                        'password' => $credentials['password'],
+                    ])) {
+                
+                        return response()->json([
+                            'success' => false,
+                            'errors' => ['Please check your credentials']
+                        ], 401);
+                    }
                 }
 
             } catch (ClientException $e) {
@@ -119,13 +145,30 @@ class APIAuthController extends Controller
         }
 
         try {
-            if (! $token = auth()->attempt($credentials)) {
-            
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['Please check your credentials']
-                ], 401);
-            }
+            if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
+                    if (! $token = auth()->attempt([
+                        'email' => $credentials['username'], 
+                        'password' => $credentials['password'],
+                    ])) {
+                        
+                        return response()->json([
+                            'success' => false,
+                            'errors' => ['Please check your credentials']
+                        ], 401);
+                    }
+                } else {
+                    if (! $token = auth()->attempt([
+                        'phone' => $credentials['username'], 
+                        'password' => $credentials['password'],
+                    ])) {
+                
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['Please check your credentials']
+                    ], 401);
+                }
+                }
+
         } catch (JWTException $e) {
             return response()->json([
                 'success' => false,
