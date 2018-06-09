@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\CustomerWelcome;
 use App\Customer;
@@ -64,8 +65,14 @@ class APICustomerController extends Controller
         //Generate One Time PIN
         $otp = new Otp;
 
+         //Send email with OTP to customer
+        if($request->filled('email')) {
+            \Mail::to($request->email)->send(new CustomerWelcome($otp));
+        }
+
         //Create customer entry in database
         $customer = Customer::create([
+            'uuid' => (string) Str::orderedUuid(),
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
             'phone' =>$credentials['phone'],
@@ -76,11 +83,6 @@ class APICustomerController extends Controller
 
         //Create otp entry in database
         $customer->otp()->save($otp);
-
-        //Send email with OTP to customer
-        if($request->filled('email')) {
-            \Mail::to($customer)->send(new CustomerWelcome($otp));
-        }
 
         try {
             //$customer->notify(new SendOTPNotification($otp));
@@ -107,7 +109,7 @@ class APICustomerController extends Controller
             ], 500);
         }
 
-        return $this->respondWithToken($token, $customer->id);
+        return $this->respondWithToken($token, $customer->uuid);
     }
 
     public function activate(Request $request, Customer $customer){
@@ -121,6 +123,17 @@ class APICustomerController extends Controller
                 $customer->jelion = $credentials['jelion'];
                 $customer->active = true; //Set active flag to true
                 $customer->save();
+
+                if($request->hasFile('avatar')){
+
+                    $filename = $customer->uuid . '.jpg';
+                    $avatar = $request->file('avatar');
+                    $path = $avatar->storeAs('avatars', $filename);
+
+                    $directory = config('app.url') . '/storage/app/avatars/';
+                    $customer->avatar = $directory . $filename;
+                    $customer->save();
+                }
 
                 return response()->json($customer, 201);
             }
@@ -208,14 +221,14 @@ class APICustomerController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token, $id = "")
+    protected function respondWithToken($token, $uuid = "")
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'message' => 'Verification code has been sent.',
             //'expires_in' => auth()->factory()->getTTL(),
-            'id' => $id
+            'uuid' => $uuid
         ], 200);
     }
 }

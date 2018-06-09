@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Customer;
 
 class CustomerAvatarController extends Controller
 {
@@ -12,11 +13,18 @@ class CustomerAvatarController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request, Customer $customer)
     {
-    	$avatar = $request->file('avatar');
-        $path = $avatar->store('avatars');
+        if($request->hasFile('avatar')){
+            $filename = $customer->uuid . '.jpg';
+            $avatar = $request->file('avatar');
+            $path = $avatar->storeAs('avatars', $filename);
 
-        return $path;
+            $directory = config('app.url') . '/storage/app/avatars/';
+            $customer->avatar = $directory . $filename;
+            $customer->save();
+        }
+
+        return $customer;
     }
 }

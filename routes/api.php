@@ -56,10 +56,9 @@ Route::group([
 	Route::middleware('auth:api')->patch('/{customer}', 'APICustomerController@update');
 	Route::get('/{customer}/otp', 'OtpController@requestNewOTP');
 	Route::post('/{customer}/otp', 'OtpController@verifyOTP');
-	Route::middleware('auth:api')->patch('/{customer}/activate', 'APICustomerController@activate');
+	Route::middleware('auth:api')->post('/{customer}/activate', 'APICustomerController@activate');
+	Route::middleware('auth:api')->post('/{customer}/avatar', 'CustomerAvatarController@update');
 });
-
-Route::post('update_test_avatar', 'CustomerAvatarController@update');
 
 Route::group([
 	

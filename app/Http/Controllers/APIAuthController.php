@@ -33,6 +33,36 @@ class APIAuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'forgotPassword', 'resetPassword']]);
     }
 
+    protected function attemptLoginByCredentials($username, $password) {
+
+        if(filter_var($username, FILTER_VALIDATE_EMAIL)){
+                    if (! $token = auth()->attempt([
+                        'email' => $username, 
+                        'password' => $password,
+                    ])) {
+                
+                        return response()->json([
+                            'success' => false,
+                            'errors' => ['Please check your credentials']
+                        ], 401);
+                    }
+                } else {
+                    if (! $token = auth()->attempt([
+                        'phone' => $username, 
+                        'password' => $password,
+                    ])) {
+                
+                        return response()->json([
+                            'success' => false,
+                            'errors' => ['Please check your credentials']
+                        ], 401);
+                    }
+                }
+
+        return $token;
+    }
+
+
     /**
      * Get a JWT via given credentials.
      *
@@ -97,29 +127,8 @@ class APIAuthController extends Controller
                 }
 
                 //$customer->notify(new SendOTPNotification($otp));
-                if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
-                    if (! $token = auth()->attempt([
-                        'email' => $credentials['username'], 
-                        'password' => $credentials['password'],
-                    ])) {
-                
-                        return response()->json([
-                            'success' => false,
-                            'errors' => ['Please check your credentials']
-                        ], 401);
-                    }
-                } else {
-                    if (! $token = auth()->attempt([
-                        'phone' => $credentials['username'], 
-                        'password' => $credentials['password'],
-                    ])) {
-                
-                        return response()->json([
-                            'success' => false,
-                            'errors' => ['Please check your credentials']
-                        ], 401);
-                    }
-                }
+
+                $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
 
             } catch (ClientException $e) {
                 return response()->json([
@@ -145,29 +154,8 @@ class APIAuthController extends Controller
         }
 
         try {
-            if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
-                    if (! $token = auth()->attempt([
-                        'email' => $credentials['username'], 
-                        'password' => $credentials['password'],
-                    ])) {
-                        
-                        return response()->json([
-                            'success' => false,
-                            'errors' => ['Please check your credentials']
-                        ], 401);
-                    }
-                } else {
-                    if (! $token = auth()->attempt([
-                        'phone' => $credentials['username'], 
-                        'password' => $credentials['password'],
-                    ])) {
-                
-                    return response()->json([
-                        'success' => false,
-                        'errors' => ['Please check your credentials']
-                    ], 401);
-                }
-                }
+            
+            $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
 
         } catch (JWTException $e) {
             return response()->json([
@@ -273,7 +261,7 @@ class APIAuthController extends Controller
                 'message' => 'Verification code has been sent.'
             ], 200,
             [ 
-                'Location' => $customer->id,
+                'Location' => $customer->uuid,
             ]);
 
         } catch (ClientException $e) {

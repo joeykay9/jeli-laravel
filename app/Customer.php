@@ -16,7 +16,7 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'phone', 'email', 'jelion', 'password', 'verified', 'active',
+        'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'avatar', 'password', 'verified', 'active',
     ];
 
     /**
@@ -34,12 +34,12 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $visible = [
-        'id', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'verified', 'active'
+        'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'avatar', 'active'
     ];
 
-    // public function getRouteKeyName(){
-    //     return 'phone';
-    // }
+    public function getRouteKeyName(){
+        return 'uuid';
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
