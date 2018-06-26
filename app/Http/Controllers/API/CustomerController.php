@@ -1,19 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\CustomerWelcome;
 use App\Customer;
 use App\Otp;
+use App\Settings;
 use App\Notifications\SendOTPNotification;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use GuzzleHttp\Exception\ClientException;
 
-class APICustomerController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -81,6 +84,9 @@ class APICustomerController extends Controller
             'password' => bcrypt($request['password']),
         ]);
 
+        //Create customer settings
+        $customer->settings()->save(new Settings);
+
         //Create otp entry in database
         $customer->otp()->save($otp);
 
@@ -128,10 +134,14 @@ class APICustomerController extends Controller
 
                     $filename = $customer->uuid . '.jpg';
                     $avatar = $request->file('avatar');
-                    $path = $avatar->storeAs('avatars', $filename);
+                    $path = Storage::putFileAs(
+                        'avatars', $avatar, $filename
+                    );
 
-                    $directory = config('app.url') . '/storage/app/avatars/';
-                    $customer->avatar = $directory . $filename;
+                    //Storage::setVisibility($path, 'public'); -- TOFIX
+                    $url = Storage::url($path);
+
+                    $customer->avatar = $url;
                     $customer->save();
                 }
 
@@ -171,20 +181,22 @@ class APICustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $credentials = $request->all();
+        if($request->filled('phone')) {
+            $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+        }
 
         //Validate update request
         $rules = [
-            'first_name' => 'nullable|string|max:50',
-            'last_name' => 'nullable|string|max:50',
-            'phone' => 'bail|nullable|string|max:15|unique:customers',
+            'phone' => 'bail|phone:AUTO,GH|string|max:15|unique:customers',
             'email' => 'bail|nullable|string|email|max:50|unique:customers', //Email already exists
+            'jelion' => 'string|max:18',
         ];
 
         $messages = [
             'phone.max' => 'Please provide a valid :attribute number.',
-            'phone.unique' => ':attribute number has already been taken.',
+            'phone.unique' => 'Phone number has already been taken',
             'email' => 'Please provide a valid email address.',
-            'email.unique' => 'Email has already been taken'
+            'email.unique' => 'Email has already been taken',
         ];
 
         $validator = Validator::make($credentials, $rules, $messages);
@@ -196,6 +208,8 @@ class APICustomerController extends Controller
             ], 422);
         }
 
+        //TODO: Generate OTP and send to new number or email
+        
         //Update Customer's details
         $customer->update($credentials);
 

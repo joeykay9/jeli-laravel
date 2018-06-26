@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Validator, Hash;
@@ -12,7 +13,7 @@ use App\Notifications\SendOTPNotification;
 use App\Mail\CustomerWelcome;
 use GuzzleHttp\Exception\ClientException;
 
-class APIAuthController extends Controller
+class AuthController extends Controller
 {
 
     protected $OTP;

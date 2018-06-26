@@ -33,12 +33,12 @@ Route::group([
 
 ], function ($router) {
 
-    Route::post('login', 'APIAuthController@login');
-    Route::post('logout', 'APIAuthController@logout');
-    Route::post('refresh', 'APIAuthController@refresh');
-    Route::post('me', 'APIAuthController@me');
-    Route::post('forgot_password', 'APIAuthController@forgotPassword');
-    Route::post('reset_password', 'APIAuthController@resetPassword');
+    Route::post('login', 'API\AuthController@login');
+    Route::post('logout', 'API\AuthController@logout');
+    Route::post('refresh', 'API\AuthController@refresh');
+    Route::post('me', 'API\AuthController@me');
+    Route::post('forgot_password', 'API\AuthController@forgotPassword');
+    Route::post('reset_password', 'API\AuthController@resetPassword');
 });
 
 Route::group([
@@ -47,17 +47,18 @@ Route::group([
 
 ], function () {
 	//Return all customers
-	Route::middleware('auth:api')->get('/', 'APICustomerController@index');
+	Route::middleware('auth:api')->get('/', 'API\CustomerController@index');
 	//Register a customer
-	Route::post('/', 'APICustomerController@store');
+	Route::post('/', 'API\CustomerController@store');
 	//Will use this for viewing a contact's Jeli details
-	Route::middleware('auth:api')->get('/{customer}', 'APICustomerController@show');
+	Route::middleware('auth:api')->get('/{customer}', 'API\CustomerController@show');
 	//Update Jeli Customer details
-	Route::middleware('auth:api')->patch('/{customer}', 'APICustomerController@update');
-	Route::get('/{customer}/otp', 'OtpController@requestNewOTP');
-	Route::post('/{customer}/otp', 'OtpController@verifyOTP');
-	Route::middleware('auth:api')->post('/{customer}/activate', 'APICustomerController@activate');
-	Route::middleware('auth:api')->post('/{customer}/avatar', 'CustomerAvatarController@update');
+	Route::middleware('auth:api')->patch('/{customer}', 'API\CustomerController@update');
+	Route::get('/{customer}/otp', 'API\OtpController@requestNewOTP');
+	Route::post('/{customer}/otp', 'API\OtpController@verifyOTP');
+	Route::middleware('auth:api')->post('/{customer}/activate', 'API\CustomerController@activate');
+	Route::middleware('auth:api')->post('/{customer}/avatar', 'API\CustomerAvatarController@update');
+	Route::middleware('auth:api')->patch('/{customer}/settings', 'API\SettingsController@update');
 });
 
 Route::group([
@@ -66,14 +67,14 @@ Route::group([
 
 ], function() {
 	//Moment
-	Route::get('moments', 'MomentController@index'); //Get all moments a user belongs to
-	Route::post('moments', 'MomentController@store'); //Store a moment
-	Route::get('moments/{moment}', 'MomentController@show'); //Show a specfic moment
-	Route::put('moments/{moment}', 'MomentController@update'); //Update a specfic moment
-	Route::delete('moments/{moment}', 'MomentController@destroy'); //Delete a specfic moment
+	Route::get('moments', 'API\MomentController@index'); //Get all moments a user belongs to
+	Route::post('moments', 'API\MomentController@store'); //Store a moment
+	Route::get('moments/{moment}', 'API\MomentController@show'); //Show a specfic moment
+	Route::put('moments/{moment}', 'API\MomentController@update'); //Update a specfic moment
+	Route::delete('moments/{moment}', 'API\MomentController@destroy'); //Delete a specfic moment
 	//HTML forms do not support PUT, PATCH, or DELETE actions
 
 	//Return all businesses
-	Route::get('businesses', 'APIBusinessController@index');
-	Route::get('businesses/{business}', 'APIBusinessController@show');
+	Route::get('businesses', 'API\BusinessController@index');
+	Route::get('businesses/{business}', 'API\BusinessController@show');
 });

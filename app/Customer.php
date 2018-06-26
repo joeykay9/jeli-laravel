@@ -78,6 +78,10 @@ class Customer extends Authenticatable implements JWTSubject
         return $this->hasOne(Otp::class);
     }
 
+    public function settings() {
+        return $this->hasOne(Settings::class);
+    }
+
     public function createMoment(Moment $moment){
         $this->createdMoments()->save($moment);
     }
