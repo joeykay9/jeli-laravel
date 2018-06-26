@@ -18,6 +18,7 @@ class CreateSettingsTable extends Migration
             $table->integer('customer_id');
             $table->boolean('read_receipts')->default(0);
             $table->boolean('live_location')->default(0);
+            $table->string('status')->nullable();
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers');
