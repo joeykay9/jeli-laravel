@@ -145,7 +145,11 @@ class CustomerController extends Controller
                     $customer->save();
                 }
 
-                return response()->json($customer, 201);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Customer has been activated',
+                    'data' => $customer
+                ], 201);
             }
 
             return response()->json([
