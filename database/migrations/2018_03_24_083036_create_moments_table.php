@@ -20,6 +20,8 @@ class CreateMomentsTable extends Migration
             $table->string('title');
             $table->string('icon')->nullable();
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
 
         Schema::create('customer_moment', function (Blueprint $table) {

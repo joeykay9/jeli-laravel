@@ -21,7 +21,7 @@ class CreateSettingsTable extends Migration
             $table->string('status')->nullable();
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 

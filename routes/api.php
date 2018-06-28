@@ -54,7 +54,11 @@ Route::group([
 	Route::middleware('auth:api')->get('/{customer}', 'API\CustomerController@show');
 	//Update Jeli Customer details
 	Route::middleware('auth:api')->patch('/{customer}', 'API\CustomerController@update');
+	//Delete Jeli Customer Details
+	Route::middleware('auth:api')->delete('/{customer}', 'API\CustomerController@destroy');
+	//Request new otp
 	Route::get('/{customer}/otp', 'API\OtpController@requestNewOTP');
+	//Verify otp
 	Route::post('/{customer}/otp', 'API\OtpController@verifyOTP');
 	Route::middleware('auth:api')->post('/{customer}/activate', 'API\CustomerController@activate');
 	Route::middleware('auth:api')->post('/{customer}/avatar', 'API\CustomerAvatarController@update');

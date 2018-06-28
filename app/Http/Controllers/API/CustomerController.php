@@ -227,9 +227,19 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        //
+        //Delete customer avatar
+        $filename = 'avatars/' . $customer->uuid . '.jpg';
+        Storage::delete($filename);
+
+        //Delete customer details
+        $customer->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Account has been successfully deleted'
+        ], 200);
     }
 
     /**
