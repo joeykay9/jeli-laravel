@@ -92,7 +92,7 @@ class CustomerController extends Controller
         $customer->otp()->save($otp);
 
         try {
-            //$customer->notify(new SendOTPNotification($otp));
+            $customer->notify(new SendOTPNotification($otp));
 
             if (! $token = auth()->attempt([
                 'phone' => $credentials['phone'],

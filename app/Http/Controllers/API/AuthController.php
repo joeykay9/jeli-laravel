@@ -127,7 +127,7 @@ class AuthController extends Controller
                     \Mail::to($customer)->send(new CustomerWelcome($otp));
                 }
 
-                //$customer->notify(new SendOTPNotification($otp));
+                $customer->notify(new SendOTPNotification($otp));
 
                 $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
 
@@ -255,7 +255,7 @@ class AuthController extends Controller
                 \Mail::to($customer)->send(new CustomerWelcome($otp));
             }
 
-            //$customer->notify(new SendOTPNotification($otp));
+            $customer->notify(new SendOTPNotification($otp));
 
             return response()->json([
                 'success' => true,
