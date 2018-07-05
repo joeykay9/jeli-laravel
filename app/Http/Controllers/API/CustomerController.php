@@ -12,6 +12,7 @@ use App\Mail\CustomerWelcome;
 use App\Customer;
 use App\Otp;
 use App\Settings;
+use Hash;
 use App\Notifications\SendOTPNotification;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use GuzzleHttp\Exception\ClientException;
@@ -227,8 +228,33 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(Request $request, Customer $customer)
     {
+        //Validate request
+        $password = $request->all();
+
+        $rules = [
+            'password' => 'required', //should be required from the app
+        ];
+
+        $validator = Validator::make($password, $rules);
+
+        if($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
+
+        //Logic
+        if(! Hash::check($password['password'], $customer->password)) {
+
+            return response()->json([
+                'success' => false,
+                'errors' => ['Wrong password entered']
+            ], 401);
+        }
+
         //Delete customer avatar
         $filename = 'avatars/' . $customer->uuid . '.jpg';
         Storage::delete($filename);
