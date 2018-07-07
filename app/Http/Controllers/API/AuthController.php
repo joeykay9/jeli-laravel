@@ -131,13 +131,12 @@ class AuthController extends Controller
 
                 $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
 
+            } catch (ClientException $e) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
+                ], 500);
             } 
-            // catch (ClientException $e) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
-            //     ], 500);
-            // } 
                 catch (JWTException $e) {
                 return response()->json([
                     'success' => false,

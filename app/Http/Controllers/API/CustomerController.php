@@ -109,13 +109,12 @@ class CustomerController extends Controller
                 'success' => false,
                 'errors' => ['Failed to login, please try again.']
             ], 500);
-        } 
-        // catch (ClientException $e) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
-        //     ], 500);
-        // }
+        } catch (ClientException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
+            ], 500);
+        }
 
         return $this->respondWithToken($token, $customer->uuid);
     }
