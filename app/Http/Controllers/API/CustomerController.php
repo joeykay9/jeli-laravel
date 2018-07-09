@@ -89,32 +89,32 @@ class CustomerController extends Controller
         $customer->settings()->save(new Settings);
 
         //Create otp entry in database
-        $customer->otp()->save($otp);
+        // $customer->otp()->save($otp);
 
-        try {
-            $customer->notify(new SendOTPNotification($otp));
+        // try {
+        //     $customer->notify(new SendOTPNotification($otp));
 
-            if (! $token = auth()->attempt([
-                'phone' => $credentials['phone'],
-                'password' => $credentials['password'],
-            ])) {
+        //     if (! $token = auth()->attempt([
+        //         'phone' => $credentials['phone'],
+        //         'password' => $credentials['password'],
+        //     ])) {
             
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['Please check your credentials']
-                ], 401);
-            }
-        } catch (JWTException $e) {
-            return response()->json([
-                'success' => false,
-                'errors' => ['Failed to login, please try again.']
-            ], 500);
-        } catch (ClientException $e) {
-            return response()->json([
-                'success' => false,
-                'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
-            ], 500);
-        }
+        //         return response()->json([
+        //             'success' => false,
+        //             'errors' => ['Please check your credentials']
+        //         ], 401);
+        //     }
+        // } catch (JWTException $e) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'errors' => ['Failed to login, please try again.']
+        //     ], 500);
+        // } catch (ClientException $e) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
+        //     ], 500);
+        // }
 
         return $this->respondWithToken($token, $customer->uuid);
     }
