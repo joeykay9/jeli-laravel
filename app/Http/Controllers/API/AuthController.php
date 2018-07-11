@@ -42,10 +42,7 @@ class AuthController extends Controller
                         'password' => $password,
                     ])) {
                 
-                        return response()->json([
-                            'success' => false,
-                            'errors' => ['Please check your credentials']
-                        ], 401);
+                        return $token;
                     }
                 } else {
                     if (! $token = auth()->attempt([
@@ -53,10 +50,7 @@ class AuthController extends Controller
                         'password' => $password,
                     ])) {
                 
-                        return response()->json([
-                            'success' => false,
-                            'errors' => ['Please check your credentials']
-                        ], 401);
+                        return $token;
                     }
                 }
 
@@ -119,30 +113,37 @@ class AuthController extends Controller
         if(! $customer->otp->verified) {
 
             //Send OTP to Customers phone via SMS
-            // try {
-            //     $otp = new Otp;
-            //     $customer->otp()->update($otp->toArray());
+            try {
+                $otp = new Otp;
+                $customer->otp()->update($otp->toArray());
 
-            //     if($customer->email) {
-            //         \Mail::to($customer)->send(new CustomerWelcome($otp));
-            //     }
+                if($customer->email) {
+                    \Mail::to($customer)->send(new CustomerWelcome($otp));
+                }
 
-            //     $customer->notify(new SendOTPNotification($otp));
+                $customer->notify(new SendOTPNotification($otp));
 
-            //     $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
+                $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
 
-            // } catch (ClientException $e) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
-            //     ], 500);
-            // } 
-            //     catch (JWTException $e) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'errors' => ['Failed to login, please try again.']
-            //     ], 500);
-            // }
+            } catch (ClientException $e) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
+                ], 500);
+            } 
+                catch (JWTException $e) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['Failed to login, please try again.']
+                ], 500);
+            }
+
+            if(! $token){
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['Please check your credentials'],
+                ], 401);
+            }
 
             //Customer has not been verified
             return response()->json([
