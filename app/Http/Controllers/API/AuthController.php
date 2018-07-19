@@ -114,14 +114,14 @@ class AuthController extends Controller
 
             //Send OTP to Customers phone via SMS
             try {
-                $otp = new Otp;
-                $customer->otp()->update($otp->toArray());
+                // $otp = new Otp;
+                // $customer->otp()->update($otp->toArray());
 
-                if($customer->email) {
-                    \Mail::to($customer)->send(new CustomerWelcome($otp));
-                }
+                // if($customer->email) {
+                //     \Mail::to($customer)->send(new CustomerWelcome($otp));
+                // }
 
-                $customer->notify(new SendOTPNotification($otp));
+                // $customer->notify(new SendOTPNotification($otp));
 
                 $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
 

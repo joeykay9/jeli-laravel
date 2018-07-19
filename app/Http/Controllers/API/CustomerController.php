@@ -67,12 +67,12 @@ class CustomerController extends Controller
         }
 
         //Generate One Time PIN
-        $otp = new Otp;
+        // $otp = new Otp;
 
-         //Send email with OTP to customer
-        if($request->filled('email')) {
-            \Mail::to($request->email)->send(new CustomerWelcome($otp));
-        }
+        //  //Send email with OTP to customer
+        // if($request->filled('email')) {
+        //     \Mail::to($request->email)->send(new CustomerWelcome($otp));
+        // }
 
         //Create customer entry in database
         $customer = Customer::create([
@@ -102,9 +102,9 @@ class CustomerController extends Controller
             }
 
             //Create otp entry in database
-            $customer->otp()->save($otp);
+            // $customer->otp()->save($otp);
 
-            $customer->notify(new SendOTPNotification($otp));
+            // $customer->notify(new SendOTPNotification($otp));
             
         } catch (JWTException $e) {
             return response()->json([
