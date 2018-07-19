@@ -114,8 +114,8 @@ class AuthController extends Controller
 
             //Send OTP to Customers phone via SMS
             try {
-                // $otp = new Otp;
-                // $customer->otp()->update($otp->toArray());
+                $otp = new Otp;
+                $customer->otp()->update($otp->toArray());
 
                 // if($customer->email) {
                 //     \Mail::to($customer)->send(new CustomerWelcome($otp));
@@ -149,7 +149,7 @@ class AuthController extends Controller
             return response()->json([
                     'access_token' => $token,
                     'token_type' => 'bearer',
-                    'message' => 'Verification code has been sent, please verify your account.',
+                    // 'message' => 'Verification code has been sent, please verify your account.',
                     'verified' => $customer->otp->verified,
                     //'expires_in' => auth()->factory()->getTTL(),
                     'data' => $customer

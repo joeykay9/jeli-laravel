@@ -67,7 +67,7 @@ class CustomerController extends Controller
         }
 
         //Generate One Time PIN
-        // $otp = new Otp;
+        $otp = new Otp;
 
         //  //Send email with OTP to customer
         // if($request->filled('email')) {
@@ -102,7 +102,7 @@ class CustomerController extends Controller
             }
 
             //Create otp entry in database
-            // $customer->otp()->save($otp);
+            $customer->otp()->save($otp);
 
             // $customer->notify(new SendOTPNotification($otp));
             
@@ -282,7 +282,7 @@ class CustomerController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'message' => 'Verification code has been sent.',
+            // 'message' => 'Verification code has been sent.',
             //'expires_in' => auth()->factory()->getTTL(),
             'uuid' => $uuid
         ], 200);

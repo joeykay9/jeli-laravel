@@ -66,28 +66,28 @@ class OtpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function requestNewOTP(Customer $customer) {
+    public function requestOTP(Customer $customer) {
 
-    	$newOtp = new Otp;
-        $customer->otp()->update($newOtp->toArray());
+    	$otp = new Otp;
+        $customer->otp()->update($otp->toArray());
 
-        // //Unverify customer
-        // if($customer->otp->verified){
-        //     $customer->otp->verified = false;
-        //     $customer->otp->save();
-        // }
+        //Unverify customer
+        if($customer->otp->verified){
+            $customer->otp->verified = false;
+            $customer->otp->save();
+        }
 
         //Send email with OTP to customer
         // if($customer->email){
-        //     \Mail::to($customer)->send(new CustomerWelcome($newOtp));
+        //     \Mail::to($customer)->send(new CustomerWelcome($otp));
         // }
 
         //Send new one time pin via SMS
-        $customer->notify(new SendOTPNotification($newOtp));
+        $customer->notify(new SendOTPNotification($otp));
 
         return response()->json([
             'success' => true,
-            'message' => 'New verification code has been sent',
+            'message' => 'Verification code has been sent',
         ], 200);
     }
 }
