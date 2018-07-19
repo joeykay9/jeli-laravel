@@ -71,16 +71,16 @@ class OtpController extends Controller
     	$newOtp = new Otp;
         $customer->otp()->update($newOtp->toArray());
 
-        //Unverify customer
-        if($customer->otp->verified){
-            $customer->otp->verified = false;
-            $customer->otp->save();
-        }
+        // //Unverify customer
+        // if($customer->otp->verified){
+        //     $customer->otp->verified = false;
+        //     $customer->otp->save();
+        // }
 
         //Send email with OTP to customer
-        if($customer->email){
-            \Mail::to($customer)->send(new CustomerWelcome($newOtp));
-        }
+        // if($customer->email){
+        //     \Mail::to($customer)->send(new CustomerWelcome($newOtp));
+        // }
 
         //Send new one time pin via SMS
         $customer->notify(new SendOTPNotification($newOtp));
