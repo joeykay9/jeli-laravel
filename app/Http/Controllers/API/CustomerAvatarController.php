@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Customer;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerAvatarController extends Controller
 {
@@ -19,13 +20,34 @@ class CustomerAvatarController extends Controller
         if($request->hasFile('avatar')){
             $filename = $customer->uuid . '.jpg';
             $avatar = $request->file('avatar');
-            $path = $avatar->storeAs('avatars', $filename);
+            $path = Storage::putFileAs(
+                        'avatars', $avatar, $filename
+                    );
 
-            $directory = config('app.url') . '/storage/app/avatars/';
-            $customer->avatar = $directory . $filename;
+            $url = Storage::url($path);
+
+            $customer->avatar = $url;
             $customer->save();
         }
 
         return $customer;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Customer $customer)
+    {
+        //Delete customer avatar
+        $filename = 'avatars/' . $customer->uuid . '.jpg';
+        Storage::delete($filename);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Avatar has been successfully removed'
+        ], 200);
     }
 }

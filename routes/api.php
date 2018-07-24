@@ -62,6 +62,7 @@ Route::group([
 	Route::post('/{customer}/otp', 'API\OtpController@verifyOTP');
 	Route::middleware('auth:api')->post('/{customer}/activate', 'API\CustomerController@activate');
 	Route::middleware('auth:api')->post('/{customer}/avatar', 'API\CustomerAvatarController@update');
+	Route::middleware('auth:api')->delete('/{customer}/avatar', 'API\CustomerAvatarController@destroy');
 	Route::middleware('auth:api')->patch('/{customer}/settings', 'API\SettingsController@update');
 });
 
