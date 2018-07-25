@@ -136,7 +136,7 @@ class CustomerController extends Controller
                 if($request->hasFile('avatar')){
 
                     $avatar = $request->file('avatar');
-                    $path = Storage::putFileAs(
+                    $path = Storage::putFile(
                         'avatars', $avatar
                     );
 
