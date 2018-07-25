@@ -135,10 +135,9 @@ class CustomerController extends Controller
 
                 if($request->hasFile('avatar')){
 
-                    $filename = $customer->uuid . '.jpg';
                     $avatar = $request->file('avatar');
                     $path = Storage::putFileAs(
-                        'avatars', $avatar, $filename
+                        'avatars', $avatar
                     );
 
                     //Storage::setVisibility($path, 'public'); -- TOFIX

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Customer;
+use App\Business;
 use Illuminate\Support\Facades\Storage;
 
-class CustomerAvatarController extends Controller
+class BusinessAvatarController extends Controller
 {
     /**
      * Update the avatar for the user.
@@ -15,21 +15,22 @@ class CustomerAvatarController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Business $business)
     {
         if($request->hasFile('avatar')){
+            $filename = $business->uuid . '.jpg';
             $avatar = $request->file('avatar');
             $path = Storage::putFileAs(
-                        'avatars', $avatar
+                        'avatars', $avatar, $filename
                     );
 
             $url = Storage::url($path);
 
-            $customer->avatar = $url;
-            $customer->save();
+            $business->avatar = $url;
+            $business->save();
         }
 
-        return $customer;
+        return $business;
     }
 
     /**
@@ -38,10 +39,10 @@ class CustomerAvatarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(business $business)
     {
-        //Delete customer avatar
-        $filename = 'avatars/' . $customer->uuid . '.jpg';
+        //Delete business avatar
+        $filename = 'avatars/' . $business->uuid . '.jpg';
         Storage::delete($filename);
 
         return response()->json([
