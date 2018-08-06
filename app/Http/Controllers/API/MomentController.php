@@ -73,7 +73,7 @@ class MomentController extends Controller
         }
 
     	return response()->json([
-    		$moment, $moment->chatGroup], 201);
+    		$moment], 201);
     }
 
     /**
