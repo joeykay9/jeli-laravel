@@ -43,9 +43,9 @@ class MomentController extends Controller
             'category' => 'required|string',
             'title' => 'required|string|max:25',
             'date' => 'nullable|date', 
-            'time' => 'nullble|date_format:H:i', 
+            'time' => 'nullable|date_format:H:i', 
             'location' => 'nullable|string',
-            'budget' => 'nullable|decimal',
+            'budget' => 'nullable|numeric',
         ];
 
         $messages = [];
@@ -72,8 +72,8 @@ class MomentController extends Controller
             }
         }
 
-    	return response()->json([
-    		$moment], 201);
+    	return response()->json(
+    		$moment, 201);
     }
 
     /**
