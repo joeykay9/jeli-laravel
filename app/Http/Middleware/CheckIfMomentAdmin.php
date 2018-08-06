@@ -13,8 +13,10 @@ class CheckIfMomentAdmin
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $moment)
+    public function handle($request, Closure $next)
     {
+        auth('api')->user()->moments()->find($request->route('moment')->id)
+
         return $next($request);
     }
 }

@@ -36,7 +36,7 @@ class MomentController extends Controller
     public function store(Request $request)
     {
         $credentials = $request->only([
-            'category', 'title', 'date', 'time', 'location', 'budget'
+            'category', 'title', 'date', 'time', 'location', 'budget', 'chat_group'
         ]);
 
         $rules = [
@@ -46,6 +46,7 @@ class MomentController extends Controller
             'time' => 'nullable|date_format:H:i', 
             'location' => 'nullable|string',
             'budget' => 'nullable|numeric',
+            'chat_group' => 'boolean',
         ];
 
         $messages = [];
@@ -82,8 +83,9 @@ class MomentController extends Controller
      * @param  \App\Moment  $moment
      * @return \Illuminate\Http\Response
      */
-    public function show(Moment $moment)
+    public function show(Request $request, Moment $moment)
     {
+        dd(auth('api')->user()->moments()->find($request->route('moment')->id)->pivot->is_guest);
         return $moment;
     }
 

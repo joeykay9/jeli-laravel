@@ -35,7 +35,7 @@ class SettingsController extends Controller
 
         $rules = [
             'read_receipts' => 'boolean',
-            'live_location' => 'boolean|max:2',
+            'live_location' => 'boolean',
         ];
 
         $validator = Validator::make($credentials, $rules);

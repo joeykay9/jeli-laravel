@@ -80,6 +80,8 @@ Route::group([
 	//HTML forms do not support PUT, PATCH, or DELETE actions
 	Route::post('moments/{moment}/organisers', 'API\MomentController@addOrganisers'); //Add organisers
 	Route::post('moments/{moment}/guests', 'API\MomentController@addGuests'); //Add guests
+	//To do list
+	Route::post('moments/{moment}/todos', 'API\TodoController@store');
 
 	//Return all businesses
 	Route::get('businesses', 'API\BusinessController@index');
