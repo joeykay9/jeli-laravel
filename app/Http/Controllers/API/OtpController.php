@@ -69,7 +69,9 @@ class OtpController extends Controller
     public function requestOTP(Customer $customer) {
 
     	$otp = new Otp;
-        $customer->otp()->update($otp->toArray());
+
+        //Create otp entry in database
+        $customer->otp()->save($otp);
 
         //Unverify customer
         if($customer->otp->verified){

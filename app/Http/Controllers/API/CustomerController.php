@@ -66,14 +66,6 @@ class CustomerController extends Controller
             ], 422);
         }
 
-        //Generate One Time PIN
-        $otp = new Otp;
-
-        //  //Send email with OTP to customer
-        // if($request->filled('email')) {
-        //     \Mail::to($request->email)->send(new CustomerWelcome($otp));
-        // }
-
         //Create customer entry in database
         $customer = Customer::create([
             'uuid' => (string) Str::orderedUuid(),
@@ -100,9 +92,6 @@ class CustomerController extends Controller
                     'errors' => ['Please check your credentials']
                 ], 401);
             }
-
-            //Create otp entry in database
-            $customer->otp()->save($otp);
 
             // $customer->notify(new SendOTPNotification($otp));
             

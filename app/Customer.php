@@ -71,7 +71,9 @@ class Customer extends Authenticatable implements JWTSubject
     }
 
     public function moments() {
-        return $this->belongsToMany(Moment::class)->withTimestamps();
+        return $this->belongsToMany(Moment::class)
+                ->withPivot('is_organiser', 'is_guest')
+                ->withTimestamps();
     }
 
     public function otp() {

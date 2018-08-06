@@ -15,20 +15,30 @@ class CreateMomentsTable extends Migration
     {
         Schema::create('moments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id');
-            $table->string('category');
+            $table->integer('customer_id')->nullable();
+            $table->string('category')->nullable();
             $table->string('title');
+            $table->date('date')->nullable();
+            $table->time('time')->nullable();
+            $table->string('location')->nullable();
             $table->string('icon')->nullable();
+            $table->decimal('budget')->nullable();
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
         });
 
         Schema::create('customer_moment', function (Blueprint $table) {
             $table->integer('customer_id');
             $table->integer('moment_id');
+            $table->boolean('is_organiser')->default(0);
+            $table->boolean('is_guest')->default(0);
+            $table->boolean('is_admin')->default(0);
             $table->timestamps();
             $table->primary(['customer_id', 'moment_id']);
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('moment_id')->references('id')->on('moments')->onDelete('cascade');
         });
     }
 

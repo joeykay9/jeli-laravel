@@ -13,7 +13,7 @@ class Moment extends Model
      * @var array
      */
     protected $fillable = [
-        'category', 'title',
+        'category', 'title', 'date', 'time', 'location', 'icon', 'budget',
     ];
 
     /**
@@ -22,8 +22,12 @@ class Moment extends Model
      * @var array
      */
     protected $visible = [
-        'id', 'category', 'title',
+        'id', 'category', 'title', 'date', 'time', 'location', 'icon',
     ];
+
+    protected $organisers = [];
+
+    protected $guests = [];
 
 	//Moment is created by Customer
 	public function creator() {
@@ -31,7 +35,9 @@ class Moment extends Model
 	}
 
     public function members() {
-        return $this->belongsToMany(Customer::class)->withTimestamps();
+        return $this->belongsToMany(Customer::class)
+                ->withPivot('is_organiser', 'is_guest', 'is_admin')
+                ->withTimestamps();
     }
 
     public function services() {
@@ -42,5 +48,29 @@ class Moment extends Model
     public function chatGroup() {
 
     	return $this->hasOne(ChatGroup::class);
+    }
+
+    public function addOrganiser(Customer $customer) {
+
+        $this->members->attach($customer, ['is_organiser' => true]);
+    }
+
+    public function addGuest(Customer $customer) {
+        
+        $this->members->attach($customer, ['is_guest' => true]);
+    }
+
+    public function getOrganisers() {
+
+        $this->organisers = $this->members->where('is_organiser', true);
+
+        return $this->organisers;
+    }
+
+    public function getGuests() {
+
+        $this->guests = $this->members->where('is_guest', true);
+
+        return $this->guests;
     }
 }

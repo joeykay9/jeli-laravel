@@ -1,0 +1,89 @@
+@font-face {
+    font-family: TX_Jello;
+    src: url('jeli_font.ttf');
+    font-weight: bold;
+}
+@font-face {
+    font-family: Railway-italic;
+    src: url('Raleway-Italic.ttf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: Railway-bold;
+    src: url('Raleway-Light.ttf');
+    font-weight: bold;
+}
+
+/* .body .container
+{
+    background: #f1f1f1;
+} */
+
+.navbar {
+  background-color: rgb(74, 13, 143);
+  background: -moz-linear-gradient(135deg,#5C326E 0%, #D47EFA 100%);
+  background: -webkit-linear-gradient(135deg,#5C326E 0%, #D47EFA 100%);
+  background: linear-gradient(135deg,#5C326E 0%, #D47EFA 100%);
+  -webkit-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
+}
+  .card a
+  {
+      text-decoration: none;
+      color:black;
+
+  }
+  .navbar .navbar-brand h2
+  {
+    font-family: TX_Jello;
+    font-size: 50px;
+  }
+
+  .card
+  {
+      margin-top: 10%;
+      padding: 0;
+  }
+  .card h3
+  {
+      padding-top: 0%;
+      font-size: 20px;
+  }
+  .card li
+  {
+      font-family: Railway-bold;
+      font-size: 12px;
+      line-height: 20px;
+  }
+
+  h2
+  {
+    font-family: TX_Jello;
+    margin-top: 5%;
+  }
+
+  #newsfeed1 .card-body, #newsfeed2 .card-body:hover
+  {
+      box-shadow: none;
+  }
+
+  #downloadInstall
+  {
+      margin-top: 7%;
+  }
+ .card-body:hover
+  {
+    -webkit-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width:768px)
+  {
+      #newsfeed1, #newsfeed2
+      {
+          display: none;
+      }
+  }
