@@ -65,7 +65,7 @@ class MomentController extends Controller
         );
 
         //Store in pivot table
-        auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_admin' => true]);
+        auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
 
         if($request->filled('chat_group')) { //If chat group option specified
             if($request->chat_group) { // And it's true
@@ -85,7 +85,7 @@ class MomentController extends Controller
      */
     public function show(Request $request, Moment $moment)
     {
-        dd(auth('api')->user()->moments()->find($request->route('moment')->id)->pivot->is_guest);
+        dd(auth('api')->user()->moments()->find($request->route('moment')->id)->pivot->is_grp_admin);
         return $moment;
     }
 

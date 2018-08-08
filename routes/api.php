@@ -78,10 +78,13 @@ Route::group([
 	Route::put('moments/{moment}', 'API\MomentController@update'); //Update a specfic moment
 	Route::delete('moments/{moment}', 'API\MomentController@destroy'); //Delete a specfic moment
 	//HTML forms do not support PUT, PATCH, or DELETE actions
-	Route::post('moments/{moment}/organisers', 'API\MomentController@addOrganisers'); //Add organisers
-	Route::post('moments/{moment}/guests', 'API\MomentController@addGuests'); //Add guests
+	Route::middleware('moment.admin')
+		->post('moments/{moment}/organisers', 'API\MomentController@addOrganisers'); //Add organisers
+	Route::middleware('moment.admin')
+		->post('moments/{moment}/guests', 'API\MomentController@addGuests'); //Add guests
 	//To do list
-	Route::post('moments/{moment}/todos', 'API\TodoController@store');
+	Route::middleware('moment.admin')
+		->post('moments/{moment}/todos', 'API\TodoController@store'); //Create list items
 
 	//Return all businesses
 	Route::get('businesses', 'API\BusinessController@index');

@@ -68,16 +68,24 @@ class OtpController extends Controller
      */
     public function requestOTP(Customer $customer) {
 
-    	$otp = new Otp;
+        $otp = new Otp;
+
+        if($customer->otp) {
+            $customer->otp()->update($otp->toArray());
+            //Unverify customer
+            $customer->otp->verified = false;
+            $customer->otp->save();
+
+            $customer->notify(new SendOTPNotification($otp));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Verification code has been sent',
+            ], 200);
+        }
 
         //Create otp entry in database
         $customer->otp()->save($otp);
-
-        //Unverify customer
-        if($customer->otp->verified){
-            $customer->otp->verified = false;
-            $customer->otp->save();
-        }
 
         //Send email with OTP to customer
         // if($customer->email){

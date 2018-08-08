@@ -72,7 +72,7 @@ class Customer extends Authenticatable implements JWTSubject
 
     public function moments() {
         return $this->belongsToMany(Moment::class)
-                ->withPivot('is_organiser', 'is_guest')
+                ->withPivot('is_organiser', 'is_guest', 'is_grp_admin')
                 ->withTimestamps();
     }
 
