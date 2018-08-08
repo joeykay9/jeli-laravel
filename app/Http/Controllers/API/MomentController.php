@@ -159,9 +159,14 @@ class MomentController extends Controller
         }
 
         //Get Jeli Guests
-        $jeliGuests = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
+        $jeliGuestsOnJeli = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
 
-        $moment->members()->attach($jeliGuests, ['is_guest' => true]);
+        $moment->members()->attach($jeliGuestsOnJeli, ['is_guest' => true]);
+
+        //Extract numbers of those not on jeli from fromatedPhoneNumbers array
+        #$jeliGuestsNotOnJeli = Customer::whereNotIn('phone', $formattedPhoneNumbers)->get();
+
+        #dd($jeliGuestsNotOnJeli);
     }
 
     /**
