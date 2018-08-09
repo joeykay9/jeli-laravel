@@ -19,13 +19,13 @@ use App\Customer;
 //     return $request->user();
 // });
 
-Route::get('send_test_email', function(){
-	Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
-	{
-		$message->subject('Mailgun and Laravel are awesome!');
-		$message->to('joeykay9@gmail.com');
-	});
-});
+// Route::get('send_test_email', function(){
+// 	Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
+// 	{
+// 		$message->subject('Mailgun and Laravel are awesome!');
+// 		$message->to('joeykay9@gmail.com');
+// 	});
+// });
 
 Route::group([
 

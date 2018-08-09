@@ -67,6 +67,8 @@ class AuthController extends Controller
     {
         $credentials = $request->only('username', 'password');
 
+        dd($credentials);
+
         if($request->filled('username')) {
             if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
 
