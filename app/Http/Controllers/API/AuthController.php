@@ -114,24 +114,9 @@ class AuthController extends Controller
 
             //Send OTP to Customers phone via SMS
             try {
-                $otp = new Otp;
-                $customer->otp()->update($otp->toArray());
-
-                // if($customer->email) {
-                //     \Mail::to($customer)->send(new CustomerWelcome($otp));
-                // }
-
-                // $customer->notify(new SendOTPNotification($otp));
-
                 $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
 
-            } catch (ClientException $e) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
-                ], 500);
-            } 
-                catch (JWTException $e) {
+            } catch (JWTException $e) {
                 return response()->json([
                     'success' => false,
                     'errors' => ['Failed to login, please try again.']
@@ -149,7 +134,6 @@ class AuthController extends Controller
             return response()->json([
                     'access_token' => $token,
                     'token_type' => 'bearer',
-                    // 'message' => 'Verification code has been sent, please verify your account.',
                     'verified' => $customer->otp->verified,
                     //'expires_in' => auth()->factory()->getTTL(),
                     'data' => $customer
