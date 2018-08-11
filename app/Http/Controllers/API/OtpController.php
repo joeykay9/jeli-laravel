@@ -31,6 +31,13 @@ class OtpController extends Controller
 
         $validator = Validator::make($credentials, $rules, $messages);
 
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
+
         if(! $customer->otp->verified) {
             $otp = $customer->otp->otp;
 

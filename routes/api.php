@@ -75,8 +75,10 @@ Route::group([
 	Route::get('moments', 'API\MomentController@index'); //Get all moments a user belongs to
 	Route::post('moments', 'API\MomentController@store'); //Store a moment
 	Route::get('moments/{moment}', 'API\MomentController@show'); //Show a specfic moment
-	Route::put('moments/{moment}', 'API\MomentController@update'); //Update a specfic moment
-	Route::delete('moments/{moment}', 'API\MomentController@destroy'); //Delete a specfic moment
+	Route::middleware('moment.creator')
+		->put('moments/{moment}', 'API\MomentController@update'); //Update a specfic moment
+	Route::middleware('moment.creator')
+		->delete('moments/{moment}', 'API\MomentController@destroy'); //Delete a specfic moment
 	//HTML forms do not support PUT, PATCH, or DELETE actions
 	Route::middleware('moment.admin')
 		->post('moments/{moment}/organisers', 'API\MomentController@addOrganisers'); //Add organisers
