@@ -95,7 +95,9 @@ class Handler extends ExceptionHandler
         }
 
         if($login == 'response') {
-            return response()->json(['error' => 'Unauthenticated'], 401);
+            return response()->json([
+                'error' => ['Unauthenticated']
+            ], 401);
         }
 
         return $request->expectsJson()

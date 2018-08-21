@@ -35,8 +35,7 @@ class Moment extends Model
 	}
 
     public function members() {
-        return $this->belongsToMany(Customer::class)
-                ->withPivot(['is_organiser', 'is_guest', 'is_grp_admin'])
+        return $this->belongsToMany(Customer::class)->withPivot(['is_organiser', 'is_guest', 'is_grp_admin'])
                 ->withTimestamps();
     }
 

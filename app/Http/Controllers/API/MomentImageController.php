@@ -4,32 +4,32 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Customer;
+use App\Moment;
 use Illuminate\Support\Facades\Storage;
 
-class CustomerAvatarController extends Controller
+class MomentImageController extends Controller
 {
     /**
-     * Update the avatar for the user.
+     * Update the image for the moment.
      *
      * @param  Request  $request
      * @return Response
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Moment $moment)
     {
-        if($request->hasFile('avatar')){
-            $avatar = $request->file('avatar');
+        if($request->hasFile('image')){
+            $image = $request->file('image');
             $path = Storage::putFile(
-                        'avatars', $avatar
+                        'moments', $image
                     ); //stores file in 'avatars' directory and returns the path
 
             $url = Storage::url($path); //returns full url of location of file
 
-            $customer->avatar = $url;
-            $customer->save();
+            $moment->icon = $url;
+            $moment->save();
         }
 
-        return $customer;
+        return $moment;
     }
 
     /**
@@ -38,16 +38,16 @@ class CustomerAvatarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(Moment $moment)
     {
-        //Delete customer avatar
-        $url = $customer->avatar; //get the url of the avatar
+        //Delete moment icon
+        $url = $moment->icon; //get the url of the moment
         $path = substr(parse_url($url, PHP_URL_PATH), 1); //returns path of url with leading / taken off
-        Storage::delete($path);
+        Storage::delete($filename);
 
         return response()->json([
             'success' => true,
-            'message' => 'Avatar has been successfully removed'
+            'message' => 'Icon has been successfully removed'
         ], 200);
     }
 }

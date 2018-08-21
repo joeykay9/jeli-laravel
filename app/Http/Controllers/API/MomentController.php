@@ -9,6 +9,7 @@ use App\ChatGroup;
 use App\Customer;
 use Illuminate\Support\Facades\Validator;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use Illuminate\Support\Facades\Storage;
 
 class MomentController extends Controller
 {
@@ -64,6 +65,20 @@ class MomentController extends Controller
             new Moment($credentials)
         );
 
+        if($request->hasFile('icon')){
+
+            $icon = $request->file('icon');
+            $path = Storage::putFile(
+                'icons', $icon
+            );
+
+            //Storage::setVisibility($path, 'public'); -- TOFIX
+            $url = Storage::url($path);
+
+            $moment->icon = $url;
+            $moment->save();
+        }
+
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
 
@@ -85,8 +100,7 @@ class MomentController extends Controller
      */
     public function show(Request $request, Moment $moment)
     {
-        dd(auth('api')->user()->moments()->find($request->route('moment')->id)->pivot->is_grp_admin);
-        return $moment;
+        return $auth('api')->user()->moments()->where('id', $moment->id)->first();
     }
 
     /**
@@ -106,67 +120,6 @@ class MomentController extends Controller
 
         //Return the updated moment
         return $moment;
-    }
-
-    public function addOrgnisers(Request $request, Moment $moment)
-    {
-        $credentials = $request->all();
-        $phoneNumbers = array();
-
-        //Extract phone numbers from request
-        foreach ($credentials as $data => $array) {
-            foreach ($array as $index => $contacts){
-                foreach ($contacts as $key => $value) {
-                    if($key == "contactNumber")
-                        $phoneNumbers[] = $value;
-                }
-            }
-        }
-
-        $formattedPhoneNumbers = array();
-
-        //Format phone numbers
-        foreach ($phoneNumbers as $key => $value) {
-            $formattedPhoneNumbers[] = (string) PhoneNumber::make($value, 'GH');
-        }
-
-        //Get Jeli Organisers
-        $jeliOrganisers = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
-
-        $moment->members()->attach($jeliGuests, ['is_organiser' => true]);
-    }
-
-    public function addGuests(Request $request, Moment $moment)
-    {
-        $credentials = $request->all();
-        $phoneNumbers = array();
-
-        //Extract phone numbers from request
-        foreach ($credentials as $data => $array) {
-            foreach ($array as $index => $contacts){
-                foreach ($contacts as $key => $value) {
-                    if($key == "contactNumber")
-                        $phoneNumbers[] = $value;
-                }
-            }
-        }
-
-        $formattedPhoneNumbers = array();
-
-        //Format phone numbers
-        foreach ($phoneNumbers as $key => $value) {
-            $formattedPhoneNumbers[] = (string) PhoneNumber::make($value, 'GH');
-        }
-
-        //Get Jeli Guests
-        $jeliGuestsOnJeli = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
-
-        $moment->members()->attach($jeliGuestsOnJeli, ['is_guest' => true]);
-
-        //Extract numbers of those not on jeli from fromatedPhoneNumbers array
-        #$jeliGuestsNotOnJeli = Customer::whereNotIn('phone', $formattedPhoneNumbers)->get();
-
-        #dd($jeliGuestsNotOnJeli);
     }
 
     /**

@@ -80,10 +80,28 @@ Route::group([
 	Route::middleware('moment.creator')
 		->delete('moments/{moment}', 'API\MomentController@destroy'); //Delete a specfic moment
 	//HTML forms do not support PUT, PATCH, or DELETE actions
+	Route::middleware('moment.creator')->post('/{moment}/avatar', 'API\MomentImageController@update');
+	Route::middleware('moment.creator')->delete('/{moment}/avatar', 'API\MomentImageController@destroy');
+
+	//Organisers
+	Route::middleware('moment.organiser')
+		->get('moments/{moment}/organisers', 'API\MomentOrganiserController@index');
+		//View moment organisers in  Jelispace [You need to be an organiser to see that]
 	Route::middleware('moment.admin')
-		->post('moments/{moment}/organisers', 'API\MomentController@addOrganisers'); //Add organisers
+		->post('moments/{moment}/organisers', 'API\MomentOrganiserController@store'); //Add list of organisers [You need to be a moment admin to do that]
 	Route::middleware('moment.admin')
-		->post('moments/{moment}/guests', 'API\MomentController@addGuests'); //Add guests
+		->patch('moments/{moment}/organisers/{customer}', 'API\MomentOrganiserController@updateAdminStatus'); //Update admin status of organiser [You need to be a moment admin to do that]
+	Route::middleware('moment.admin')
+		->delete('moments/{moment}/organisers/{customer}', 'API\MomentOrganiserController@removeOrganiser'); //Remove an organiser from a moment's Jelispace [You need to be a moment admin to do that]
+
+	//Guests
+	Route::middleware('moment.organiser')
+		->get('moments/{moment}/guests', 'API\MomentGuestController@index'); //View moment guest list [You need to be an organiser to see that]
+	Route::middleware('moment.admin')
+		->post('moments/{moment}/guests', 'API\MomentGuestController@store'); //Add list of guests [You need to be a moment admin to do that]
+	Route::middleware('moment.admin')
+		->delete('moments/{moment}/guests/{customer}', 'API\MomentGuestController@removeGuest'); //Remove a customer from guest list [You need to be a moment admin to do that]
+
 	//To do list
 	Route::middleware('moment.admin')
 		->post('moments/{moment}/todos', 'API\TodoController@store'); //Create list items

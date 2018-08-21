@@ -62,5 +62,6 @@ class Kernel extends HttpKernel
         'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
         'moment.admin' => \App\Http\Middleware\CheckIfMomentAdmin::class,
         'moment.creator' => \App\Http\Middleware\CheckIfMomentCreator::class,
+        'moment.organiser' => \App\Http\Middleware\CheckIfMomentOrganiser::class,
     ];
 }
