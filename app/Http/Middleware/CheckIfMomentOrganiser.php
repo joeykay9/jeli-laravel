@@ -17,8 +17,7 @@ class CheckIfMomentOrganiser
     {
         if(! auth('api')->user()->moments()
                 ->find($request->route('moment')->id)
-                ->pivot
-                ->is_organiser) {
+                ->pivot->is_organiser) {
             return response()->json([
                 'success' => false,
                 'errors' => ['Unauthorized']

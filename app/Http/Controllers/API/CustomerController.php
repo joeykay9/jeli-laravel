@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\CustomerWelcome;
@@ -14,6 +15,7 @@ use App\Otp;
 use App\Settings;
 use Hash;
 use App\Notifications\SendOTPNotification;
+use App\Notifications\Slack\CustomerAccountCreated;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use GuzzleHttp\Exception\ClientException;
 
@@ -79,6 +81,9 @@ class CustomerController extends Controller
 
         //Create customer settings
         $customer->settings()->save(new Settings);
+
+        Notification::route('slack', 'https://hooks.slack.com/services/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')
+                    ->notify(new CustomerAccountCreated($customer));
 
         try {
 

@@ -18,12 +18,6 @@ class AuthController extends Controller
 
     protected $OTP;
 
-    protected function generateOTP() {
-        $this->OTP = mt_rand(100000, 999999);
-
-        return $this->OTP;
-    }
-
     /**
      * Create a new AuthController instance.
      *
@@ -109,7 +103,7 @@ class AuthController extends Controller
                     'errors' => ['Incorrect username or password. Please check your credentials.']
                 ], 401); //401: Unauthorized
         }
-
+        
         if(! $customer->otp->verified) {
 
             //Send OTP to Customers phone via SMS

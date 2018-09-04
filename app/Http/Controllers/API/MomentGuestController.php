@@ -20,7 +20,7 @@ class MomentGuestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Moment $moment)
     {
         return response()->json($moment->members()->wherePivot('is_guest', true)->get()); //List all guests of a moment
     }
@@ -46,16 +46,28 @@ class MomentGuestController extends Controller
             }
         }
 
-        $formattedPhoneNumbers = array();
+        $formattedPhoneNumbers = array(); //Initiaize array
 
         //Format phone numbers
         foreach ($phoneNumbers as $key => $value) {
-            $formattedPhoneNumbers[] = (string) PhoneNumber::make($value, 'GH');
+            $formattedPhoneNumbers[] = (string) PhoneNumber::make($value, 'GH'); //store phone numbers in ghanaian format in array
         }
 
         //Get Jeli Guests
         $jeliGuestsOnJeli = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
+        $flattenedArray = array_dot($jeliGuestsOnJeli->toArray()); // array_dot: flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth:
+        
+        $onJeli = array(); //Numbers in list on Jeli
 
+        foreach ($flattenedArray as $key => $value) {
+            if(preg_match("/phone$/", $key)){
+                $onJeli[] = $value;
+            }
+        }
+
+        $notOnJeli = array_diff($formattedPhoneNumbers, $onJeli); //Numbers in list not on Jeli
+        dd($notOnJeli);
+        
         $moment->members()->attach($jeliGuestsOnJeli, ['is_guest' => true]);
 
         //Extract numbers of those not on jeli from formatedPhoneNumbers array
