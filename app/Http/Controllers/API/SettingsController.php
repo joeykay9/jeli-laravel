@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Validator;
 class SettingsController extends Controller
 {
 
+    public function __construct(){
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display the specified resource.
      *

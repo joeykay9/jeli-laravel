@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Storage;
 
 class CustomerAvatarController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth:api');
+    }
+
     /**
      * Update the avatar for the user.
      *

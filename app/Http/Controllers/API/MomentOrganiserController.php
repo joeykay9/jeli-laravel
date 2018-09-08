@@ -11,6 +11,16 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 
 class MomentOrganiserController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth:api');
+        $this->middleware('moment.organiser')->only([
+            'index', 'destroy'
+        ]);
+        $this->middleware('moment.admin')->only([
+            'store', 'updateAdminStatus', 'removeOrganiser'
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *

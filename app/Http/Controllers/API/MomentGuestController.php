@@ -13,6 +13,12 @@ class MomentGuestController extends Controller
 {
     public function __construct(){
         $this->middleware('auth:api');
+        $this->middleware('moment.organiser')->only([
+            'index'
+        ]);
+        $this->middleware('moment.admin')->only([
+            'store', 'removeGuest'
+        ]);
     }
 
     /**

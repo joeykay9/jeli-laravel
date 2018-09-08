@@ -21,6 +21,11 @@ use GuzzleHttp\Exception\ClientException;
 
 class CustomerController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -166,6 +171,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //Will use this for viewing a contact's Jeli details
     public function show(Customer $customer)
     {
         return $customer;

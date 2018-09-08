@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class MomentImageController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth:api');
+        $this->middleware('moment.creator')->only([
+            'update', 'destroy'
+        ]);
+    }
+
     /**
      * Update the image for the moment.
      *
