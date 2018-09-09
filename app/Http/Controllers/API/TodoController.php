@@ -10,6 +10,9 @@ class TodoController extends Controller
 {
     public function __construct(){
         $this->middleware('auth:api');
+        $this->middleware('moment.admin')->only([
+            'store'
+        ]);
     }
 
     /**

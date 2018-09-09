@@ -41,14 +41,9 @@ Route::group([
     Route::post('reset_password', 'API\AuthController@resetPassword');
 });
 
-Route::apiResource('customers', 'API\CustomerController');
-
 Route::group([
-
 	'prefix' => 'customers'
-
 ], function () {
-
 	//Request new otp
 	Route::get('/{customer}/otp', 'API\OtpController@requestOTP');
 	//Verify otp
@@ -63,11 +58,8 @@ Route::group([
 	Route::patch('/{customer}/settings', 'API\SettingsController@update');
 });
 
-Route::apiResource('moments', 'API\MomentController');
 Route::group([
-	
 	'prefix' => 'moments'
-
 ], function() {
 	
 	Route::post('/{moment}/avatar', 'API\MomentImageController@update');
@@ -86,10 +78,14 @@ Route::group([
 	Route::delete('moments/{moment}/guests/{customer}', 'API\MomentGuestController@removeGuest'); //Remove a customer from guest list [You need to be a moment admin to do that]
 
 	//To do list
-	Route::middleware('moment.admin')
-		->post('moments/{moment}/todos', 'API\TodoController@store'); //Create list items
-
-		Route::apiResource('businesses', 'API\BusinessController')->only([
-			'index', 'show'
-		]);
+	Route::post('moments/{moment}/todos', 'API\TodoController@store'); //Create list items
 });
+
+Route::apiResources([
+	'customers' => 'API\CustomerController',
+	'moments' => 'API\MomentController'
+]);
+
+Route::apiResource('businesses', 'API\BusinessController')->only([
+	'index', 'show'
+]);
