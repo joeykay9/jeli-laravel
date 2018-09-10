@@ -120,7 +120,7 @@ class AuthController extends Controller
             if(! $token){
                 return response()->json([
                     'success' => false,
-                    'errors' => ['Please check your credentials'],
+                    'errors' => ['Incorrect username or password. Please check your credentials'],
                 ], 401);
             }
 

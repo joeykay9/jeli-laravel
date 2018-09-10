@@ -25,7 +25,7 @@ class CreateMomentsTable extends Migration
             $table->decimal('budget')->nullable();
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
 
         Schema::create('customer_moment', function (Blueprint $table) {
