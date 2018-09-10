@@ -14,8 +14,8 @@ use App\Customer;
 use App\Otp;
 use App\Settings;
 use Hash;
+use App\Events\Customer\AccountCreated;
 use App\Notifications\SendOTPNotification;
-use App\Notifications\Slack\CustomerAccountCreated;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use GuzzleHttp\Exception\ClientException;
 
@@ -24,7 +24,7 @@ class CustomerController extends Controller
 
     public function __construct(){
         $this->middleware('auth:api')->except([
-            'store', 'actvate'
+            'store',
         ]);
     }
 
@@ -90,8 +90,7 @@ class CustomerController extends Controller
         $customer->settings()->save(new Settings);
         $customer->otp()->save(new Otp);
 
-        Notification::route('slack', 'https://hooks.slack.com/services/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')
-                    ->notify(new CustomerAccountCreated($customer));
+        event(new AccountCreated($customer));
 
         try {
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Customer;
 
-use App\Events\Event;
+use App\Events\Customer\AccountActivated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EventListener
+class AccountActivatedListener
 {
     /**
      * Create the event listener.
@@ -21,10 +21,10 @@ class EventListener
     /**
      * Handle the event.
      *
-     * @param  Event  $event
+     * @param  AccountActivated  $event
      * @return void
      */
-    public function handle(Event $event)
+    public function handle(AccountActivated $event)
     {
         //
     }

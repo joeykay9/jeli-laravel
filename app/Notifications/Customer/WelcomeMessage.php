@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Notifications\Slack;
+namespace App\Notifications\Customer;
 
 use App\Customer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
+use NotificationChannels\Hubtel\HubtelChannel;
+use NotificationChannels\Hubtel\HubtelMessage;
 
-class CustomerAccountCreated extends Notification
+class WelcomeMessage extends Notification
 {
     use Queueable;
 
@@ -33,7 +34,7 @@ class CustomerAccountCreated extends Notification
      */
     public function via($notifiable)
     {
-        return ['slack'];
+        return ['mail', HubtelChannel::class];
     }
 
     /**
@@ -45,24 +46,17 @@ class CustomerAccountCreated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject('Welcome')
+                    ->greeting('Welcome to Jeli')
+                    ->line('Your Jeli Account was created successfully');
     }
 
-    public function toSlack($notifiable)
+    public function toSMS($notifiable)
     {
-        return (new SlackMessage)
-                    ->success()
-                    ->content('Jeli Customer Account has been created')
-                    ->attachment(function ($attachment) {
-                        $attachment->title('New Jeli Customer')
-                                   ->fields([
-                                        'Name' => $this->customer->first_name . ' ' . $this->customer->last_name,
-                                        'Phone' => $this->customer->phone,
-                                        'Email' => $this->customer->email,
-                                   ]);
-                    });
+        return (new HubtelMessage)
+                    ->from('Jeli')
+                    ->content('Your Jeli Account was created successfully. Jeli! Making Moments Possible!')
+                    ->registeredDelivery(true);
     }
 
     /**

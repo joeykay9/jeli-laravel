@@ -13,12 +13,21 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
-        ],
         'App\Events\Customer\AccountCreated' => [
-            'App\Listeners\Customer\SendNewAccountNotification',
+            'App\Listeners\Customer\AccountCreatedListener',
         ],
+        'App\Events\Customer\AccountActivated' => [
+            'App\Listeners\Customer\AccountActivatedListener',
+        ],
+        // 'App\Events\Customer\EmailUpdated' => [
+        //     'App\Listeners\Customer\SendEmailUpdatedNotification'
+        // ],
+        // 'App\Events\Customer\PhoneUpdated' => [
+        //     'App\Listeners\Customer\SendPhoneUpdatedNotification'
+        // ],
+        // 'App\Events\Customer\PasswordChanged' => [
+        //     'App\Listeners\Customer\SendPasswordChangedNotification'
+        // ],
     ];
 
     /**

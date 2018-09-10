@@ -50,10 +50,10 @@ return [
 
         'slack' => [
             'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
+            'url' => env('LOG_SLACK_WEBHOOK_URL', 'https://hooks.slack.com/services/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'),
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
-            'level' => 'critical',
+            'level' => 'info',
         ],
 
         'syslog' => [
