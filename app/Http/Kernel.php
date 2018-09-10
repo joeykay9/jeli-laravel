@@ -63,5 +63,6 @@ class Kernel extends HttpKernel
         'moment.admin' => \App\Http\Middleware\CheckIfMomentAdmin::class,
         'moment.creator' => \App\Http\Middleware\CheckIfMomentCreator::class,
         'moment.organiser' => \App\Http\Middleware\CheckIfMomentOrganiser::class,
+        'account.exists' => \App\Http\Middleware\CheckIfAccountExists::class,
     ];
 }

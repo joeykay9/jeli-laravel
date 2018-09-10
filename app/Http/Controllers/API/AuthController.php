@@ -26,6 +26,12 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'forgotPassword', 'resetPassword']]);
+        $this->middleware('account.exists')->only([
+            'login'
+        ]);
+        $this->middleware('accout.verified')->only([
+            'login'
+        ])
     }
 
     protected function attemptLoginByCredentials($username, $password) {
@@ -90,19 +96,6 @@ class AuthController extends Controller
                 'errors' => $validator->messages()->all()
             ], 422);
         }
-
-        if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
-            $customer = Customer::where('email', $credentials['username'])->first();
-        } else {
-            $customer = Customer::where('phone', $credentials['username'])->first();
-        }
-
-        if(! $customer) {
-            return response()->json([
-                    'success' => false,
-                    'errors' => ['Incorrect username or password. Please check your credentials.']
-                ], 401); //401: Unauthorized
-        }
         
         if(! $customer->otp->verified) {
 
@@ -115,13 +108,6 @@ class AuthController extends Controller
                     'success' => false,
                     'errors' => ['Failed to login, please try again.']
                 ], 500);
-            }
-
-            if(! $token){
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['Incorrect username or password. Please check your credentials'],
-                ], 401);
             }
 
             //Customer has not been verified
