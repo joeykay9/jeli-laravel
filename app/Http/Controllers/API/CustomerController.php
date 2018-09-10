@@ -88,6 +88,7 @@ class CustomerController extends Controller
 
         //Create customer settings
         $customer->settings()->save(new Settings);
+        $customer->otp()->save(new Otp);
 
         Notification::route('slack', 'https://hooks.slack.com/services/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')
                     ->notify(new CustomerAccountCreated($customer));
