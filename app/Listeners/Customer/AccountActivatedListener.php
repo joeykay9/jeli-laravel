@@ -26,6 +26,6 @@ class AccountActivatedListener
      */
     public function handle(AccountActivated $event)
     {
-        //
+        $event->customer->notify(new WelcomeMessage($event->customer));
     }
 }

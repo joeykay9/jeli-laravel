@@ -35,7 +35,7 @@ class AuthController extends Controller
 
         if(filter_var($username, FILTER_VALIDATE_EMAIL)){
                     if (! $token = auth()->attempt([
-                        'email' => $username, 
+                        'email' => $username,
                         'password' => $password,
                     ])) {
                 

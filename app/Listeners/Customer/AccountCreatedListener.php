@@ -33,7 +33,5 @@ class AccountCreatedListener implements ShouldQueue
             'Phone' => $event->customer->phone,
             'Email' => $event->customer->email,
         ]);
-
-        $event->customer->notify(new WelcomeMessage($event->customer));
     }
 }

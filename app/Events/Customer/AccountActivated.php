@@ -14,14 +14,16 @@ class AccountActivated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $customer;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Customer $customer)
     {
-        //
+        $this->customer = $customer;
     }
 
     /**

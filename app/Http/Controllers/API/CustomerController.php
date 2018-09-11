@@ -148,6 +148,8 @@ class CustomerController extends Controller
                     $customer->save();
                 }
 
+                event(new AccountActivated($customer));
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Customer has been activated',
