@@ -29,9 +29,6 @@ class AuthController extends Controller
         $this->middleware('account.exists')->only([
             'login'
         ]);
-        $this->middleware('accout.verified')->only([
-            'login'
-        ])
     }
 
     protected function attemptLoginByCredentials($username, $password) {
