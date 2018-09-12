@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Customer;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class CheckIfAccountExists
 {
