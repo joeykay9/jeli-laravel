@@ -93,6 +93,20 @@ class AuthController extends Controller
                 'errors' => $validator->messages()->all()
             ], 422);
         }
+
+        if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
+            $customer = Customer::where('email', $request->username)->first();
+        } else {
+            $request->username = (string) PhoneNumber::make($request->username, 'GH');
+            $customer = Customer::where('phone', $request->username)->first();
+        }
+
+        if (! $customer) {
+            return response()->json([
+                    'success' => false,
+                    'errors' => ['Incorrect username or password. Please check your credentials.']
+                ], 401); //401: Unauthorized
+        }
         
         if(! $customer->otp->verified) {
 
