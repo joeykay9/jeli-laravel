@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Customer;
 
+use App\Notifications\Customer\WelcomeMessage;
 use App\Events\Customer\AccountActivated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

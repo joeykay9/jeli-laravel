@@ -19,6 +19,7 @@ class CheckIfAccountExists
         if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
             $customer = Customer::where('email', $request->username)->first();
         } else {
+            $request->username = (string) PhoneNumber::make($request->username, 'GH');
             $customer = Customer::where('phone', $request->username)->first();
         }
 

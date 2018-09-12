@@ -15,6 +15,7 @@ use App\Otp;
 use App\Settings;
 use Hash;
 use App\Events\Customer\AccountCreated;
+use App\Events\Customer\AccountActivated;
 use App\Notifications\SendOTPNotification;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use GuzzleHttp\Exception\ClientException;

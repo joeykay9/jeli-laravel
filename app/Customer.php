@@ -87,4 +87,12 @@ class Customer extends Authenticatable implements JWTSubject
     public function createMoment(Moment $moment){
         $this->createdMoments()->save($moment);
     }
+
+    public function scopeActive($query){
+        return $query->where('active', true)->get();
+    }
+
+    public function scopeInactive($query){
+        return $query->where('active', false)->get();
+    }
 }

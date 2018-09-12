@@ -48,18 +48,16 @@ class WelcomeMessage extends Notification
         return (new MailMessage)
                     ->subject('Welcome')
                     ->greeting('Hello ' . $this->customer->first_name)
-                    ->line('Your Jeli Account was created successfully. 
-                        Create and collobrate on Moments with your friends, family or colleagues.
-                        You could also invite guests to your Moments and so much more.');
+                    ->line('Your Jeli Account was created successfully.')
+                    ->line('Create and collobrate on Moments with your friends, family or colleagues.')
+                    ->line('You could also invite guests to your Moments and so much more.');
     }
 
     public function toSMS($notifiable)
     {
         return (new HubtelMessage)
                     ->from('Jeli')
-                    ->content('Your Jeli Account was created successfully.
-                        Create and collobrate on Moments with your friends, family or colleagues.
-                        Jeli! Making Moments Possible!')
+                    ->content('Hello, ' . $this->customer->first_name . 'Your Jeli Account was created successfully. ' . 'Create and collobrate on Moments with your friends, family or colleagues. ' . 'Jeli! Making Moments Possible!')
                     ->registeredDelivery(true);
     }
 

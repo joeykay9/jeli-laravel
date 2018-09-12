@@ -10,6 +10,7 @@ use App\Customer;
 use Illuminate\Support\Facades\Validator;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Storage;
+use App\Events\Customer\MomentCreated;
 
 class MomentController extends Controller
 {
@@ -67,6 +68,8 @@ class MomentController extends Controller
         auth('api')->user()->createMoment($moment = 
             new Moment($credentials)
         );
+
+        event(new MomentCreated($moment));
 
         if($request->hasFile('icon')){
 

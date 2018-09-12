@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Customer\AccountActivated' => [
             'App\Listeners\Customer\AccountActivatedListener',
         ],
+        'App\Events\Customer\MomentCreated' => [
+            'App\Listeners\Customer\MomentCreatedListener',
+        ],
         // 'App\Events\Customer\EmailUpdated' => [
         //     'App\Listeners\Customer\SendEmailUpdatedNotification'
         // ],
