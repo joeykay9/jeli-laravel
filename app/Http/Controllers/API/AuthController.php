@@ -26,9 +26,6 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'forgotPassword', 'resetPassword']]);
-        $this->middleware('account.exists')->only([
-            'login'
-        ]);
     }
 
     protected function attemptLoginByCredentials($username, $password) {
