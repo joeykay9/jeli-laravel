@@ -5,6 +5,7 @@ namespace App\Listeners\Customer;
 use App\Events\Customer\MomentCreated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 class MomentCreatedListener
 {

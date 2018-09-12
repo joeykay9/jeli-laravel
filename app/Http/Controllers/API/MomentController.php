@@ -69,8 +69,6 @@ class MomentController extends Controller
             new Moment($credentials)
         );
 
-        event(new MomentCreated($moment));
-
         if($request->hasFile('icon')){
 
             $icon = $request->file('icon');
@@ -87,6 +85,8 @@ class MomentController extends Controller
 
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
+
+        event(new MomentCreated($moment));
 
         if($request->filled('chat_group')) { //If chat group option specified
             if($request->chat_group) { // And it's true

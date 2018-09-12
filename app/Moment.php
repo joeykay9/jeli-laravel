@@ -30,8 +30,8 @@ class Moment extends Model
     protected $guests = [];
 
 	//Moment is created by Customer
-	public function creator() {
-		return $this->belongsTo(Customer::class);
+	public function creator() { //does not work if foreign key is not specified
+		return $this->belongsTo(Customer::class, 'customer_id');
 	}
 
     public function members() {
