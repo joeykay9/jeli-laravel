@@ -118,6 +118,14 @@ class AuthController extends Controller
                 ], 500);
             }
 
+            //If token is false, then wrong login credentials entered
+            if(! $token) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['Incorrect username or password. Please check your credentials.']
+                ], 401); //401: Unauthorized
+            }
+
             //Customer has not been verified
             return response()->json([
                     'access_token' => $token,
@@ -137,6 +145,14 @@ class AuthController extends Controller
                 'success' => false,
                 'errors' => ['Failed to login, please try again.']
             ], 500);
+        }
+
+        //If token is false, then wrong login credentials entered
+        if(! $token){
+            return response()->json([
+                    'success' => false,
+                    'errors' => ['Incorrect username or password. Please check your credentials.']
+                ], 401); //401: Unauthorized
         }
 
         return $this->respondWithToken($token, $customer);
