@@ -13,7 +13,7 @@ class Moment extends Model
      * @var array
      */
     protected $fillable = [
-        'category', 'title', 'date', 'time', 'location', 'icon', 'budget',
+        'category', 'title', 'date', 'time', 'location', 'icon', 'budget', 'is_memory'
     ];
 
     /**
@@ -22,7 +22,7 @@ class Moment extends Model
      * @var array
      */
     protected $visible = [
-        'id', 'category', 'title', 'date', 'time', 'location', 'icon', 'budget'
+        'id', 'category', 'title', 'date', 'time', 'location', 'icon', 'budget', 'is_memory'
     ];
 
     protected $organisers = [];
@@ -47,6 +47,10 @@ class Moment extends Model
     public function chatGroup() {
 
     	return $this->hasOne(ChatGroup::class);
+    }
+
+    public function place() {
+        return $this->hasOne(Place::class);
     }
 
     public function addOrganiser(Customer $customer) {

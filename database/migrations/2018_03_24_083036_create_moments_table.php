@@ -23,6 +23,7 @@ class CreateMomentsTable extends Migration
             $table->string('location')->nullable();
             $table->string('icon')->nullable();
             $table->decimal('budget')->nullable();
+            $table->boolean('is_memory')->default(0);
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');

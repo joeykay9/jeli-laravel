@@ -61,6 +61,9 @@ Route::group([
 Route::group([
 	'prefix' => 'moments'
 ], function() {
+
+	Route::post('/{moment}/end', 'API\MomentController@end');
+	Route::post('/{moment}/restore', 'API\MomentController@restore');
 	
 	Route::post('/{moment}/avatar', 'API\MomentImageController@update');
 	Route::delete('/{moment}/avatar', 'API\MomentImageController@destroy');

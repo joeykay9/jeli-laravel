@@ -17,7 +17,7 @@ class MomentController extends Controller
     public function __construct(){
     	$this->middleware('auth:api');
         $this->middleware('moment.creator')->only([
-            'update', 'destroy'
+            'update', 'destroy', 'end'
         ]);
     }
 
@@ -125,6 +125,30 @@ class MomentController extends Controller
         $moment->update($input);
 
         //Return the updated moment
+        return $moment;
+    }
+
+    public function end(Request $request, Moment $moment)
+    {
+        $input = $request->only('is_memory');
+
+        if(! $moment->is_memory) {
+            $moment->is_memory = true;
+            $moment->save();
+        }
+
+        return $moment;
+    }
+
+    public function restore(Request $request, Moment $moment)
+    {
+        $input = $request->only('is_memory');
+
+        if($moment->is_memory) {
+            $moment->is_memory = false;
+            $moment->save();
+        }
+
         return $moment;
     }
 
