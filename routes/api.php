@@ -65,8 +65,8 @@ Route::group([
 	Route::post('/{moment}/end', 'API\MomentController@end');
 	Route::post('/{moment}/restore', 'API\MomentController@restore');
 	
-	Route::post('/{moment}/avatar', 'API\MomentImageController@update');
-	Route::delete('/{moment}/avatar', 'API\MomentImageController@destroy');
+	Route::post('/{moment}/icon', 'API\MomentImageController@update');
+	Route::delete('/{moment}/icon', 'API\MomentImageController@destroy');
 
 	//Organisers
 	Route::get('/{moment}/organisers', 'API\MomentOrganiserController@index');
