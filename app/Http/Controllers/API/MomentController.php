@@ -69,23 +69,10 @@ class MomentController extends Controller
             new Moment($credentials)
         );
 
-        if($request->hasFile('icon')){
-
-            $icon = $request->file('icon');
-            $path = Storage::putFile(
-                'icons', $icon
-            );
-
-            //Storage::setVisibility($path, 'public'); -- TOFIX
-            $url = Storage::url($path);
-
-            $moment->icon = $url;
-            $moment->save();
-        }
-
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
 
+        //Fire Moment Created event
         event(new MomentCreated($moment));
 
         if($request->filled('chat_group')) { //If chat group option specified
