@@ -41,7 +41,7 @@ class MomentController extends Controller
     public function store(Request $request)
     {
         $credentials = $request->only([
-            'category', 'title', 'date', 'time', 'location', 'budget', 'chat_group'
+            'category', 'title', 'date', 'time', 'location', 'budget',
         ]);
 
         $rules = [
@@ -51,7 +51,6 @@ class MomentController extends Controller
             'time' => 'nullable|date_format:H:i', 
             'location' => 'nullable|string',
             'budget' => 'nullable|numeric',
-            'chat_group' => 'boolean',
         ];
 
         $messages = [];
@@ -72,14 +71,9 @@ class MomentController extends Controller
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
 
-        //Fire Moment Created event
-        event(new MomentCreated($moment));
+        event(new MomentCreated($moment)); //Fire Moment Created event
 
-        if($request->filled('chat_group')) { //If chat group option specified
-            if($request->chat_group) { // And it's true
-                $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
-            }
-        }
+        $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 
     	return response()->json(
     		$moment, 201);
