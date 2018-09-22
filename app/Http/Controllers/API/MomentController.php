@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Moment;
 use App\ChatGroup;
 use App\Customer;
+use App\Place;
 use Illuminate\Support\Facades\Validator;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Storage;
@@ -41,7 +42,7 @@ class MomentController extends Controller
     public function store(Request $request)
     {
         $credentials = $request->only([
-            'category', 'title', 'date', 'time', 'location', 'budget',
+            'category', 'title', 'date', 'time', 'budget',
         ]);
 
         $rules = [
@@ -49,13 +50,14 @@ class MomentController extends Controller
             'title' => 'required|string|max:25',
             'date' => 'nullable|date', 
             'time' => 'nullable|date_format:H:i', 
-            'location' => 'nullable|string',
+            'place_id' => 'nullable|string',
+            'place_name' => 'nullable|string',
             'budget' => 'nullable|numeric',
         ];
 
         $messages = [];
 
-        $validator = Validator::make($credentials, $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if($validator->fails()){
             return response()->json([
@@ -68,10 +70,33 @@ class MomentController extends Controller
             new Moment($credentials)
         );
 
+        //Create Place Object
+        $place = new Place([
+            'place_id' => $request->place_id,
+            'place_name' => $request->place_name,
+        ]);
+
+        //Save Place Record
+        $moment->place()->save($place);
+
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
 
         event(new MomentCreated($moment)); //Fire Moment Created event
+
+        if($request->hasFile('icon')){
+ 
+             $icon = $request->file('icon');
+             $path = Storage::putFile(
+                 'icons', $icon
+             );
+ 
+             //Storage::setVisibility($path, 'public'); -- TOFIX
+             $url = Storage::url($path);
+ 
+             $moment->icon = $url;
+             $moment->save();
+         }
 
         $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 

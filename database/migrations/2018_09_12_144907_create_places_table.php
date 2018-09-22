@@ -17,7 +17,7 @@ class CreatePlacesTable extends Migration
             $table->increments('id');
             $table->integer('moment_id')->unique()->nullable();
             $table->string('place_id')->unique()->nullable();
-            $table->string('name')->nullable();
+            $table->string('place_name')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
 
