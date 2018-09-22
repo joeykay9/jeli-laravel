@@ -169,7 +169,7 @@ class MomentController extends Controller
             "date" => $moment->date,
             "time" => $moment->time,
             "place_id" => $moment->place->place_id,
-            "place_name" => $moment->place->place_id,
+            "place_name" => $moment->place->place_name,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
         ], 201);
@@ -191,7 +191,7 @@ class MomentController extends Controller
             "date" => $moment->date,
             "time" => $moment->time,
             "place_id" => $moment->place->place_id,
-            "place_name" => $moment->place->place_id,
+            "place_name" => $moment->place->place_name,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
         ], 201);
