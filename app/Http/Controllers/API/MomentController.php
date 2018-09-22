@@ -127,6 +127,7 @@ class MomentController extends Controller
             "place_name" => $moment->place->place_name,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
+            "is_memory" => $moment->is_memory,
         ], 201);
     }
 
@@ -138,7 +139,20 @@ class MomentController extends Controller
      */
     public function show(Request $request, Moment $moment)
     {
-        return $auth('api')->user()->moments()->where('id', $moment->id)->first();
+        //return auth('api')->user()->moments()->where('id', $moment->id)->first();
+
+        return response()->json([
+            "id" => $moment->id,
+            "category" => $moment->category,
+            "title" => $moment->title,
+            "date" => $moment->date,
+            "time" => $moment->time,
+            "place_id" => $moment->place->place_id,
+            "place_name" => $moment->place->place_name,
+            "budget" => $moment->budget,
+            "icon" => $moment->icon,
+            "is_memory" => $moment->is_memory,
+        ], 201);
     }
 
     /**
@@ -151,10 +165,17 @@ class MomentController extends Controller
     public function update(Request $request, Moment $moment)
     {
         //Validate the request
-        $input = $request->all();
+        $input = $request->except(['place_id', 'place_name']);
+        $place = $request->only(['place_id', 'place_name']);
 
         //Update the moment
         $moment->update($input);
+
+        if($place) {
+            $moment->place->place_id = $place->place_id;
+            $moment->place->place_name = $place->place_name;
+            $moment->place->save();
+        }
 
         //Return the updated moment
         return response()->json([
@@ -167,6 +188,7 @@ class MomentController extends Controller
             "place_name" => $moment->place->place_name,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
+            "is_memory" => $moment->is_memory,
         ], 201);
     }
 
@@ -189,6 +211,7 @@ class MomentController extends Controller
             "place_name" => $moment->place->place_name,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
+            "is_memory" => $moment->is_memory,
         ], 201);
     }
 
@@ -211,6 +234,7 @@ class MomentController extends Controller
             "place_name" => $moment->place->place_name,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
+            "is_memory" => $moment->is_memory,
         ], 201);
     }
 
