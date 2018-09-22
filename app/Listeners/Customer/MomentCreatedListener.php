@@ -7,7 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-class MomentCreatedListener
+class MomentCreatedListener implements ShouldQueue
 {
     /**
      * Create the event listener.

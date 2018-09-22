@@ -7,7 +7,7 @@ use App\Events\Customer\AccountActivated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AccountActivatedListener
+class AccountActivatedListener implements ShouldQueue
 {
     /**
      * Create the event listener.

@@ -29,8 +29,25 @@ class MomentController extends Controller
      */
     public function index()
     {
+        $moments = [];
+
+        foreach (auth('api')->user()->moments as $moment) {
+            $moments[] = [
+                "id" => $moment->id,
+                "category" => $moment->category,
+                "title" => $moment->title,
+                "date" => $moment->date,
+                "time" => $moment->time,
+                "place_id" => $moment->place->place_id,
+                "place_name" => $moment->place->place_name,
+                "budget" => $moment->budget,
+                "icon" => $moment->icon,
+                "is_memory" => $moment->is_memory,
+            ];
+        }
+
         //Return JSON array of JSON Moment objects
-        return auth('api')->user()->moments;
+        return response()->json($moments);
     }
 
     /**
