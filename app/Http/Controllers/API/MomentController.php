@@ -140,7 +140,17 @@ class MomentController extends Controller
         $moment->update($input);
 
         //Return the updated moment
-        return $moment;
+        return response()->json([
+            "id" => $moment->id,
+            "category" => $moment->category,
+            "title" => $moment->title,
+            "date" => $moment->date,
+            "time" => $moment->time,
+            "place_id" => $moment->place->place_id,
+            "place_name" => $moment->place->place_id,
+            "budget" => $moment->budget,
+            "icon" => $moment->icon,
+        ], 201);
     }
 
     public function end(Request $request, Moment $moment)
@@ -152,7 +162,17 @@ class MomentController extends Controller
             $moment->save();
         }
 
-        return $moment;
+        return response()->json([
+            "id" => $moment->id,
+            "category" => $moment->category,
+            "title" => $moment->title,
+            "date" => $moment->date,
+            "time" => $moment->time,
+            "place_id" => $moment->place->place_id,
+            "place_name" => $moment->place->place_id,
+            "budget" => $moment->budget,
+            "icon" => $moment->icon,
+        ], 201);
     }
 
     public function restore(Request $request, Moment $moment)
@@ -164,7 +184,17 @@ class MomentController extends Controller
             $moment->save();
         }
 
-        return $moment;
+        return response()->json([
+            "id" => $moment->id,
+            "category" => $moment->category,
+            "title" => $moment->title,
+            "date" => $moment->date,
+            "time" => $moment->time,
+            "place_id" => $moment->place->place_id,
+            "place_name" => $moment->place->place_id,
+            "budget" => $moment->budget,
+            "icon" => $moment->icon,
+        ], 201);
     }
 
     /**
