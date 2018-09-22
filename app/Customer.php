@@ -16,7 +16,7 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'avatar', 'password', 'verified', 'active',
+        'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'dob', 'avatar', 'password', 'active',
     ];
 
     /**
@@ -34,7 +34,7 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $visible = [
-        'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'avatar', 'active'
+        'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'dob', 'avatar', 'active'
     ];
 
     public function getRouteKeyName(){
