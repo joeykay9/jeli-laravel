@@ -100,8 +100,17 @@ class MomentController extends Controller
 
         $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 
-    	return response()->json(
-    		$moment, 201);
+    	return response()->json([
+            "id" => $moment->id,
+            "category" => $moment->category,
+            "title" => $moment->title,
+            "date" => $moment->date,
+            "time" => $moment->time,
+            "place_id" => $moment->place->place_id,
+            "place_name" => $moment->place->place_id,
+            "budget" => $moment->budget,
+            "icon" => $moment->icon,
+        ], 201);
     }
 
     /**
