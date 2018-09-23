@@ -87,16 +87,21 @@ class MomentController extends Controller
             new Moment($credentials)
         );
 
-        //Create Place Object
-        $place = new Place([
-            'place_id' => $request->place_id,
-            'place_name' => $request->place_name,
-        ]);
+        if($request->filled('place_id') && $request->filled('place_id')){
+            //Create Place Object
+            $place = new Place([
+                'place_id' => $request->place_id,
+                'place_name' => $request->place_name,
+            ]);
+
+            //Save Place Record
+            $moment->place()->save($place);
+        } else {
+            //Save Place Record
+            $moment->place()->save(new Place());
+        }
 
         // dd($moment->chatGroup());
-
-        //Save Place Record
-        $moment->place()->save($place);
 
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
