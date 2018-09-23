@@ -98,7 +98,7 @@ class MomentController extends Controller
             $moment->place()->save($place);
         } else {
             //Save Place Record
-            $moment->place()->save(new Place());
+            $moment->place()->save(new Place);
         }
 
         // dd($moment->chatGroup());
