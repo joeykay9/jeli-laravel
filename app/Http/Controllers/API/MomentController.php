@@ -101,6 +101,8 @@ class MomentController extends Controller
 
         event(new MomentCreated($moment)); //Fire Moment Created event
 
+        dd($moment);
+
         // if($request->hasFile('icon')){
  
         //      $icon = $request->file('icon');
