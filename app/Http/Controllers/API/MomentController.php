@@ -93,6 +93,8 @@ class MomentController extends Controller
             'place_name' => $request->place_name,
         ]);
 
+        dd($moment);
+
         //Save Place Record
         $moment->place()->save($place);
 
@@ -100,8 +102,6 @@ class MomentController extends Controller
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
 
         event(new MomentCreated($moment)); //Fire Moment Created event
-
-        dd($moment);
 
         // if($request->hasFile('icon')){
  
