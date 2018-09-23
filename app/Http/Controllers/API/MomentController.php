@@ -93,7 +93,7 @@ class MomentController extends Controller
             'place_name' => $request->place_name,
         ]);
 
-        dd($moment->place()->save($place));
+        dd($moment->place());
 
         //Save Place Record
         $moment->place()->save($place);
