@@ -101,19 +101,19 @@ class MomentController extends Controller
 
         event(new MomentCreated($moment)); //Fire Moment Created event
 
-        if($request->hasFile('icon')){
+        // if($request->hasFile('icon')){
  
-             $icon = $request->file('icon');
-             $path = Storage::putFile(
-                 'icons', $icon
-             );
+        //      $icon = $request->file('icon');
+        //      $path = Storage::putFile(
+        //          'icons', $icon
+        //      );
  
-             //Storage::setVisibility($path, 'public'); -- TOFIX
-             $url = Storage::url($path);
+        //      //Storage::setVisibility($path, 'public'); -- TOFIX
+        //      $url = Storage::url($path);
  
-             $moment->icon = $url;
-             $moment->save();
-         }
+        //      $moment->icon = $url;
+        //      $moment->save();
+        //  }
 
         $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 
