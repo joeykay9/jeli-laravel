@@ -96,7 +96,7 @@ class MomentController extends Controller
         // dd($moment->chatGroup());
 
         //Save Place Record
-        // $moment->place()->save($place);
+        $moment->place()->save($place);
 
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
@@ -125,8 +125,8 @@ class MomentController extends Controller
             "title" => $moment->title,
             "date" => $moment->date,
             "time" => $moment->time,
-            "place_id" => $moment->place ? $moment->place->place_id: "null",
-            "place_name" => $moment->place ? $moment->place->place_name : "null",
+            "place_id" => $moment->place ? $moment->place->place_id: null,
+            "place_name" => $moment->place ? $moment->place->place_name : null,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
             "is_memory" => $moment->is_memory,
