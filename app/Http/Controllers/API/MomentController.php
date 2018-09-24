@@ -58,6 +58,8 @@ class MomentController extends Controller
      */
     public function store(Request $request)
     {
+
+        dd($request);
         $credentials = $request->only([
             'category', 'title', 'date', 'time', 'budget',
         ]);
@@ -172,7 +174,6 @@ class MomentController extends Controller
         //Validate the request
         $input = $request->except(['place_id', 'place_name']);
         $place = $request->only(['place_id', 'place_name']);
-
         //Update the moment
         $moment->update($input);
 
