@@ -101,8 +101,6 @@ class MomentController extends Controller
             $moment->place()->save(new Place);
         }
 
-        // dd($moment->chatGroup());
-
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
 
@@ -130,7 +128,7 @@ class MomentController extends Controller
             "title" => $moment->title,
             "date" => $moment->date,
             "time" => $moment->time,
-            "place_id" => $moment->place ? $moment->place->place_id: null,
+            "place_id" => $moment->place ? $moment->place->place_id : null,
             "place_name" => $moment->place ? $moment->place->place_name : null,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
