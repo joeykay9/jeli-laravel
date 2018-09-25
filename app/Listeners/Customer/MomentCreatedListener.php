@@ -31,6 +31,7 @@ class MomentCreatedListener implements ShouldQueue
             'Creator' => $event->moment->creator->first_name . ' ' . $event->moment->creator->last_name,
             'Category' => $event->moment->category,
             'Title' => $event->moment->title,
+            'Place' => $event->moment->place()->first()->place_name,
         ]);
     }
 }
