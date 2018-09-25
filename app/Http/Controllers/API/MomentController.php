@@ -58,8 +58,6 @@ class MomentController extends Controller
      */
     public function store(Request $request)
     {
-
-        dd($request);
         $credentials = $request->only([
             'category', 'title', 'date', 'time', 'budget',
         ]);
