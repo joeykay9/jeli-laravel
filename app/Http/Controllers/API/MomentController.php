@@ -171,10 +171,10 @@ class MomentController extends Controller
     {
         //Validate the request
         $input = $request->except(['place_id', 'place_name']);
-        $place = $request->only(['place_id', 'place_name']);
+        $place = $request->filled(['place_id', 'place_name']);
 
         //Update the moment
-        if(! $input) {
+        if($input) {
             $moment->update($input);
         }
 
