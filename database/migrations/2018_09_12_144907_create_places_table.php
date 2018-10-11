@@ -18,7 +18,7 @@ class CreatePlacesTable extends Migration
             $table->integer('moment_id')->unique()->nullable();
             $table->string('place_id')->nullable();
             $table->string('place_name')->nullable();
-            $table->string('image')->nullable();
+            $table->string('place_image')->nullable();
             $table->timestamps();
 
             $table->foreign('moment_id')->references('id')->on('moments')->onDelete('cascade');

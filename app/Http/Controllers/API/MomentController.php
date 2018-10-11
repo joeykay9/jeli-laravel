@@ -40,6 +40,7 @@ class MomentController extends ApiController
                 "time" => $moment->time,
                 "place_id" => $moment->place()->first()->place_id,
                 "place_name" => $moment->place()->first()->place_name,
+                "place_image" => $moment->place()->first()->place_image,
                 "budget" => $moment->budget,
                 "icon" => $moment->icon,
                 "is_memory" => $moment->is_memory,
@@ -69,6 +70,7 @@ class MomentController extends ApiController
             'time' => 'nullable|date_format:H:i', 
             'place_id' => 'nullable|string',
             'place_name' => 'nullable|string',
+            'place_image' => 'nullable|string',
             'budget' => 'nullable|numeric',
         ];
 
@@ -92,6 +94,7 @@ class MomentController extends ApiController
             $place = new Place([
                 'place_id' => $request->place_id,
                 'place_name' => $request->place_name,
+                'place_image' => $request->place_image,
             ]);
 
             //Save Place Record
@@ -130,6 +133,7 @@ class MomentController extends ApiController
             "time" => $moment->time,
             "place_id" => $moment->place()->first()->place_id,
             "place_name" => $moment->place()->first()->place_name,
+            "place_image" => $moment->place()->first()->place_image,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
             "is_memory" => $moment->is_memory,
@@ -154,6 +158,7 @@ class MomentController extends ApiController
             "time" => $moment->time,
             "place_id" => $moment->place()->first()->place_id,
             "place_name" => $moment->place()->first()->place_name,
+            "place_image" => $moment->place()->first()->place_image,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
             "is_memory" => $moment->is_memory,
@@ -170,7 +175,7 @@ class MomentController extends ApiController
     public function update(Request $request, Moment $moment)
     {
         //Validate the request
-        $input = $request->except(['place_id', 'place_name']);
+        $input = $request->except(['place_id', 'place_name', 'place_image']);
         $place = $request->filled(['place_id', 'place_name']);
 
         //Update the moment
@@ -181,6 +186,7 @@ class MomentController extends ApiController
         if($place) {
             $moment->place->place_id = $request->input('place_id');
             $moment->place->place_name = $request->input('place_name');
+            $moment->place->place_image = $request->input('place_image');
             $moment->place->save();
         }
 
@@ -193,6 +199,7 @@ class MomentController extends ApiController
             "time" => $moment->time,
             "place_id" => $moment->place()->first()->place_id,
             "place_name" => $moment->place()->first()->place_name,
+            "place_image" => $moment->place()->first()->place_image,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
             "is_memory" => $moment->is_memory,
@@ -216,6 +223,7 @@ class MomentController extends ApiController
             "time" => $moment->time,
             "place_id" => $moment->place()->first()->place_id,
             "place_name" => $moment->place()->first()->place_name,
+            "place_image" => $moment->place()->first()->place_image,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
             "is_memory" => $moment->is_memory,
@@ -239,6 +247,7 @@ class MomentController extends ApiController
             "time" => $moment->time,
             "place_id" => $moment->place->place_id,
             "place_name" => $moment->place->place_name,
+            "place_image" => $moment->place->place_image,
             "budget" => $moment->budget,
             "icon" => $moment->icon,
             "is_memory" => $moment->is_memory,
