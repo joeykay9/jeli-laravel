@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Moment;
 use App\ChatGroup;
 use App\Customer;
@@ -12,8 +11,9 @@ use Illuminate\Support\Facades\Validator;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Storage;
 use App\Events\Customer\MomentCreated;
+use App\Http\Controllers\API\ApiController;
 
-class MomentController extends Controller
+class MomentController extends ApiController
 {
     public function __construct(){
     	$this->middleware('auth:api');
@@ -179,8 +179,8 @@ class MomentController extends Controller
         }
 
         if($place) {
-            $moment->place->place_id = $place->place_id;
-            $moment->place->place_name = $place->place_name;
+            $moment->place->place_id = $request->input('place_id');
+            $moment->place->place_name = $request->input('place_name');
             $moment->place->save();
         }
 

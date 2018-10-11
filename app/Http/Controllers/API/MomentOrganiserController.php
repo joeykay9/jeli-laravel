@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Moment;
 use App\Customer;
 use Illuminate\Support\Facades\Validator;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use App\Http\Controllers\API\ApiController;
 
-class MomentOrganiserController extends Controller
+class MomentOrganiserController extends ApiController
 {
 
     public function __construct(){

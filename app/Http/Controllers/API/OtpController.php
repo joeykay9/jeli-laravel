@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Validator;
 use App\Otp;
 use App\Customer;
 use App\Mail\CustomerWelcome;
 use App\Notifications\SendOTPNotification;
+use App\Http\Controllers\API\ApiController;
 
-class OtpController extends Controller
+class OtpController extends ApiController
 {
     /**
      * Verify OTP sent by customer via SMS

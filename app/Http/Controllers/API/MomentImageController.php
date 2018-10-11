@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Moment;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\API\ApiController;
 
-class MomentImageController extends Controller
+class MomentImageController extends ApiController
 {
 
     public function __construct(){

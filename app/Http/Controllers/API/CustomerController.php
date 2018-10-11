@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -19,8 +18,9 @@ use App\Events\Customer\AccountActivated;
 use App\Notifications\SendOTPNotification;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use GuzzleHttp\Exception\ClientException;
+use App\Http\Controllers\API\ApiController;
 
-class CustomerController extends Controller
+class CustomerController extends ApiController
 {
 
     public function __construct(){

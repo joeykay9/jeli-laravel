@@ -5,10 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Settings;
 use App\Customer;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\API\ApiController;
 
-class SettingsController extends Controller
+class SettingsController extends ApiController
 {
 
     public function __construct(){

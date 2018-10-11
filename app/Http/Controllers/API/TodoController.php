@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Todo;
+use App\Http\Controllers\API\ApiController;
 
-class TodoController extends Controller
+class TodoController extends ApiController
 {
     public function __construct(){
         $this->middleware('auth:api');

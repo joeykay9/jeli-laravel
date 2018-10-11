@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Validator, Hash;
@@ -12,8 +11,9 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Notifications\SendOTPNotification;
 use App\Mail\CustomerWelcome;
 use GuzzleHttp\Exception\ClientException;
+use App\Http\Controllers\API\ApiController;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
 
     protected $OTP;
