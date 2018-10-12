@@ -49,6 +49,9 @@ class CustomerAvatarController extends ApiController
         $path = substr(parse_url($url, PHP_URL_PATH), 1); //returns path of url with leading / taken off
         Storage::delete($path);
 
+        $customer->avatar = null;
+        $customer->save();
+
         return response()->json([
             'success' => true,
             'message' => 'Avatar has been successfully removed'

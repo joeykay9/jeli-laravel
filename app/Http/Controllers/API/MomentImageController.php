@@ -51,7 +51,11 @@ class MomentImageController extends ApiController
         //Delete moment icon
         $url = $moment->icon; //get the url of the moment
         $path = substr(parse_url($url, PHP_URL_PATH), 1); //returns path of url with leading / taken off
+        // dd($path);
         Storage::delete($path);
+
+        $moment->icon = null;
+        $moment->save();
 
         return response()->json([
             'success' => true,
