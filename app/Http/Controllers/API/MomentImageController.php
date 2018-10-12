@@ -25,8 +25,8 @@ class MomentImageController extends ApiController
      */
     public function update(Request $request, Moment $moment)
     {
-        if($request->hasFile('image')){
-            $image = $request->file('image');
+        if($request->hasFile('icon')){
+            $image = $request->file('icon');
             $path = Storage::putFile(
                         'moments', $image
                     ); //stores file in 'avatars' directory and returns the path
