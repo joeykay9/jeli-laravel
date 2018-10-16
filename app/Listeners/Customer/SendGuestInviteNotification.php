@@ -2,10 +2,12 @@
 
 namespace App\Listeners\Customer;
 
+use App\Events\Customer\MomentGuestsInvited;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Notification;
 
-class MomentGuestsInvitedListener
+class SendGuestInviteNotification implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -20,11 +22,11 @@ class MomentGuestsInvitedListener
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param  MomentGuestsInvited  $event
      * @return void
      */
-    public function handle($event)
+    public function handle(MomentGuestsInvited $event)
     {
-        //
+        Notification::send($event->jeliContacts, new GuestInvite($event->customer, $event->moment));
     }
 }

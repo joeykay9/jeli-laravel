@@ -9,6 +9,7 @@
         "aws/aws-sdk-php": "~3.0",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "^6.3",
+        "laravel-notification-channels/onesignal": "^1.2",
         "laravel/framework": "5.6.*",
         "laravel/socialite": "^3.1",
         "laravel/tinker": "~1.0",

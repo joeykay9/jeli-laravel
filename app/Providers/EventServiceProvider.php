@@ -22,6 +22,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Customer\MomentCreated' => [
             'App\Listeners\Customer\MomentCreatedListener',
         ],
+        'App\Events\Customer\MomentGuestsInvited' => [
+            'App\Listeners\Customer\SendGuestInviteNotification',
+        ],
+        'App\Events\Customer\MomentOrganisersAdded' => [
+            'App\Listeners\Customer\MomentOrganisersAddedListener',
+        ],
         // 'App\Events\Customer\EmailUpdated' => [
         //     'App\Listeners\Customer\SendEmailUpdatedNotification'
         // ],

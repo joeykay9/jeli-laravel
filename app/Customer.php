@@ -64,6 +64,11 @@ class Customer extends Authenticatable implements JWTSubject
         return $this->phone;
     }
 
+    public function routeNotificationForOneSignal()
+    {
+        return 'ONE_SIGNAL_PLAYER_ID';
+    }
+
     //RELATIONSHIPS
     //Customer created
     public function createdMoments() {
