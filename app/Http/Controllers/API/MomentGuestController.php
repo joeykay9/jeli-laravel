@@ -37,7 +37,7 @@ class MomentGuestController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Moment $moment)
+    public function invite(Request $request, Moment $moment)
     {
         $credentials = $request->all();
         $phoneNumbers = array();
@@ -72,14 +72,21 @@ class MomentGuestController extends ApiController
         }
 
         $notOnJeli = array_diff($formattedPhoneNumbers, $onJeli); //Numbers in list not on Jeli
-        dd($notOnJeli);
         
-        $moment->members()->attach($jeliGuestsOnJeli, ['is_guest' => true]);
+        //Attach on Acceptance
+        // $moment->members()->attach($jeliGuestsOnJeli, ['is_guest' => true]);
 
-        //Extract numbers of those not on jeli from formatedPhoneNumbers array
-        $jeliGuestsNotOnJeli = Customer::whereNotIn('phone', $formattedPhoneNumbers)->get();
+        event(new MomentGuestsAdded($jeliGuestsOnJeli, $notOnJeli)); //Arg 1: Collection, Arg 2: Array
 
-        dd($jeliGuestsNotOnJeli->toArray());
+        return response()->json([
+            'success' => true,
+            'message' => "Guests invite sent",
+        ]);
+    }
+
+    //This method runs when a Guest accepts an invite
+    public function rsvp(Moment $moment) {
+        
     }
 
     /**

@@ -77,8 +77,9 @@ Route::group([
 
 	//Guests
 	Route::get('/{moment}/guests', 'API\MomentGuestController@index'); //View moment guest list [You need to be an organiser to see that]
-	Route::post('moments/{moment}/guests', 'API\MomentGuestController@store'); //Add list of guests [You need to be a moment admin to do that]
-	Route::delete('moments/{moment}/guests/{customer}', 'API\MomentGuestController@removeGuest'); //Remove a customer from guest list [You need to be a moment admin to do that]
+	Route::post('/{moment}/guests', 'API\MomentGuestController@invite'); //Add list of guests [You need to be a moment admin to do that]
+	Route::get('/{moment}/guests/rsvp', 'API\MomentGuestController@rsvp') //Route for a guest accepting an invite
+	Route::delete('/{moment}/guests/{customer}', 'API\MomentGuestController@removeGuest'); //Remove a customer from guest list [You need to be a moment admin to do that]
 
 	//To do list
 	Route::post('moments/{moment}/todos', 'API\TodoController@store'); //Create list items
