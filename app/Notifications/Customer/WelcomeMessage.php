@@ -34,7 +34,7 @@ class WelcomeMessage extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', HubtelChannel::class, 'database'];
+        return [HubtelChannel::class, 'database'];
     }
 
     /**

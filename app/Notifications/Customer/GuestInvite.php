@@ -8,6 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use NotificationChannels\OneSignal\OneSignalChannel;
 use NotificationChannels\OneSignal\OneSignalMessage;
+use NotificationChannels\Hubtel\HubtelChannel;
+use NotificationChannels\Hubtel\HubtelMessage;
+use App\Customer;
+use App\Moment;
 
 class GuestInvite extends Notification
 {
@@ -35,7 +39,7 @@ class GuestInvite extends Notification
      */
     public function via($notifiable)
     {
-        return [OneSignalChannel::class, 'database'];
+        return [HubtelChannel::class, 'database'];
     }
 
     /**
@@ -56,14 +60,14 @@ class GuestInvite extends Notification
     {
         return OneSignalMessage::create()
             ->subject("Moment Guest Invite")
-            ->body("Hi " . $notifiable->first_name . "! " . $this->customer->first_name . " has invited you to thier moment " . $this->moment . ". Follow the link below to respond to the invite.");
+            ->body($this->customer->first_name . " has invited you to their moment " . $this->moment);
     }
 
     public function toSMS($notifiable)
     {
         return (new HubtelMessage)
                     ->from('Jeli')
-                    ->content('Hi' . $notifiable->first_name . '! ' . $this->customer->first_name . ' has invited you to thier moment ' . $this->moment . '. Follow the link below to respond to the invite.')
+                    ->content('Hi there! ' . $this->customer->first_name . ' has invited you to thier moment "' . $this->moment->title . '" on Jeli. Follow the link below to respond to the invite.')
                     ->registeredDelivery(true);
     }
 

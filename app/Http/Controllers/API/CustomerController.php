@@ -57,7 +57,8 @@ class CustomerController extends ApiController
             'first_name' => 'nullable|string|max:50',
             'last_name' => 'nullable|string|max:50',
             'phone' => 'bail|phone:AUTO,GH|required|string|max:15|unique:customers', //should be required from the app
-            'email' => 'bail|nullable|string|required|email|max:50|unique:customers', //Email already exists
+            'email' => 'bail|string|required|email|max:50|unique:customers', //Email already exists
+            'dob' => 'nullable|date',
             'password' => 'required|confirmed', //should be required from the app
         ];
 
@@ -84,6 +85,7 @@ class CustomerController extends ApiController
             'phone' =>$credentials['phone'],
             'email' => $request['email'],
             'jelion' => $request['jelion'],
+            'dob' => $request['dob'],
             'password' => bcrypt($request['password']),
         ]);
 

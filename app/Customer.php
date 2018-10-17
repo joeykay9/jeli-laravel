@@ -37,6 +37,8 @@ class Customer extends Authenticatable implements JWTSubject
         'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'dob', 'avatar', 'active'
     ];
 
+    
+
     public function getRouteKeyName(){
         return 'uuid';
     }
