@@ -72,6 +72,7 @@ Route::group([
 	Route::get('/{moment}/organisers', 'API\MomentOrganiserController@index');
 		//View moment organisers in  Jelispace [You need to be an organiser to see that]
 	Route::post('/{moment}/organisers', 'API\MomentOrganiserController@store'); //Add list of organisers [You need to be a moment admin to do that]
+	Route::get('/{moment}/organisers/size', 'API\MomentOrganiserController@size'); //Get the number of organisers in the moment
 	Route::patch('/{moment}/organisers/{customer}', 'API\MomentOrganiserController@updateAdminStatus'); //Update admin status of organiser [You need to be a moment admin to do that]
 	Route::delete('/{moment}/organisers/{customer}', 'API\MomentOrganiserController@removeOrganiser'); //Remove an organiser from a moment's Jelispace [You need to be a moment admin to do that]
 

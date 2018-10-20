@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Validator, Hash;
 use App\Customer;
 use App\Otp;
+use App\OneSignalDevice;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Notifications\SendOTPNotification;
 use App\Mail\CustomerWelcome;
@@ -59,7 +60,7 @@ class AuthController extends ApiController
      */
     public function login(Request $request)
     {
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->only('username', 'password', 'player_id');
 
         if($request->filled('username')) {
             if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
@@ -67,6 +68,7 @@ class AuthController extends ApiController
                 $rules = [
                     'username' => 'required|email',
                     'password' => 'required',
+                    'player_id' => 'string|required',
                 ];
             } else {
                 $credentials['username'] = (string) PhoneNumber::make($request->username, 'GH');
@@ -74,6 +76,7 @@ class AuthController extends ApiController
                 $rules = [
                     'username' => 'required|phone:AUTO,GH',
                     'password' => 'required',
+                    'player_id' => 'string|required',
                 ];
             }
         }
@@ -103,6 +106,17 @@ class AuthController extends ApiController
                     'success' => false,
                     'errors' => ['Incorrect username or password. Please check your credentials.']
                 ], 401); //401: Unauthorized
+        }
+
+        if($request->filled('player_id')) {
+            if(! $customer->devices()
+                ->where('player_id', $request['player_id'])
+                ->first()){
+
+                $device = new OneSignalDevice;
+                $device->player_id = $request['player_id'];
+                $customer->devices()->save($device);
+            }
         }
         
         if(! $customer->otp->verified) {

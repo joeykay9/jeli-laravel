@@ -97,6 +97,11 @@ class MomentOrganiserController extends ApiController
         ], 200);
     }
 
+    public function size(Moment $moment){
+        
+        return $moment->getOrganisers()->count();
+    }
+
     /**
      * Remove the specified resource from storage.
      *

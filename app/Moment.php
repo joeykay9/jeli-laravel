@@ -67,7 +67,7 @@ class Moment extends Model
 
     public function getOrganisers() {
 
-        $this->organisers = $this->members->where('is_organiser', true);
+        $this->organisers = $this->members()->where('is_organiser', true)->get();
 
         return $this->organisers;
     }

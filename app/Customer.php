@@ -68,7 +68,7 @@ class Customer extends Authenticatable implements JWTSubject
 
     public function routeNotificationForOneSignal()
     {
-        return 'ONE_SIGNAL_PLAYER_ID';
+        return $this->devices()->loggedIn()->pluck('player_id')->toArray();
     }
 
     //RELATIONSHIPS
@@ -91,10 +91,15 @@ class Customer extends Authenticatable implements JWTSubject
         return $this->hasOne(Settings::class);
     }
 
+    public function devices() {
+        return $this->hasMany(OneSignalDevice::class);
+    }
+
     public function createMoment(Moment $moment){
         $this->createdMoments()->save($moment);
     }
 
+    //Query Scopes
     public function scopeActive($query){
         return $query->where('active', true)->get();
     }

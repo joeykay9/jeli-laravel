@@ -15,7 +15,7 @@ class CreateMomentsTable extends Migration
     {
         Schema::create('moments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id')->nullable();
+            $table->integer('customer_id')->nullable(); //I hope there is a reason I made this nullable lol
             $table->string('category')->nullable();
             $table->string('title');
             $table->date('date')->nullable();
@@ -25,7 +25,7 @@ class CreateMomentsTable extends Migration
             $table->boolean('is_memory')->default(0);
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade'); //to be thought through later
         });
 
         Schema::create('customer_moment', function (Blueprint $table) {

@@ -12,6 +12,7 @@ use App\Mail\CustomerWelcome;
 use App\Customer;
 use App\Otp;
 use App\Settings;
+use App\OneSignalDevice;
 use Hash;
 use App\Events\Customer\AccountCreated;
 use App\Events\Customer\AccountActivated;
@@ -126,6 +127,7 @@ class CustomerController extends ApiController
     }
 
     public function activate(Request $request, Customer $customer){
+        //Validate the request
 
         if(! $customer->active) { // If customer's account is not activated
             if($request->filled('jelion')) { // If request contains filled jelion field
@@ -136,6 +138,17 @@ class CustomerController extends ApiController
                 $customer->jelion = $credentials['jelion'];
                 $customer->active = true; //Set active flag to true
                 $customer->save();
+
+                if($request->filled('player_id')) {
+                    if(! $customer->devices()
+                        ->where('player_id', $request['player_id'])
+                        ->first()){
+
+                        $device = new OneSignalDevice;
+                        $device->player_id = $request['player_id'];
+                        $customer->devices()->save($device);
+                    }
+                }
 
                 if($request->hasFile('avatar')){
 
