@@ -109,14 +109,19 @@ class AuthController extends ApiController
         }
 
         if($request->filled('player_id')) {
-            if(! $customer->devices()
+            $customerDevice = $customer->devices()
                 ->where('player_id', $request['player_id'])
-                ->first()){
+                ->first();
+
+            if(! $customerDevice) {
 
                 $device = new OneSignalDevice;
                 $device->player_id = $request['player_id'];
                 $customer->devices()->save($device);
             }
+
+            $customerDevice->logged_in = true;
+            $customerDevice->save();
         }
         
         if(! $customer->otp->verified) {
@@ -187,8 +192,16 @@ class AuthController extends ApiController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
+        $player_id = $request->only('player_id');
+
+        $customerDevice = auth()->user()->devices()
+                            ->where('player_id', $player_id)
+                            ->first();
+        $customerDevice->logged_in = false;
+        $customerDevice->save();
+        
         auth()->logout();
 
         return response()->json([

@@ -128,6 +128,25 @@ class CustomerController extends ApiController
 
     public function activate(Request $request, Customer $customer){
         //Validate the request
+        $input = $request->all();
+
+        $rules = [
+            'jelion' => 'required|string|max:25',
+            'player_id' => 'required|string',
+        ];
+
+        $messages = [
+            'required' => 'The :attribute field is required.',
+        ];
+
+        $validator = Validator::make($inputs, $rules, $messages);
+        
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
 
         if(! $customer->active) { // If customer's account is not activated
             if($request->filled('jelion')) { // If request contains filled jelion field
@@ -140,14 +159,19 @@ class CustomerController extends ApiController
                 $customer->save();
 
                 if($request->filled('player_id')) {
-                    if(! $customer->devices()
+                    $customerDevice = $customer->devices()
                         ->where('player_id', $request['player_id'])
-                        ->first()){
+                        ->first();
+
+                    if(! $customerDevice) {
 
                         $device = new OneSignalDevice;
                         $device->player_id = $request['player_id'];
                         $customer->devices()->save($device);
                     }
+
+                    $customerDevice->logged_in = true;
+                    $customerDevice->save();
                 }
 
                 if($request->hasFile('avatar')){

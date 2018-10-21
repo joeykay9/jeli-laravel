@@ -28,7 +28,9 @@ class MomentOrganiserController extends ApiController
      */
     public function index(Moment $moment)
     {
-        return response()->json($moment->members()->wherePivot('is_organiser', true)->get()); //List all organisers of a moment's Jelispace
+        return response()->json([
+            $moment->members()->wherePivot('is_organiser', true)->get()
+        ], 200); //List all organisers of a moment's Jelispace
     }
 
     /**
@@ -99,7 +101,9 @@ class MomentOrganiserController extends ApiController
 
     public function size(Moment $moment){
         
-        return $moment->getOrganisers()->count();
+        return response()->json([
+            'size' => $moment->getOrganisers()->count()
+        ], 200);
     }
 
     /**
