@@ -196,6 +196,19 @@ class AuthController extends ApiController
     {
         $player_id = $request->only('player_id');
 
+        $rules = [
+            'player_id' => 'required|string',
+        ];
+
+        $validator = Validator::make($player_id, $rules);
+
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
+
         $customerDevice = auth()->user()->devices()
                             ->where('player_id', $player_id)
                             ->first();
@@ -332,13 +345,13 @@ class AuthController extends ApiController
 
         //Log customer in
         try {
-                if (! $token = auth()->attempt($credentials)) {
-                
-                    return response()->json([
-                        'success' => false,
-                        'errors' => ['Please check your credentials']
-                    ], 401);
-                }
+            if (! $token = auth()->attempt($credentials)) {
+            
+            return response()->json([
+                    'success' => false,
+                    'errors' => ['Please check your credentials']
+                ], 401);
+            }  
         } catch (JWTException $e) {
             return response()->json([
                 'success' => false,

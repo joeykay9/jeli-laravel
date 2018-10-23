@@ -139,7 +139,7 @@ class CustomerController extends ApiController
             'required' => 'The :attribute field is required.',
         ];
 
-        $validator = Validator::make($inputs, $rules, $messages);
+        $validator = Validator::make($input, $rules, $messages);
         
         if($validator->fails()) {
             return response()->json([
