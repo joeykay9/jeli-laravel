@@ -62,6 +62,12 @@ class MomentGuestController extends ApiController
 
         //Get Jeli Guests
         $jeliGuestsOnJeli = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
+        
+        //Adding JeliGuests to the moment
+        foreach ($jeliGuestsOnJeli as $guest) {
+            $moment->addGuest($guest);
+        } //Will try using sync in the future
+
         $flattenedArray = array_dot($jeliGuestsOnJeli->toArray()); // array_dot: flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth:
         
         $onJeli = array(); //Numbers in list on Jeli

@@ -39,7 +39,7 @@ class GuestInvite extends Notification
      */
     public function via($notifiable)
     {
-        return [HubtelChannel::class, 'database', OneSignalChannel::class];
+        return ['database', OneSignalChannel::class];
     }
 
     /**
@@ -60,7 +60,7 @@ class GuestInvite extends Notification
     {
         return OneSignalMessage::create()
             ->subject("Moment Guest Invite")
-            ->body($this->customer->first_name . " has invited you to their moment " . $this->moment);
+            ->body($this->customer->first_name . " has invited you to their moment " . $this->moment->title);
     }
 
     public function toSMS($notifiable)
