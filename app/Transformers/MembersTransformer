@@ -21,6 +21,7 @@ class MembersTransformer extends TransformerAbstract
 			'last_name' => $member->last_name,
 			'phone' => $member->phone,
 			'avatar' => $member->avatar,
+			'is_organiser' => false,
 		];
 	}
 
