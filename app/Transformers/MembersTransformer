@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Transformers;
+
+use App\Moment;
+use App\Customer;
+use League\Fractal\TransformerAbstract;
+
+class MembersTransformer extends TransformerAbstract 
+{
+	/**
+	* Turn this item object into a generic array
+	*
+	* @return array
+	*/
+
+	public function transform (Customer $member) {
+
+		return [
+			'first_name' => $member->first_name,
+			'last_name' => $member->last_name,
+			'phone' => $member->phone,
+			'avatar' => $member->avatar,
+		];
+	}
+
+}

@@ -68,6 +68,8 @@ Route::group([
 	Route::post('/{moment}/icon', 'API\MomentImageController@update');
 	Route::delete('/{moment}/icon', 'API\MomentImageController@destroy');
 
+	Route::get('/{moment}/members', 'API\MomentMemberController@index');
+
 	//Organisers
 	Route::get('/{moment}/organisers', 'API\MomentOrganiserController@index');
 		//View moment organisers in  Jelispace [You need to be an organiser to see that]

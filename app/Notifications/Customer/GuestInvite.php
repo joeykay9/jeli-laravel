@@ -39,7 +39,7 @@ class GuestInvite extends Notification
      */
     public function via($notifiable)
     {
-        return [HubtelChannel::class, 'database'];
+        return [HubtelChannel::class, 'database', OneSignalChannel::class];
     }
 
     /**
