@@ -57,12 +57,12 @@ class Moment extends Model
 
     public function addOrganiser(Customer $customer) {
 
-        $this->members->attach($customer, ['is_organiser' => true]);
+        $this->members()->attach($customer, ['is_organiser' => true]);
     }
 
     public function addGuest(Customer $customer) {
         
-        $this->members->attach($customer, ['is_guest' => true]);
+        $this->members()->attach($customer, ['is_guest' => true]);
     }
 
     public function getOrganisers() {
