@@ -65,6 +65,8 @@ class MomentOrganiserController extends ApiController
         //Get Jeli Organisers
         $jeliOrganisers = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
 
+        //Code to handle if customer is already an organiser on this moment or have Nathany do it at his end...On add particiapnts to a group Whatsapp replaces their status with 'Already added to the group' when the contact list loads
+
         $moment->members()->attach($jeliOrganisers, ['is_organiser' => true]);
 
         event(new MomentOrganisersAdded(auth('api')->user(), $moment, $jeliOrganisers));

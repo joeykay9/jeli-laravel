@@ -28,6 +28,8 @@ class MomentOrganisersAddedListener
      */
     public function handle(MomentOrganisersAdded $event)
     {
+
+        dd($event->jeliOrganisers);
         //Might use a Job to do this or not
         Notification::send($event->jeliOrganisers, new OrganiserAddedNotification($event->customer, $event->moment));
     }
