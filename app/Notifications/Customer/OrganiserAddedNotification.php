@@ -58,7 +58,7 @@ class OrganiserAddedNotification extends Notification
     {
         return OneSignalMessage::create()
             ->subject("Moment Organiser")
-            ->body(is_null($this->customer->first_name) ? $this->customer->jelion : $this->customer->first_name . " has added you to their moment '" . $this->moment->title . "' as an organiser.");
+            ->body((is_null($this->customer->first_name) ? $this->customer->jelion : $this->customer->first_name) . " has added you to their moment '" . $this->moment->title . "' as an organiser.");
     }
 
     /**
