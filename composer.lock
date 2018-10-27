@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d71742f54287373fd3c6a661e0533b0c",
+    "content-hash": "65792cd291578aafd5f086605ebfc408",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1458,29 +1458,44 @@
         },
         {
             "name": "league/fractal",
-            "version": "0.7.0",
+            "version": "0.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/fractal.git",
-                "reference": "9e217bfb344b2c9958025a202a6938419d6b694b"
+                "reference": "a0b350824f22fc2fdde2500ce9d6851a3f275b0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/fractal/zipball/9e217bfb344b2c9958025a202a6938419d6b694b",
-                "reference": "9e217bfb344b2c9958025a202a6938419d6b694b",
+                "url": "https://api.github.com/repos/thephpleague/fractal/zipball/a0b350824f22fc2fdde2500ce9d6851a3f275b0e",
+                "reference": "a0b350824f22fc2fdde2500ce9d6851a3f275b0e",
                 "shasum": ""
             },
+            "require": {
+                "php": ">=5.4"
+            },
             "require-dev": {
-                "illuminate/pagination": "~4.1",
-                "league/phpunit-coverage-listener": "~1.1",
-                "mockery/mockery": "dev-master@dev",
-                "silex/silex": "~1.1"
+                "doctrine/orm": "^2.5",
+                "illuminate/contracts": "~5.0",
+                "mockery/mockery": "~0.9",
+                "pagerfanta/pagerfanta": "~1.0.0",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5",
+                "zendframework/zend-paginator": "~2.3"
+            },
+            "suggest": {
+                "illuminate/pagination": "The Illuminate Pagination component.",
+                "pagerfanta/pagerfanta": "Pagerfanta Paginator",
+                "zendframework/zend-paginator": "Zend Framework Paginator"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.13-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "League\\Fractal\\": "src",
-                    "League\\Fractal\\Tests\\": "tests"
+                    "League\\Fractal\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1490,19 +1505,20 @@
             "authors": [
                 {
                     "name": "Phil Sturgeon",
-                    "email": "email@philsturgeon.co.uk",
-                    "homepage": "http://philsturgeon.co.uk/",
+                    "email": "me@philsturgeon.uk",
+                    "homepage": "http://philsturgeon.uk/",
                     "role": "Developer"
                 }
             ],
-            "description": "Handle the output of complex data structures ready for JSON output.",
-            "homepage": "https://github.com/thephpleague/fractal",
+            "description": "Handle the output of complex data structures ready for API output.",
+            "homepage": "http://fractal.thephpleague.com/",
             "keywords": [
                 "api",
                 "json",
-                "league"
+                "league",
+                "rest"
             ],
-            "time": "2014-01-31T22:08:53+00:00"
+            "time": "2017-06-12T11:04:56+00:00"
         },
         {
             "name": "league/iso3166",

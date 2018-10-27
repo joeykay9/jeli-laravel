@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\ApiController;
 use App\Moment;
 use App\Customer;
+use App\Transformers\MembersTransformer;
 
-class MomentMemberController extends Controller
+class MomentMemberController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,6 +17,8 @@ class MomentMemberController extends Controller
      */
     public function index(Request $request, Moment $moment)
     {
-        $members = $moment->members()->get()->toArray();
+        $members = $moment->members()->take(10)->get();
+
+        return $this->respondWithCollection($members, new MembersTransformer);
     }
 }

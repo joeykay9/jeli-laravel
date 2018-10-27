@@ -74,7 +74,7 @@ class Moment extends Model
 
     public function getGuests() {
 
-        $this->guests = $this->members->where('is_guest', true);
+        $this->guests = $this->members()->where('is_guest', true);
 
         return $this->guests;
     }

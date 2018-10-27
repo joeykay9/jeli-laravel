@@ -2,7 +2,6 @@
 
 namespace App\Transformers;
 
-use App\Moment;
 use App\Customer;
 use League\Fractal\TransformerAbstract;
 
@@ -21,7 +20,8 @@ class MembersTransformer extends TransformerAbstract
 			'last_name' => $member->last_name,
 			'phone' => $member->phone,
 			'avatar' => $member->avatar,
-			'is_organiser' => false,
+			'is_organiser' => $member->pivot->is_organiser,
+			'is_guest' => $member->pivot->is_guest,
 		];
 	}
 
