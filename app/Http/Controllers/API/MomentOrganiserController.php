@@ -8,6 +8,7 @@ use App\Customer;
 use Illuminate\Support\Facades\Validator;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Http\Controllers\API\ApiController;
+use App\Events\Customer\MomentOrganisersAdded;
 
 class MomentOrganiserController extends ApiController
 {
@@ -65,6 +66,13 @@ class MomentOrganiserController extends ApiController
         $jeliOrganisers = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
 
         $moment->members()->attach($jeliOrganisers, ['is_organiser' => true]);
+
+        event(new MomentOrganisersAdded(auth('api')->user(), $moment, $jeliOrganisers));
+
+        return response()->json([
+            'success' => true,
+            'message' => "Organisers have been added",
+        ]);
     }
 
     /**

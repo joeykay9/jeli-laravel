@@ -83,7 +83,7 @@ class MomentGuestController extends ApiController
         //Attach on Acceptance
         // $moment->members()->attach($jeliGuestsOnJeli, ['is_guest' => true]);
 
-        event(new MomentGuestsInvited(auth('api')->user(), $moment, $jeliGuestsOnJeli, $notOnJeli)); //Arg 1: Collection, Arg 2: Array
+        event(new MomentGuestsInvited(auth('api')->user(), $moment, $jeliGuestsOnJeli, $notOnJeli)); //Arg 3: Collection, Arg 4: Array
 
         return response()->json([
             'success' => true,

@@ -9,19 +9,27 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Customer;
+use App\Moment;
 
 class MomentOrganisersAdded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $customer;
+    public $moment;
+    public $jeliOrganisers;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Customer $customer, Moment $moment, $jeliOrganisers)
     {
-        //
+        $this->customer = $customer;
+        $this->moment = $moment;
+        $this->jeliOrganisers = $jeliOrganisers;
     }
 
     /**
