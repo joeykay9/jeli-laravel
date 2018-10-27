@@ -14,7 +14,7 @@ class CreateContactsTable extends Migration
     public function up()
     {
         Schema::create('contacts', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id'); //must change it to increment later
             $table->integer('customer_id');
             $table->string('uuid');
             $table->string('name');
@@ -22,6 +22,7 @@ class CreateContactsTable extends Migration
             $table->string('avatar')->nullable();
             $table->timestamps();
 
+            $table->primary(['id', 'customer_id']);
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
