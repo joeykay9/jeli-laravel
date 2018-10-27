@@ -95,6 +95,10 @@ class Customer extends Authenticatable implements JWTSubject
         return $this->hasMany(OneSignalDevice::class);
     }
 
+    public function contacts() {
+        return $this->hasMany(Contact::class);
+    }
+
     public function createMoment(Moment $moment){
         $this->createdMoments()->save($moment);
     }
