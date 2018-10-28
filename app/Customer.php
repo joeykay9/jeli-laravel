@@ -84,7 +84,7 @@ class Customer extends Authenticatable implements JWTSubject
     }
 
     public function contacts() {
-        return $this->belongsToMany(Customer::class)
+        return $this->belongsToMany(Customer::class, 'customer_contact', 'customer_id', 'contact_id')
                 ->withPivot('contact_name')
                 ->withTimestamps();
     }

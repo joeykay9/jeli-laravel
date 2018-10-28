@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ApiController;
-use App\Contact;
 use App\Transformers\ContactTransformer;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Customer;
@@ -24,7 +23,7 @@ class ContactController extends ApiController
 
     public function sync(Request $request, Customer $customer) {
     	$credentials = $request->all();
-        $phoneNumbers = array();
+        $contactList = array();
 
         //Extract phone numbers from request
         foreach ($credentials as $data => $array) {
@@ -34,17 +33,12 @@ class ContactController extends ApiController
             	$jeliCustomer = Customer::where('phone', $phone)->first();
 
             	if($jeliCustomer) {
-                	$contact = new Contact([
-                    	'uuid' => $jeliCustomer->uuid,
-                        'name' => $name,
-                        'phone' => $jeliCustomer->phone,
-                        'avatar' => $jeliCustomer->avatar,
-                    ]);
-
-                    $customer->contacts()->save($contact);
+                    $contactList[$jeliCustomer->id] = ['contact_name' => $name];
                 }
         	}
     	}
+
+        $customer->contacts()->sync($contactList);
 
     	return response()->json([
     		'success' => true,

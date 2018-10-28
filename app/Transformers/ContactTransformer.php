@@ -13,10 +13,10 @@ class ContactTransformer extends TransformerAbstract
 	public function transform (Customer $contact) {
 
 		return [
-			'uuid' => $customer->uuid,
-			'name' => $customer->pivot->contact_name,
-			'phone' => $customer->phone,
-			'avatar' => $customer->avatar,
+			'uuid' => $contact->uuid,
+			'name' => $contact->pivot->contact_name,
+			'phone' => $contact->phone,
+			'avatar' => $contact->avatar,
 		];
 	}
 }
