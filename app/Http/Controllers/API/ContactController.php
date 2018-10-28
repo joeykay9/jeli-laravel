@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\ApiController;
 use App\Contact;
 use App\Transformers\ContactTransformer;
+use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Customer;
 
 class ContactController extends ApiController
@@ -28,26 +29,26 @@ class ContactController extends ApiController
         //Extract phone numbers from request
         foreach ($credentials as $data => $array) {
             foreach ($array as $index => $contacts){
-               	foreach ($contacts as $key => $value) {
-                    if($key == "contactName")
-                        $name = $value;
-                    if($key == "contactNumber") {
-                    	$phone = (string) PhoneNumber::make($value, 'GH');
-                        $jeliCustomer = Customer::where('phone', $phone);
-                    }
+            	$name = $contacts['contactName'];
+            	$phone = (string) PhoneNumber::make($contacts['contactNumber'], 'GH');
+            	$jeliCustomer = Customer::where('phone', $phone)->first();
 
-                    if($jeliCustomer) {
-                    	$contact = new Contact([
-	                    	'uuid' => $jeliCustomer->uuid,
-	                        'name' => $name,
-	                        'phone' => $jeliCustomer->phone,
-	                        'avatar' => $jeliCustomer->avatar,
-	                    ]);
+            	if($jeliCustomer) {
+                	$contact = new Contact([
+                    	'uuid' => $jeliCustomer->uuid,
+                        'name' => $name,
+                        'phone' => $jeliCustomer->phone,
+                        'avatar' => $jeliCustomer->avatar,
+                    ]);
 
-	                    $customer->contacts()->save($contact);
-                    }
+                    $customer->contacts()->save($contact);
                 }
         	}
     	}
+
+    	return response()->json([
+    		'success' => true,
+    		'message' => 'Your contacts have been successfully synced'
+    	], 201);
     }
 }

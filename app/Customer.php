@@ -83,6 +83,12 @@ class Customer extends Authenticatable implements JWTSubject
                 ->withTimestamps();
     }
 
+    public function contacts() {
+        return $this->belongsToMany(Customer::class)
+                ->withPivot('contact_name')
+                ->withTimestamps();
+    }
+
     public function otp() {
         return $this->hasOne(Otp::class);
     }
@@ -93,10 +99,6 @@ class Customer extends Authenticatable implements JWTSubject
 
     public function devices() {
         return $this->hasMany(OneSignalDevice::class);
-    }
-
-    public function contacts() {
-        return $this->hasMany(Contact::class);
     }
 
     public function createMoment(Moment $moment){

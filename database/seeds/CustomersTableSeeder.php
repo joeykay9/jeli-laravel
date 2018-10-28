@@ -20,7 +20,7 @@ class CustomersTableSeeder extends Seeder
         //
         DB::statement('TRUNCATE customers CASCADE');
 
-        $faker = Factory::create();
+        $faker = Factory::create('en_GH');
 
         $password = Hash::make('password');
 
@@ -45,7 +45,7 @@ class CustomersTableSeeder extends Seeder
         		'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
         		'email' => $faker->email,
-        		'phone' => $faker->e164PhoneNumber,
+        		'phone' => $faker->phoneNumber,
         		'jelion' => $faker->colorName,
                 'active' => $faker->boolean,
                 'avatar' => $faker->imageUrl,

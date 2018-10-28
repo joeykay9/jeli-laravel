@@ -2,7 +2,7 @@
 
 namespace App\Transformers;
 
-use App\Contact;
+use App\Customer;
 use League\Fractal\TransformerAbstract;
 
 /**
@@ -10,13 +10,13 @@ use League\Fractal\TransformerAbstract;
  */
 class ContactTransformer extends TransformerAbstract
 {
-	public function transform (Contact $contact) {
+	public function transform (Customer $contact) {
 
 		return [
-			'uuid' => $contact->uuid,
-			'name' => $contact->name,
-			'phone' => $contact->phone,
-			'avatar' => $contact->avatar,
+			'uuid' => $customer->uuid,
+			'name' => $customer->pivot->contact_name,
+			'phone' => $customer->phone,
+			'avatar' => $customer->avatar,
 		];
 	}
 }

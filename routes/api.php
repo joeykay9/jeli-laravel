@@ -56,6 +56,10 @@ Route::group([
 
 	//Settings
 	Route::patch('/{customer}/settings', 'API\SettingsController@update');
+
+	//Contacts
+	Route::get('/{customer}/contacts', 'API\ContactController@index');
+	Route::post('/{customer}/contacts', 'API\ContactController@sync');
 });
 
 Route::group([

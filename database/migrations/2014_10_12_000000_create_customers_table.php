@@ -28,6 +28,17 @@ class CreateCustomersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        Schema::create('customer_contact', function (Blueprint $table) {
+            $table->integer('customer_id');
+            $table->integer('contact_id');
+            $table->string('contact_name');
+            $table->timestamps();
+            $table->primary(['customer_id', 'contact_id']);
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('customers')->onDelete('cascade');
+        });
     }
 
     /**
