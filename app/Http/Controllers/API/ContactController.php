@@ -16,7 +16,7 @@ class ContactController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, Customer $customer) {
-	    $contacts = $customer->contacts()->take(10)->get();
+	    $contacts = $customer->contacts()->take(20)->get();
 
         return $this->respondWithCollection($contacts, new ContactTransformer);
     }
@@ -40,9 +40,12 @@ class ContactController extends ApiController
 
         $customer->contacts()->sync($contactList);
 
-    	return response()->json([
-    		'success' => true,
-    		'message' => 'Your contacts have been successfully synced'
-    	], 201);
+        $jeliContacts = $customer->contacts()->take(20)->get();
+
+        return $this->respondWithCollection($jeliContacts, new ContactTransformer);
+    	// return response()->json([
+    	// 	'success' => true,
+    	// 	'message' => 'Your contacts have been successfully synced'
+    	// ], 201);
     }
 }
