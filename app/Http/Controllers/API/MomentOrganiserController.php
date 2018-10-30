@@ -45,31 +45,16 @@ class MomentOrganiserController extends ApiController
         $credentials = $request->all();
         $phoneNumbers = array();
 
-        //Extract phone numbers from request
-        foreach ($credentials as $data => $array) {
-            foreach ($array as $index => $contacts){
-                foreach ($contacts as $key => $value) {
-                    if($key == "contactNumber")
-                        $phoneNumbers[] = $value;
-                }
-            }
-        }
+        $array = $credentials['data'];
+        $uuids = array_values(array_dot($array));
 
-        $formattedPhoneNumbers = array();
+        $organisers = Customer::whereIn('uuid', $uuids)->get(); //Get Customers from submitted uuids
 
-        //Format phone numbers
-        foreach ($phoneNumbers as $key => $value) {
-            $formattedPhoneNumbers[] = (string) PhoneNumber::make($value, 'GH');
-        }
-
-        //Get Jeli Organisers
-        $jeliOrganisers = Customer::whereIn('phone', $formattedPhoneNumbers)->get();
+        $moment->members()->attach($organisers, ['is_organiser' => true]);
 
         //Code to handle if customer is already an organiser on this moment or have Nathany do it at his end...On add particiapnts to a group Whatsapp replaces their status with 'Already added to the group' when the contact list loads
 
-        $moment->members()->attach($jeliOrganisers, ['is_organiser' => true]);
-
-        event(new MomentOrganisersAdded(auth('api')->user(), $moment, $jeliOrganisers));
+        event(new MomentOrganisersAdded(auth('api')->user(), $moment, $organisers));
 
         return response()->json([
             'success' => true,
