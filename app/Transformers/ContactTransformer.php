@@ -14,8 +14,8 @@ class ContactTransformer extends TransformerAbstract
 
 		return [
 			'uuid' => $contact->uuid,
-			'name' => $contact->pivot->contact_name,
-			'phone' => $contact->phone,
+			'contact_name' => $contact->pivot->contact_name,
+			'contact_phone' => $contact->phone,
 			'avatar' => $contact->avatar,
 		];
 	}

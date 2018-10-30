@@ -28,8 +28,8 @@ class ContactController extends ApiController
         //Extract phone numbers from request
         foreach ($credentials as $data => $array) {
             foreach ($array as $index => $contacts){
-            	$name = $contacts['contactName'];
-            	$phone = (string) PhoneNumber::make($contacts['contactNumber'], 'GH');
+            	$name = $contacts['contact_name'];
+            	$phone = (string) PhoneNumber::make($contacts['contact_phone'], 'GH');
             	$jeliCustomer = Customer::where('phone', $phone)->first();
 
             	if($jeliCustomer) {
