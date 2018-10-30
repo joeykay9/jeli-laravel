@@ -43,12 +43,15 @@ class MomentOrganiserController extends ApiController
     public function store(Request $request, Moment $moment)
     {
         $credentials = $request->all();
-        $phoneNumbers = array();
-
         $array = $credentials['data'];
         $uuids = array_values(array_dot($array));
 
         $organisers = Customer::whereIn('uuid', $uuids)->get(); //Get Customers from submitted uuids
+
+        //Increase the chat group size by the number of organisers added
+        $size = $organisers->count();
+        $moment->chatGroup->size += $size;
+        $moment->chatGroup->save();
 
         $moment->members()->attach($organisers, ['is_organiser' => true]);
 
