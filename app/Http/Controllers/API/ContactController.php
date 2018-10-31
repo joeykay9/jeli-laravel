@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\ApiController;
 use App\Transformers\ContactTransformer;
 use Propaganistas\LaravelPhone\PhoneNumber;
+use Illuminate\Support\Facades\Validator;
 use App\Customer;
 
 class ContactController extends ApiController
@@ -25,9 +26,32 @@ class ContactController extends ApiController
     	$credentials = $request->all();
         $contactList = array();
 
+        $rules = [
+            'data' => 'required|array|min:1', 
+            '**.contact_name' => 'required|string',
+            '**.contact_phone' => 'bail|phone:AUTO,GH|required|string',
+        ];
+
+        $validator = Validator::make($credentials, $rules);
+
+        if($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
+
         //Extract phone numbers from request
         foreach ($credentials as $data => $array) {
             foreach ($array as $index => $contacts){
+
+                if(! (array_key_exists('contact_name', $contacts) && array_key_exists('contact_phone', $contacts))) {
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['contact_name & contact_phone fields are both required']
+                    ], 422);
+                }
+
             	$name = $contacts['contact_name'];
             	$phone = (string) PhoneNumber::make($contacts['contact_phone'], 'GH');
             	$jeliCustomer = Customer::where('phone', $phone)->first();
