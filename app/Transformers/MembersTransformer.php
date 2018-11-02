@@ -15,10 +15,15 @@ class MembersTransformer extends TransformerAbstract
 
 	public function transform (Customer $member) {
 
+		$user = auth('api')->user()
+							->contacts()
+							->where('contact_id', $member->id)
+							->where('contact_id', '<>', auth('api')->user()->id)
+							->first();
+
 		return [
-			'first_name' => $member->first_name,
-			'last_name' => $member->last_name,
-			'phone' => $member->phone,
+			'contact_name' => (is_null($user) ? 'You' : $user->pivot->contact_name),
+			'contact_phone' => $member->phone,
 			'avatar' => $member->avatar,
 			'is_organiser' => $member->pivot->is_organiser,
 			'is_guest' => $member->pivot->is_guest,
