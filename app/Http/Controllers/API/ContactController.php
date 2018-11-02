@@ -54,7 +54,9 @@ class ContactController extends ApiController
 
             	$name = $contacts['contact_name'];
             	$phone = (string) PhoneNumber::make($contacts['contact_phone'], 'GH');
-            	$jeliCustomer = Customer::where('phone', $phone)->first();
+            	$jeliCustomer = Customer::where('phone', $phone)
+                                        ->where('phone', '<>', $customer->phone)
+                                        ->first();
 
             	if($jeliCustomer) {
                     $contactList[$jeliCustomer->id] = ['contact_name' => $name];
