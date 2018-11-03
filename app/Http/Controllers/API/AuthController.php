@@ -108,53 +108,6 @@ class AuthController extends ApiController
                 ], 401); //401: Unauthorized
         }
 
-        if($request->filled('player_id')) {
-            $customerDevice = $customer->devices()
-                ->where('player_id', $request['player_id'])
-                ->first();
-
-            if(! $customerDevice) {
-
-                $device = new OneSignalDevice;
-                $device->player_id = $request['player_id'];
-                $customer->devices()->save($device);
-            }
-
-            $customerDevice->logged_in = true;
-            $customerDevice->save();
-        }
-        
-        if(! $customer->otp->verified) {
-
-            //Send OTP to Customers phone via SMS
-            try {
-                $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
-
-            } catch (JWTException $e) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['Failed to login, please try again.']
-                ], 500);
-            }
-
-            //If token is false, then wrong login credentials entered
-            if(! $token) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['Incorrect username or password. Please check your credentials.']
-                ], 401); //401: Unauthorized
-            }
-
-            //Customer has not been verified
-            return response()->json([
-                    'access_token' => $token,
-                    'token_type' => 'bearer',
-                    'verified' => $customer->otp->verified,
-                    //'expires_in' => auth()->factory()->getTTL(),
-                    'data' => $customer
-                ], 200);
-        }
-
         try {
             
             $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
@@ -172,6 +125,21 @@ class AuthController extends ApiController
                     'success' => false,
                     'errors' => ['Incorrect username or password. Please check your credentials.']
                 ], 401); //401: Unauthorized
+        }
+
+        if($request->filled('player_id')) {
+            $customerDevice = $customer->devices()
+                ->where('player_id', $request['player_id'])
+                ->first();
+
+            if(! $customerDevice) {
+                $device = new OneSignalDevice;
+                $device->player_id = $request['player_id'];
+                $customer->devices()->save($device);
+            } else {
+                $customerDevice->logged_in = true;
+                $customerDevice->save();
+            }
         }
 
         return $this->respondWithToken($token, $customer);
