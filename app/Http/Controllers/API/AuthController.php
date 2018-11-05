@@ -94,6 +94,7 @@ class AuthController extends ApiController
             ], 422);
         }
 
+        //Check if Customer exists
         if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
             $customer = Customer::where('email', $request->username)->first();
         } else {
@@ -101,6 +102,7 @@ class AuthController extends ApiController
             $customer = Customer::where('phone', $request->username)->first();
         }
 
+        //Return failed response if customer does not exist
         if (! $customer) {
             return response()->json([
                     'success' => false,
@@ -108,6 +110,7 @@ class AuthController extends ApiController
                 ], 401); //401: Unauthorized
         }
 
+        //Try loggin in customer
         try {
             
             $token = $this->attemptLoginByCredentials($credentials['username'], $credentials['password']);
@@ -119,7 +122,7 @@ class AuthController extends ApiController
             ], 500);
         }
 
-        //If token is false, then wrong login credentials entered
+        //If token is false, then wrong login credentials namely password entered
         if(! $token){
             return response()->json([
                     'success' => false,

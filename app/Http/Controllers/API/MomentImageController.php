@@ -29,7 +29,7 @@ class MomentImageController extends ApiController
             $image = $request->file('icon');
             $path = Storage::putFile(
                         'moments', $image
-                    ); //stores file in 'avatars' directory and returns the path
+                    ); //stores file in 'moments' directory and returns the path
 
             $url = Storage::url($path); //returns full url of location of file
 

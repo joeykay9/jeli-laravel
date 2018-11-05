@@ -57,7 +57,7 @@ class WelcomeMessage extends Notification
     {
         return (new HubtelMessage)
                     ->from('Jeli')
-                    ->content('Hello ' . $this->customer->first_name . ', Your Jeli Account was created successfully. ' . 'Create and collobrate on Moments with your friends, family or colleagues. ' . 'Jeli! Making Moments Possible!')
+                    ->content('Hello ' . (is_null($this->customer->first_name) ? $this->customer->jelion: $this->customer->first_name) . ', Your Jeli Account was created successfully. ' . 'Create and collobrate on Moments with your friends, family or colleagues. ' . 'Jeli! Making Moments Possible!')
                     ->registeredDelivery(true);
     }
 

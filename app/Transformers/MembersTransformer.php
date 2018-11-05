@@ -22,6 +22,7 @@ class MembersTransformer extends TransformerAbstract
 							->first();
 
 		return [
+			'moment_id' => $member->pivot->moment_id,
 			'contact_name' => (is_null($user) ? 'You' : $user->pivot->contact_name),
 			'contact_phone' => $member->phone,
 			'avatar' => $member->avatar,
