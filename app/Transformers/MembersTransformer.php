@@ -29,7 +29,7 @@ class MembersTransformer extends TransformerAbstract
 							? (
 								($myself) 
 								? 'You' 
-								:  ('\u2666 ' . $member->jelion)
+								:  json_encode(('\u2666 ' . $member->jelion))
 							) : $user->pivot->contact_name),
 			'contact_phone' => $member->phone,
 			'avatar' => $member->avatar,
