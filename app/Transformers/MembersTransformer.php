@@ -18,13 +18,19 @@ class MembersTransformer extends TransformerAbstract
 		$user = auth('api')->user()
 							->contacts()
 							->where('contact_id', $member->id)
-							->where('contact_id', '<>', auth('api')->user()->id)
+							//->where('contact_id', '<>', auth('api')->user()->id)
 							->first();
+		$myself = ($member->id == auth('api')->user()->id);
 
 		return [
 			'rid' => ($member->pivot->moment_id . $member->phone),
 			'moment_id' => $member->pivot->moment_id,
-			'contact_name' => (is_null($user) ? 'You' : $user->pivot->contact_name),
+			'contact_name' => (is_null($user) 
+							? (
+								($myself) 
+								? 'You' 
+								: $member->jelion
+							) : $user->pivot->contact_name),
 			'contact_phone' => $member->phone,
 			'avatar' => $member->avatar,
 			'is_organiser' => $member->pivot->is_organiser,
