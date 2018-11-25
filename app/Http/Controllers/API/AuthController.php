@@ -60,7 +60,7 @@ class AuthController extends ApiController
      */
     public function login(Request $request)
     {
-        $credentials = $request->only('username', 'password', 'player_id');
+        $credentials = $request->only('username', 'password');
 
         if($request->filled('username')) {
             if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
@@ -68,7 +68,6 @@ class AuthController extends ApiController
                 $rules = [
                     'username' => 'required|email',
                     'password' => 'required',
-                    'player_id' => 'string|required',
                 ];
             } else {
                 $credentials['username'] = (string) PhoneNumber::make($request->username, 'GH');
@@ -76,7 +75,6 @@ class AuthController extends ApiController
                 $rules = [
                     'username' => 'required|phone:AUTO,GH',
                     'password' => 'required',
-                    'player_id' => 'string|required',
                 ];
             }
         }
@@ -130,21 +128,6 @@ class AuthController extends ApiController
                 ], 401); //401: Unauthorized
         }
 
-        if($request->filled('player_id')) {
-            $customerDevice = $customer->devices()
-                ->where('player_id', $request['player_id'])
-                ->first();
-
-            if(! $customerDevice) {
-                $device = new OneSignalDevice;
-                $device->player_id = $request['player_id'];
-                $customer->devices()->save($device);
-            } else {
-                $customerDevice->logged_in = true;
-                $customerDevice->save();
-            }
-        }
-
         return $this->respondWithToken($token, $customer);
     }
 
@@ -183,8 +166,11 @@ class AuthController extends ApiController
         $customerDevice = auth()->user()->devices()
                             ->where('player_id', $player_id)
                             ->first();
-        $customerDevice->logged_in = false;
-        $customerDevice->save();
+        // dd($customerDevice);
+        if($customerDevice) {
+            $customerDevice->logged_in = false;
+            $customerDevice->save();
+        }
         
         auth()->logout();
 

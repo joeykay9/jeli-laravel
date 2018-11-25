@@ -260,6 +260,42 @@ class CustomerController extends ApiController
         //HTTP status code 200: OK
     }
 
+    public function setPlayerId(Request $request, Customer $customer){
+        //Validate request
+        $player_id = $request->only('player_id');
+
+        $rules = [
+            'player_id' => 'string|required',
+        ];
+
+        $validator = Validator::make($player_id, $rules);
+
+        if($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all()
+            ], 422);
+        }
+
+        $customerDevice = $customer->devices()
+            ->where('player_id', $player_id)
+            ->first();
+
+        if(! $customerDevice) {
+            $device = new OneSignalDevice;
+            $device->player_id = $player_id;
+            $customer->devices()->save($device);
+        } else {
+            $customerDevice->logged_in = true;
+            $customerDevice->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Player ID successfully received'
+        ], 200);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

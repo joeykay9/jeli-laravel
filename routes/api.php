@@ -48,6 +48,7 @@ Route::group([
 	Route::get('/{customer}/otp', 'API\OtpController@requestOTP');
 	//Verify otp
 	Route::post('/{customer}/otp', 'API\OtpController@verifyOTP');
+	Route::post('/{customer}/player_id', 'API\CustomerController@setPlayerId');
 	Route::post('/{customer}/activate', 'API\CustomerController@activate');
 
 	//Avatar
