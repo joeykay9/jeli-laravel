@@ -122,7 +122,7 @@ class MomentOrganiserController extends ApiController
             if($result) { //If record was deleted
                 return response()->json([
                     'success' => true,
-                    'message' => 'Oraniser successfully removed'
+                    'message' => 'Organiser successfully removed'
                 ], 200);
             }
         }

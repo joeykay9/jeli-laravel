@@ -125,7 +125,6 @@ class CustomerController extends ApiController
 
         $rules = [
             'jelion' => 'required|string|max:25',
-            'player_id' => 'required|string',
         ];
 
         $messages = [
@@ -150,22 +149,6 @@ class CustomerController extends ApiController
                 $customer->jelion = $credentials['jelion'];
                 $customer->active = true; //Set active flag to true
                 $customer->save();
-
-                if($request->filled('player_id')) {
-                    $customerDevice = $customer->devices()
-                        ->where('player_id', $request['player_id'])
-                        ->first();
-
-                    if(! $customerDevice) {
-
-                        $device = new OneSignalDevice;
-                        $device->player_id = $request['player_id'];
-                        $customer->devices()->save($device);
-                    } else {
-                        $customerDevice->logged_in = true;
-                        $customerDevice->save();
-                    }
-                }
 
                 if($request->hasFile('avatar')){
 
