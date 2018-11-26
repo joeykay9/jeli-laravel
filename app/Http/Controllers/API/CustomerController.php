@@ -264,11 +264,15 @@ class CustomerController extends ApiController
             ->where('player_id', $player_id)
             ->first();
 
+
         if(! $customerDevice) {
+
             $device = new OneSignalDevice;
-            $device->player_id = $player_id;
+            $device->player_id = $request['player_id'];
             $customer->devices()->save($device);
+
         } else {
+
             $customerDevice->logged_in = true;
             $customerDevice->save();
         }
