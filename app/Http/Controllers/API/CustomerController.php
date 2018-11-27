@@ -55,18 +55,18 @@ class CustomerController extends ApiController
             }
 
         $rules = [
-            'first_name' => 'nullable|string|max:50',
-            'last_name' => 'nullable|string|max:50',
+            // 'first_name' => 'nullable|string|max:50',
+            // 'last_name' => 'nullable|string|max:50',
             'phone' => 'bail|phone:AUTO,GH|required|string|max:15|unique:customers', //should be required from the app
-            'email' => 'bail|string|required|email|max:50|unique:customers', //Email already exists
-            'dob' => 'nullable|date',
+            // 'email' => 'bail|string|required|email|max:50|unique:customers', //Email already exists
+            // 'dob' => 'nullable|date',
             'password' => 'required|confirmed', //should be required from the app
         ];
 
         $messages = [
             'required' => 'The :attribute field is required.',
             'phone.max' => 'Please provide a valid :attribute number.',
-            'email' => 'Please provide a valid email address.',
+            // 'email' => 'Please provide a valid email address.',
         ];
 
         $validator = Validator::make($credentials, $rules, $messages);
@@ -81,12 +81,12 @@ class CustomerController extends ApiController
         //Create customer entry in database
         $customer = Customer::create([
             'uuid' => (string) Str::orderedUuid(),
-            'first_name' => $request['first_name'],
-            'last_name' => $request['last_name'],
+            // 'first_name' => $request['first_name'],
+            // 'last_name' => $request['last_name'],
             'phone' =>$credentials['phone'],
-            'email' => $request['email'],
-            'jelion' => $request['jelion'],
-            'dob' => $request['dob'],
+            // 'email' => $request['email'],
+            // 'jelion' => $request['jelion'],
+            // 'dob' => $request['dob'],
             'password' => bcrypt($request['password']),
         ]);
 
