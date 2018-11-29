@@ -16,11 +16,11 @@ class CreateMomentSchedulesTable extends Migration
         Schema::create('moment_schedules', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('moment_id');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->boolean('is_range');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+            $table->boolean('is_range')->default(0);
             $table->timestamps();
 
             $table->foreign('moment_id')->references('id')->on('moments')->onDelete('cascade');

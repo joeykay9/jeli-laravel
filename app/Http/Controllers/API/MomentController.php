@@ -10,6 +10,7 @@ use App\Place;
 use Illuminate\Support\Facades\Validator;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Events\Customer\MomentCreated;
 use App\Http\Controllers\API\ApiController;
 
@@ -65,12 +66,15 @@ class MomentController extends ApiController
 
         $rules = [
             'category' => 'required|string',
-            'title' => 'required|string|max:25',
-            'date' => 'nullable|date', 
-            'time' => 'nullable|date_format:H:i', 
+            'title' => 'required|string|max:25', 
             'place_id' => 'nullable|string',
             'place_name' => 'nullable|string',
             'place_image' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i',
+            'is_range' => 'nullable|boolean',
             'budget' => 'nullable|numeric',
         ];
 
@@ -89,6 +93,7 @@ class MomentController extends ApiController
             new Moment($credentials)
         );
 
+        //Storing place details
         if($request->filled('place_id') && $request->filled('place_id')){
             //Create Place Object
             $place = new Place([
@@ -102,6 +107,18 @@ class MomentController extends ApiController
         } else {
             //Save Place Record
             $moment->place()->save(new Place);
+        }
+
+        //Storing schedule details
+        if ($request->filled('start_date')) {
+            DB::table('moment_schedules')->insert([
+                'moment_id' => $moment->id,
+                'start_date' => $request['start_date'],
+                'end_date' => $request['end_date'],
+                'start_time' => $request['start_time'],
+                'end_time' => $request['end_time'],
+                'is_range' => $request['is_range'],
+            ]);
         }
 
         //Store in pivot table

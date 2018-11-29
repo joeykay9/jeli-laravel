@@ -17,6 +17,9 @@ class MomentTransformer extends TransformerAbstract
 	}
 
 	public function transform(Moment $moment) {
+
+		$schedule = DB::table('moment_schedules')
+						->where('moment_id', $moment->id)->get();
 		
 		return [
 			

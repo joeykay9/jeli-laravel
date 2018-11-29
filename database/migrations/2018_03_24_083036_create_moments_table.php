@@ -18,8 +18,8 @@ class CreateMomentsTable extends Migration
             $table->integer('customer_id')->nullable(); //I hope there is a reason I made this nullable lol
             $table->string('category')->nullable();
             $table->string('title');
-            $table->date('date')->nullable();
-            $table->time('time')->nullable();
+            // $table->date('date')->nullable();
+            // $table->time('time')->nullable();
             $table->string('icon')->nullable();
             $table->decimal('budget')->nullable();
             $table->boolean('is_memory')->default(0);
