@@ -37,8 +37,8 @@ class MomentController extends ApiController
                 "id" => $moment->id,
                 "category" => $moment->category,
                 "title" => $moment->title,
-                "date" => $moment->date,
-                "time" => $moment->time,
+                // "date" => $moment->date,
+                // "time" => $moment->time,
                 "place_id" => $moment->place()->first()->place_id,
                 "place_name" => $moment->place()->first()->place_name,
                 "place_image" => $moment->place()->first()->place_image,
@@ -70,9 +70,11 @@ class MomentController extends ApiController
             'place_id' => 'nullable|string',
             'place_name' => 'nullable|string',
             'place_image' => 'nullable|string',
-            'start_date' => 'nullable|date',
+            'date' => 'nullable|date', //to be taken off
+            // 'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
-            'start_time' => 'nullable|date_format:H:i',
+            'time' => 'nullable|date_format:H:i', //to be taken off
+            // 'start_time' => 'nullable|date_format:H:i',
             'end_time' => 'nullable|date_format:H:i',
             'is_range' => 'nullable|boolean',
             'budget' => 'nullable|numeric',
@@ -109,17 +111,17 @@ class MomentController extends ApiController
             $moment->place()->save(new Place);
         }
 
-        //Storing schedule details
-        if ($request->filled('start_date')) {
-            DB::table('moment_schedules')->insert([
-                'moment_id' => $moment->id,
-                'start_date' => $request['start_date'],
-                'end_date' => $request['end_date'],
-                'start_time' => $request['start_time'],
-                'end_time' => $request['end_time'],
-                'is_range' => $request['is_range'],
-            ]);
-        }
+        //Storing schedule details - to be uncommented later
+        // if ($request->filled('start_date')) {
+        //     DB::table('moment_schedules')->insert([
+        //         'moment_id' => $moment->id,
+        //         'start_date' => $request['start_date'],
+        //         'end_date' => $request['end_date'],
+        //         'start_time' => $request['start_time'],
+        //         'end_time' => $request['end_time'],
+        //         'is_range' => $request['is_range'],
+        //     ]);
+        // }
 
         //Store in pivot table
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
