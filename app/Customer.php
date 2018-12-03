@@ -72,7 +72,7 @@ class Customer extends Authenticatable implements JWTSubject
     }
 
     //RELATIONSHIPS
-    //Customer created
+    //Customer created 
     public function createdMoments() {
         return $this->hasMany(Moment::class);
     }
@@ -85,7 +85,7 @@ class Customer extends Authenticatable implements JWTSubject
 
     public function contacts() {
         return $this->belongsToMany(Customer::class, 'customer_contact', 'customer_id', 'contact_id')
-                ->withPivot('contact_name')
+                ->withPivot(    'contact_name')
                 ->withTimestamps();
     }
 
@@ -112,5 +112,14 @@ class Customer extends Authenticatable implements JWTSubject
 
     public function scopeInactive($query){
         return $query->where('active', false)->get();
+    }
+
+    public function getMutualMoments(Customer $customer)
+    {
+        $moments = $customer->moments()->get();
+
+        return $this->moments()
+                    ->whereIn('id', $moments->pluck('id'))
+                    ->get();
     }
 }

@@ -124,11 +124,16 @@ class CustomerController extends ApiController
         $input = $request->all();
 
         $rules = [
+            'first_name' => 'nullable|string|max:50',
+            'last_name' => 'nullable|string|max:50',
+            'email' => 'bail|string|nullable|email|max:50|unique:customers', //Email already exists
+            'dob' => 'nullable|date',
             'jelion' => 'required|string|max:25',
         ];
 
         $messages = [
             'required' => 'The :attribute field is required.',
+            'email' => 'Please provide a valid email address.',
         ];
 
         $validator = Validator::make($input, $rules, $messages);
@@ -148,6 +153,10 @@ class CustomerController extends ApiController
                 //Update jelion
                 $customer->jelion = $credentials['jelion'];
                 $customer->active = true; //Set active flag to true
+                $customer->first_name = $input['first_name'];
+                $customer->last_name = $input['last_name'];
+                $customer->email = $input['email'];
+                $customer->dob = $input['dob'];
                 $customer->save();
 
                 if($request->hasFile('avatar')){

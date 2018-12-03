@@ -15,7 +15,7 @@ class Moment extends Model
      * @var array
      */
     protected $fillable = [
-        'category', 'title', 'date', 'time', 'icon', 'budget', 'is_memory',
+        'category', 'title', 'start_date', 'start_time', 'icon', 'budget', 'is_memory',
     ];
 
     /**
@@ -23,8 +23,8 @@ class Moment extends Model
      *
      * @var array
      */
-    protected $visible = [
-        'id', 'category', 'title', 'date', 'time', 'icon', 'budget', 'is_memory',
+    protected $visible = [  
+        'id', 'category', 'title', 'icon', 'budget', 'is_memory',
     ];
 
     protected $organisers = [];
