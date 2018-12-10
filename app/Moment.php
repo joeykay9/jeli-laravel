@@ -15,7 +15,7 @@ class Moment extends Model
      * @var array
      */
     protected $fillable = [
-        'category', 'title', 'start_date', 'start_time', 'icon', 'budget', 'is_memory',
+        'category', 'title', 'icon', 'budget', 'is_memory',
     ];
 
     /**
