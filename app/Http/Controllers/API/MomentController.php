@@ -71,9 +71,9 @@ class MomentController extends ApiController
             'place_name' => 'nullable|string',
             // 'place_image' => 'nullable|string',
             'schedule' => 'required|array|min:1',
-            '*.start_date' => 'nullable|date_fomat:d-m-Y|before:end_date',
+            '*.start_date' => 'nullable|date_fomat:d-m-Y',
             '*.end_date' => 'nullable|date_format:d-m-Y',
-            '*.start_time' => 'nullable|date_format:H:i|before:end_time',
+            '*.start_time' => 'nullable|date_format:H:i',
             '*.end_time' => 'nullable|date_format:H:i',
             'budget' => 'nullable|string',
         ];
@@ -112,13 +112,15 @@ class MomentController extends ApiController
         //Storing schedule details
         if ($request->filled('schedule')) {
             foreach ($request['schedule'] as $schedule) {
-                DB::table('moment_schedules')->insert([
-                    'moment_id' => $moment->id,
-                    'start_date' => $schedule['start_date'],
-                    'end_date' => $schedule['end_date'],
-                    'start_time' => $schedule['start_time'],
-                    'end_time' => $schedule['end_time'],
-                ]);
+                $schedule['moment_id'] = $moment->id;
+                DB::table('moment_schedules')->insert(
+                    // 'moment_id' => $moment->id,
+                    // 'start_date' => $schedule['start_date'],
+                    // 'end_date' => $schedule['end_date'],
+                    // 'start_time' => $schedule['start_time'],
+                    // 'end_time' => $schedule['end_time'],
+                    $schedule
+                );
             }
         }
 
