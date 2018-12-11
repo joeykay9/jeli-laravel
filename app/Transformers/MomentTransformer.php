@@ -11,16 +11,34 @@ use League\Fractal\TransformerAbstract;
 class MomentTransformer extends TransformerAbstract
 {
 
-	public function transform(Moment $moment) {
+	protected $availableIncludes = [
+		'schedules',
+		'members'
+	];
 
-		// $schedule = DB::table('moment_schedules')
-		// 				->where('moment_id', $moment->id)->get();
+	public function transform (Moment $moment) {
 		
 		return [
-			'id' => $moment->id,
-			'title' => $moment->title,
-			'icon' => $moment->icon,
-			'place_name' => $moment->place()->first()->place_name,
+			"id" => $moment->id,
+            "category" => $moment->category,
+            "title" => $moment->title,
+            "place_name" => $moment->place()->first()->place_name,
+            "icon" => $moment->icon,
+            "is_memory" => $moment->is_memory,
 		];
 	}
+
+	public function includeSchedules(Moment $moment)
+    {
+        $schedules = $moment->schedules;
+
+        return $this->collection($schedules, new ScheduleTransformer);
+    }
+
+    public function includeMembers(Moment $moment)
+    {
+    	$members = $moment->members;
+
+    	return $this->collection($members, new MembersTransformer);
+    }
 }

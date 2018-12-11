@@ -10,11 +10,11 @@ use League\Fractal\Manager;
 
 class ApiController extends Controller
 {
-    protected $statusCode =200;
+    protected $statusCode = 200;
 
-    public function __construct(Manager $fractal)
+    function __construct(Manager $fractal)
     {
-    	$this->fractal = $fractal;
+        $this->fractal = $fractal;
     }
 
     protected function respondWithItem($item, $callback)

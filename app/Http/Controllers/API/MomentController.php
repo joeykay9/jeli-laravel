@@ -14,10 +14,20 @@ use Illuminate\Support\Facades\DB;
 use App\Events\Customer\MomentCreated;
 use App\Http\Controllers\API\ApiController;
 use App\Transformers\MomentTransformer;
+use League\Fractal\Manager;
 
 class MomentController extends ApiController
 {
-    public function __construct(){
+
+    protected $fractal;
+
+    public function __construct(Manager $fractal){
+        $this->fractal = $fractal;
+
+        if (isset($_GET['include'])) {
+            $this->fractal->parseIncludes($_GET['include']);
+        }
+
     	$this->middleware('auth:api');
         $this->middleware('moment.creator')->only([
             'update', 'destroy', 'end'
@@ -31,25 +41,10 @@ class MomentController extends ApiController
      */
     public function index()
     {
-        // $moments = auth('api')->user()->moments()->take(20)->get();
-        // // dd($moments);
+        $moments = auth('api')->user()->moments()->take(10)->get();
+        // dd($moments);
 
-        // return $this->respondWithCollection($moments, new MomentTransformer);
-        $moments = [];
-
-        foreach (auth('api')->user()->moments as $moment) {
-            $moments[] = [
-                "id" => $moment->id,
-                "category" => $moment->category,
-                "title" => $moment->title,
-                "place_name" => $moment->place()->first()->place_name,
-                "icon" => $moment->icon,
-                "is_memory" => $moment->is_memory,
-            ];
-        }
-
-        //Return JSON array of JSON Moment objects
-        return response()->json($moments);
+        return $this->respondWithCollection($moments, new MomentTransformer);
     }
 
     /**
@@ -69,7 +64,6 @@ class MomentController extends ApiController
             'title' => 'required|string|max:25', 
             'place_id' => 'nullable|string',
             'place_name' => 'nullable|string',
-            // 'place_image' => 'nullable|string',
             'schedule' => 'required|array|min:1',
             '*.start_date' => 'nullable|date_fomat:d-m-Y',
             '*.end_date' => 'nullable|date_format:d-m-Y',
@@ -138,17 +132,7 @@ class MomentController extends ApiController
 
         $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 
-    	return response()->json([
-            "id" => $moment->id,
-            "category" => $moment->category,
-            "title" => $moment->title,
-            "place_id" => $moment->place()->first()->place_id,
-            "place_name" => $moment->place()->first()->place_name,
-            // "place_image" => $moment->place()->first()->place_image,
-            "budget" => $moment->budget,
-            "icon" => $moment->icon,
-            "is_memory" => $moment->is_memory,
-        ], 201);
+    	return $this->respondWithItem($moment, new MomentTransformer);
     }
 
     /**
@@ -159,21 +143,8 @@ class MomentController extends ApiController
      */
     public function show(Request $request, Moment $moment)
     {
-        //return auth('api')->user()->moments()->where('id', $moment->id)->first();
 
-        return response()->json([
-            "id" => $moment->id,
-            "category" => $moment->category,
-            "title" => $moment->title,
-            "date" => $moment->date,
-            "time" => $moment->time,
-            "place_id" => $moment->place()->first()->place_id,
-            "place_name" => $moment->place()->first()->place_name,
-            "place_image" => $moment->place()->first()->place_image,
-            "budget" => $moment->budget,
-            "icon" => $moment->icon,
-            "is_memory" => $moment->is_memory,
-        ], 201);
+        return $this->respondWithItem($moment, new MomentTransformer);
     }
 
     /**

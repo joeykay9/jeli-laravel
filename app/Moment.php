@@ -56,6 +56,10 @@ class Moment extends Model
         return $this->hasOne(Place::class);
     }
 
+    public function schedules() {
+        return $this->hasMany(Schedule::class);
+    }
+
     public function addOrganiser(Customer $customer) {
 
         $this->members()->attach($customer, ['is_organiser' => true]);
