@@ -19,7 +19,7 @@ class MomentsTableSeeder extends Seeder
 
         for ($i=0; $i < 10; $i++) { 
         	$moment = Moment::create([
-        		'customer_id' => mt_rand(1, 50),
+        		'customer_id' => $i+1,
         		'category' => $faker->word,
         		'title' => $faker->word,
         		'icon' => $faker->imageUrl,

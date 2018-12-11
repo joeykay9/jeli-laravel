@@ -15,7 +15,7 @@ class MomentMemberController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Moment $moment)
+    public function index(Moment $moment)
     {
         $members = $moment->members()->take(10)->get();
 

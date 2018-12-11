@@ -20,7 +20,6 @@ class CreateMomentSchedulesTable extends Migration
             $table->date('end_date')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
-            $table->boolean('is_range')->default(0);
             $table->timestamps();
 
             $table->foreign('moment_id')->references('id')->on('moments')->onDelete('cascade');

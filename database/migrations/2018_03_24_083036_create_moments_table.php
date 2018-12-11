@@ -21,7 +21,7 @@ class CreateMomentsTable extends Migration
             // $table->date('date')->nullable();
             // $table->time('time')->nullable();
             $table->string('icon')->nullable();
-            $table->decimal('budget')->nullable();
+            $table->string('budget')->nullable();
             $table->boolean('is_memory')->default(0);
             $table->timestamps();
 
