@@ -42,7 +42,7 @@ class MomentController extends ApiController
                 "id" => $moment->id,
                 "category" => $moment->category,
                 "title" => $moment->title,
-                // "place_name" => $moment->place()->first()->place_name,
+                "place_name" => $moment->place()->first()->place_name,
                 "icon" => $moment->icon,
                 "is_memory" => $moment->is_memory,
             ];
@@ -94,7 +94,7 @@ class MomentController extends ApiController
         );
 
         //Storing place details
-        if($request->filled('place_id') && $request->filled('place_id')){
+        if($request->filled('place_id') && $request->filled('place_name')){
             //Create Place Object
             $place = new Place([
                 'place_id' => $request->place_id,
@@ -113,14 +113,7 @@ class MomentController extends ApiController
         if ($request->filled('schedule')) {
             foreach ($request['schedule'] as $schedule) {
                 $schedule['moment_id'] = $moment->id;
-                DB::table('moment_schedules')->insert(
-                    // 'moment_id' => $moment->id,
-                    // 'start_date' => $schedule['start_date'],
-                    // 'end_date' => $schedule['end_date'],
-                    // 'start_time' => $schedule['start_time'],
-                    // 'end_time' => $schedule['end_time'],
-                    $schedule
-                );
+                DB::table('moment_schedules')->insert($schedule);
             }
         }
 
