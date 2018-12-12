@@ -30,7 +30,6 @@ class CreateMomentsTable extends Migration
             $table->integer('customer_id');
             $table->integer('moment_id');
             $table->boolean('is_organiser')->default(0);
-            $table->boolean('is_guest')->default(0);
             $table->boolean('is_grp_admin')->default(0);
             $table->timestamps();
             $table->primary(['customer_id', 'moment_id']);

@@ -23,8 +23,6 @@ class MembersTransformer extends TransformerAbstract
 		$myself = ($member->id == auth('api')->user()->id);
 
 		return [
-			'rid' => ($member->pivot->moment_id . $member->phone),
-			'moment_id' => $member->pivot->moment_id,
 			'contact_name' => (is_null($user) 
 							? (
 								($myself) 
@@ -34,7 +32,6 @@ class MembersTransformer extends TransformerAbstract
 			'contact_phone' => $member->phone,
 			'avatar' => $member->avatar,
 			'is_organiser' => $member->pivot->is_organiser,
-			'is_guest' => $member->pivot->is_guest,
 		];
 	}
 

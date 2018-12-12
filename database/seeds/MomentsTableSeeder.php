@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 use App\Moment;
+use App\Place;
 
 class MomentsTableSeeder extends Seeder
 {
@@ -29,14 +30,20 @@ class MomentsTableSeeder extends Seeder
 
         	$moment->members()->attach($moment, ['customer_id' => $moment->customer_id,'is_organiser' => true, 'is_grp_admin' => true]);
 
+            $place = new Place([
+                'place_id' => $faker->word,
+                'place_name' => $faker->sentence($nbwords=3),
+                'place_image' => $faker->imageUrl,
+            ]);
+
+            $moment->place()->save($place);
+
         	for ($j=0; $j < 5 ; $j++) {
         		$random = mt_rand(1,50);
-        		$is_organiser = $faker->boolean;
 
         		$moment->members()->attach($moment, [
         			'customer_id' => ($random == $moment->customer_id ? mt_rand(1,50) : $random),
-        			'is_organiser' => $is_organiser,
-        			'is_guest' => !($is_organiser),
+        			'is_organiser' => $faker->boolean,
         		]);
         	}
         }

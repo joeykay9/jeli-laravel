@@ -38,7 +38,7 @@ class Moment extends Model
 
     public function members() {
         return $this->belongsToMany(Customer::class)
-                ->withPivot(['is_organiser', 'is_guest', 'is_grp_admin'])
+                ->withPivot(['is_organiser', 'is_grp_admin'])
                 ->withTimestamps();
     }
 
@@ -67,7 +67,7 @@ class Moment extends Model
 
     public function addGuest(Customer $customer) {
         
-        $this->members()->attach($customer, ['is_guest' => true]);
+        $this->members()->attach($customer, ['is_organiser' => false]);
     }
 
     public function getOrganisers() {
@@ -79,7 +79,7 @@ class Moment extends Model
 
     public function getGuests() {
 
-        $this->guests = $this->members()->where('is_guest', true);
+        $this->guests = $this->members()->where('is_organiser', false);
 
         return $this->guests;
     }
