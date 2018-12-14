@@ -15,7 +15,7 @@ class Moment extends Model
      * @var array
      */
     protected $fillable = [
-        'category', 'title', 'icon', 'budget', 'is_memory',
+        'category', 'title', 'icon', 'budget', 'is_memory', 'place_id',
     ];
 
     /**
@@ -24,7 +24,7 @@ class Moment extends Model
      * @var array
      */
     protected $visible = [  
-        'id', 'category', 'title', 'icon', 'budget', 'is_memory',
+        'id', 'category', 'title', 'icon', 'budget', 'is_memory', 'place_id',
     ];
 
     protected $organisers = [];
@@ -53,7 +53,7 @@ class Moment extends Model
     }
 
     public function place() {
-        return $this->hasOne(Place::class);
+        return $this->belongsTo(Place::class);
     }
 
     public function schedules() {

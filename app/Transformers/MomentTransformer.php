@@ -11,7 +11,7 @@ use League\Fractal\TransformerAbstract;
 class MomentTransformer extends TransformerAbstract
 {
 
-	protected $availableIncludes = [
+	protected $defaultIncludes = [
 		'schedules',
 		'members',
 		'place'

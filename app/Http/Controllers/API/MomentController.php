@@ -8,6 +8,7 @@ use App\ChatGroup;
 use App\Customer;
 use App\Place;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Route;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ use App\Events\Customer\MomentCreated;
 use App\Http\Controllers\API\ApiController;
 use App\Transformers\MomentTransformer;
 use League\Fractal\Manager;
+use League\Fractal\Serializer\ArraySerializer;
 
 class MomentController extends ApiController
 {
@@ -23,9 +25,14 @@ class MomentController extends ApiController
 
     public function __construct(Manager $fractal){
         $this->fractal = $fractal;
+        $this->fractal->setSerializer(new ArraySerializer());
 
-        if (isset($_GET['include'])) {
-            $this->fractal->parseIncludes($_GET['include']);
+        // if (isset($_GET['include'])) {
+        //     $this->fractal->parseIncludes($_GET['include']);
+        // }
+
+        if(Route::current()->getName() == 'moments.index'){
+            $this->fractal->parseExcludes(['schedules', 'members']); //exclude shedules and members data from moment index response
         }
 
     	$this->middleware('auth:api');
@@ -90,17 +97,18 @@ class MomentController extends ApiController
         //Storing place details
         if($request->filled('place_id') && $request->filled('place_name')){
             //Create Place Object
-            $place = new Place([
-                'place_id' => $request->place_id,
-                'place_name' => $request->place_name,
-                'place_image' => $request->place_image,
-            ]);
+            $place = Place::where('place_id', $request->place_id)                ->first();
+
+            if(!$place) {
+                $place = Place::create([
+                    'place_id' => $request->place_id,
+                    'place_name' => $request->place_name,
+                    'place_image' => $request->place_image,
+                ]);
+            }
 
             //Save Place Record
-            $moment->place()->save($place);
-        } else {
-            //Save Place Record
-            $moment->place()->save(new Place);
+            $place->moments()->save($moment);
         }
 
         //Storing schedule details
@@ -116,23 +124,9 @@ class MomentController extends ApiController
 
         event(new MomentCreated($moment)); //Fire Moment Created event
 
-        // if($request->hasFile('icon')){
- 
-        //      $icon = $request->file('icon');
-        //      $path = Storage::putFile(
-        //          'icons', $icon
-        //      );
- 
-        //      //Storage::setVisibility($path, 'public'); -- TOFIX
-        //      $url = Storage::url($path);
- 
-        //      $moment->icon = $url;
-        //      $moment->save();
-        //  }
-
         $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 
-    	return $this->respondWithItem($moment, new MomentTransformer);
+    	return $this->respondWithItem($moment, new MomentTransformer)->setStatusCode(201);
     }
 
     /**
@@ -143,8 +137,8 @@ class MomentController extends ApiController
      */
     public function show(Request $request, Moment $moment)
     {
-
-        return $this->respondWithItem($moment, new MomentTransformer);
+        $momentTransformer = new MomentTransformer;
+        return $this->respondWithItem($moment, $momentTransformer);
     }
 
     /**

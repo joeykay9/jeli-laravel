@@ -21,9 +21,11 @@ class CreateMomentsTable extends Migration
             $table->string('icon')->nullable();
             $table->string('budget')->nullable();
             $table->boolean('is_memory')->default(0);
+            $table->string('place_id')->nullable();
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade'); //to be thought through later
+            // $table->foreign('place_id')->references('id')->on('places')->onDelete('set null');
         });
 
         Schema::create('customer_moment', function (Blueprint $table) {

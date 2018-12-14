@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Faker\Factory;
 use App\Moment;
 use App\Place;
+use App\Schedule;
 
 class MomentsTableSeeder extends Seeder
 {
@@ -18,7 +19,7 @@ class MomentsTableSeeder extends Seeder
 
         $faker = Factory::create('en_US');
 
-        for ($i=0; $i < 10; $i++) { 
+        for ($i=0; $i < 5; $i++) { 
         	$moment = Moment::create([
         		'customer_id' => $i+1,
         		'category' => $faker->word,
@@ -30,13 +31,22 @@ class MomentsTableSeeder extends Seeder
 
         	$moment->members()->attach($moment, ['customer_id' => $moment->customer_id,'is_organiser' => true, 'is_grp_admin' => true]);
 
-            $place = new Place([
+            $place = Place::create([
                 'place_id' => $faker->word,
-                'place_name' => $faker->sentence($nbwords=3),
+                'place_name' => $faker->streetName,
                 'place_image' => $faker->imageUrl,
             ]);
 
-            $moment->place()->save($place);
+            $place->moments()->save($moment);
+
+            $schedule = new Schedule([
+                'start_time' => $faker->date,
+                'end_date' => $faker->date,
+                'start_time' => $faker->time,
+                'end_time' => $faker->time,
+            ]);
+
+            $moment->schedules()->save($schedule);
 
         	for ($j=0; $j < 5 ; $j++) {
         		$random = mt_rand(1,50);
