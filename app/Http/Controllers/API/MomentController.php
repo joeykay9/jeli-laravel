@@ -72,14 +72,19 @@ class MomentController extends ApiController
             'place_id' => 'nullable|string',
             'place_name' => 'nullable|string',
             'schedule' => 'required|array|min:1',
-            '*.start_date' => 'nullable|date_fomat:d-m-Y',
-            '*.end_date' => 'nullable|date_format:d-m-Y',
-            '*.start_time' => 'nullable|date_format:H:i',
-            '*.end_time' => 'nullable|date_format:H:i',
+            '*.*.start_date' => 'required|date_format:"d-m-Y"',
+            '*.*.end_date' => 'nullable|date_format:"d-m-Y"',
+            '*.*.start_time' => 'nullable|date_format:"H:i"',
+            '*.*.end_time' => 'nullable|date_format:"H:i"',
             'budget' => 'nullable|string',
         ];
 
-        $messages = [];
+        $messages = [
+            '*.*.start_date.date_format' => 'Please enter a valid date in the format dd-mm-yyyy',
+            '*.*.end_date.date_format' => 'Please enter a valid date in the format dd-mm-yyyy',
+            '*.*.start_time.date_format' => 'Please enter a valid time in the format H:i (e.g. 16:43)',
+            '*.*.end_time.date_format' => 'Please enter a valid time in the format H:i (e.g. 16:43)',
+        ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
 

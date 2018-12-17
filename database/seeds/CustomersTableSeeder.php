@@ -48,6 +48,7 @@ class CustomersTableSeeder extends Seeder
         		'phone' => $faker->phoneNumber,
         		'jelion' => $faker->colorName,
                 'active' => $faker->boolean,
+                'dob' => $faker->date,
                 'avatar' => $faker->imageUrl,
         		'password' => $password,
         	]);
