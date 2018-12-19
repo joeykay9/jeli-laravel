@@ -7,6 +7,7 @@ use App\Moment;
 use App\ChatGroup;
 use App\Customer;
 use App\Place;
+use App\Schedule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Route;
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -119,8 +120,7 @@ class MomentController extends ApiController
         if ($request->filled('schedule')) {
             foreach ($request['schedule'] as $schedule) {
                 $schedule['moment_id'] = $moment->id;
-                DB::table('moment_schedules')->insert($schedule);
-                dd($schedule);
+                Schedule::create($schedule);
             }
         }
 
