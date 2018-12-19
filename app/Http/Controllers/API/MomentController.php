@@ -118,9 +118,9 @@ class MomentController extends ApiController
         //Storing schedule details
         if ($request->filled('schedule')) {
             foreach ($request['schedule'] as $schedule) {
-                dd($schedule);
                 $schedule['moment_id'] = $moment->id;
                 DB::table('moment_schedules')->insert($schedule);
+                dd($schedule);
             }
         }
 
