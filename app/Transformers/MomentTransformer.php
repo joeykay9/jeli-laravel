@@ -23,7 +23,6 @@ class MomentTransformer extends TransformerAbstract
 			"id" => $moment->id,
             "category" => $moment->category,
             "title" => $moment->title,
-            // "place_name" => $moment->place()->first()->place_name,
             "icon" => $moment->icon,
             "is_memory" => $moment->is_memory,
 		];
@@ -44,6 +43,6 @@ class MomentTransformer extends TransformerAbstract
     public function includePlace(Moment $moment) {
     	$place = $moment->place;
 
-    	return $place ? $this->item($place, new PlaceTransformer, $place) : $this->null();
+    	return $place ? $this->item($place, new PlaceTransformer) : $this->null();
     }
 }
