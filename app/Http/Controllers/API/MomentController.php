@@ -119,8 +119,9 @@ class MomentController extends ApiController
         //Storing schedule details
         if ($request->filled('schedule')) {
             foreach ($request['schedule'] as $schedule) {
-                $schedule['moment_id'] = $moment->id;
-                // Schedule::create($schedule);
+
+                // $schedule['moment_id'] = $moment->id;
+                $moment->schedules()->save(new Schedule($schedule));
             }
         }
 
