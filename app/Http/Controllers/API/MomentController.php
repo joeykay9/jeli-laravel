@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use App\Events\Customer\MomentCreated;
 use App\Http\Controllers\API\ApiController;
 use App\Transformers\MomentTransformer;
+use App\Serializers\JeliSerializer;
 use League\Fractal\Manager;
 use League\Fractal\Serializer\ArraySerializer;
 
@@ -26,7 +27,7 @@ class MomentController extends ApiController
 
     public function __construct(Manager $fractal){
         $this->fractal = $fractal;
-        $this->fractal->setSerializer(new ArraySerializer());
+        $this->fractal->setSerializer(new JeliSerializer());
 
         if(Route::current()->getName() == 'moments.index'){
             $this->fractal->parseExcludes(['schedules', 'members']); //exclude shedules and members data from moment index response
