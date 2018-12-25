@@ -120,7 +120,7 @@ class MomentController extends ApiController
         if ($request->filled('schedule')) {
             foreach ($request['schedule'] as $schedule) {
 
-                dd($schedule)
+                dd($schedule);
                 $moment->schedules()->save(new Schedule($schedule));
             }
         }
