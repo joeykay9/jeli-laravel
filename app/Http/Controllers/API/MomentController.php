@@ -28,10 +28,6 @@ class MomentController extends ApiController
         $this->fractal = $fractal;
         $this->fractal->setSerializer(new ArraySerializer());
 
-        // if (isset($_GET['include'])) {
-        //     $this->fractal->parseIncludes($_GET['include']);
-        // }
-
         if(Route::current()->getName() == 'moments.index'){
             $this->fractal->parseExcludes(['schedules', 'members']); //exclude shedules and members data from moment index response
         }
