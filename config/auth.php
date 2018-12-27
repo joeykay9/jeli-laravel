@@ -46,35 +46,6 @@ return [
             'provider' => 'customers',
         ],
 
-        'business' => [
-            'driver' => 'session',
-            'provider' => 'businesses',
-        ],
-
-        'business-api' => [
-            'driver' => 'token',
-            'provider' => 'businesses',
-        ],
-
-        'vendor' => [
-            'driver' => 'session',
-            'provider' => 'vendors',
-        ],
-
-        'vendor-api' => [
-            'driver' => 'token',
-            'provider' => 'vendors',
-        ],
-
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admins',
-        ],
-
-        'admin-api' => [
-            'driver' => 'token',
-            'provider' => 'admins',
-        ],
     ],
 
     /*
@@ -104,36 +75,6 @@ return [
         //     'driver' => 'database',
         //     'table' => 'customers',
         // ],
-
-        'businesses' => [
-            'driver' => 'eloquent',
-            'model' => App\Business::class,
-        ],
-
-        // 'businesses' => [
-        //     'driver' => 'database',
-        //     'table' => 'businesses',
-        // ],
-
-        'vendors' => [
-            'driver' => 'eloquent',
-            'model' => App\Vendor::class,
-        ],
-
-        // 'vendors' => [
-        //     'driver' => 'database',
-        //     'table' => 'vendors',
-        // ],
-
-        'admins' => [
-            'driver' => 'eloquent',
-            'model' => App\Admin::class,
-        ],
-
-        // 'admins' => [
-        //     'driver' => 'database',
-        //     'table' => 'admins',
-        // ],
     ],
 
     /*
@@ -157,21 +98,5 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
         ],
-        'businesses' => [
-            'provider' => 'businesses',
-            'table' => 'password_resets',
-            'expire' => 60,
-        ],
-        'vendors' => [
-            'provider' => 'vendors',
-            'table' => 'password_resets',
-            'expire' => 60,
-        ],
-        'admins' => [
-            'provider' => 'admins',
-            'table' => 'password_resets',
-            'expire' => 15,
-        ],
     ],
-
 ];

@@ -83,6 +83,18 @@ class Customer extends Authenticatable implements JWTSubject
                 ->withTimestamps();
     }
 
+    public function ownedBusinesses() {
+        return $this->hasMany(Business::class);
+    }
+
+    // All businesses customer belongs to
+    // whether as owner or collaborator
+    public function businesses() {
+        return $this->belongsToMany(Business::class)
+                ->withPivot('role')
+                ->withTimestamps();
+    }
+
     public function contacts() {
         return $this->belongsToMany(Customer::class, 'customer_contact', 'customer_id', 'contact_id')
                 ->withPivot('contact_name')

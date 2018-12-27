@@ -3,16 +3,12 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Vendor;
 use App\Mail\Welcome;
 use App\Notifications\BusinessResetPasswordNotification;
 
-class Business extends Authenticatable
+class Business extends Model
 {
     use Notifiable;
-
-    protected $guard = 'business';
 
     /**
      * The attributes that are mass assignable.
@@ -20,21 +16,12 @@ class Business extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'country', 'location', 'phone', 'email', 'password',
+        'name', 'category', 'country', 'location', 'phone', 'email', 'password',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    public function vendors(){
+    public function owner(){
         
-        return $this->hasMany(Vendor::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function services() {
@@ -42,21 +29,10 @@ class Business extends Authenticatable
         return $this->hasMany(Service::class);
     }
 
-    public function createVendor(Vendor $vendor){
-        $this->vendors()->save($vendor);
-
-        //Send new JeliVendor an email with login link
-        \Mail::to($vendor)->send(new VendorWelcome($vendor));
-    }
-
-    /**
-     * Send the password reset notification.
-     *
-     * @param  string  $token
-     * @return void
-     */
-    public function sendPasswordResetNotification($token)
+    public function collaborators()
     {
-        $this->notify(new BusinessResetPasswordNotification($token));
+        return $this->belongsToMany(Customer::class)
+                ->withPivot('role')
+                ->withTimestamps();
     }
 }

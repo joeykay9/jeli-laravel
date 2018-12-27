@@ -16,13 +16,12 @@ class CreateBusinessesTable extends Migration
         Schema::create('businesses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('category');
             $table->string('country');
             $table->string('location');
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('logo')->nullable();
-            $table->string('password');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

@@ -27,6 +27,10 @@ use App\Customer;
 // 	});
 // });
 
+Route::get('/', function () {
+    return ['hello api'];
+});
+
 Route::group([
 
     'prefix' => 'auth'
