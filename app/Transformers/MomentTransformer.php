@@ -24,6 +24,7 @@ class MomentTransformer extends TransformerAbstract
             "category" => $moment->category,
             "title" => $moment->title,
             "icon" => $moment->icon,
+            "budget" => $moment->budget,
             "is_memory" => $moment->is_memory,
 		];
 	}
@@ -31,7 +32,7 @@ class MomentTransformer extends TransformerAbstract
 	public function includeSchedules(Moment $moment) {
         $schedules = $moment->schedules;
 
-        return $this->collection($schedules, new ScheduleTransformer);
+        return $schedules ? $this->collection($schedules, new ScheduleTransformer) : $this->null();
     }
 
     public function includeMembers(Moment $moment) {
