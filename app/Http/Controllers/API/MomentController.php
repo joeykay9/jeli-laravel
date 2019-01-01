@@ -33,9 +33,9 @@ class MomentController extends ApiController
         }
 
         $this->middleware('auth:api');
-        // $this->middleware('moment.creator')->only([
-        //     'update', 'destroy', 'end'
-        // ]);
+        $this->middleware('moment.creator')->only([
+            'update', 'destroy', 'end'
+        ]);
     }
 
     /**
