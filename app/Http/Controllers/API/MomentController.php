@@ -170,19 +170,7 @@ class MomentController extends ApiController
         }
 
         //Return the updated moment
-        return response()->json([
-            "id" => $moment->id,
-            "category" => $moment->category,
-            "title" => $moment->title,
-            "date" => $moment->date,
-            "time" => $moment->time,
-            "place_id" => $moment->place()->first()->place_id,
-            "place_name" => $moment->place()->first()->place_name,
-            "place_image" => $moment->place()->first()->place_image,
-            "budget" => $moment->budget,
-            "icon" => $moment->icon,
-            "is_memory" => $moment->is_memory,
-        ], 201);
+        return $this->respondWithItem($moment, new MomentTransformer);
     }
 
     public function end(Request $request, Moment $moment)
