@@ -24,7 +24,7 @@ class Moment extends Model
      * @var array
      */
     protected $visible = [  
-        'id', 'category', 'title', 'icon', 'budget', 'is_memory', 'place_id',
+        'id', 'category', 'title', 'icon', 'budget', 'is_memory',
     ];
 
     protected $organisers = [];

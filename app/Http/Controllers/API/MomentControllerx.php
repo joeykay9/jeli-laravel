@@ -22,20 +22,21 @@ use League\Fractal\Serializer\ArraySerializer;
 
 class MomentController extends ApiController
 {
+
     protected $fractal;
 
     public function __construct(Manager $fractal){
         $this->fractal = $fractal;
         $this->fractal->setSerializer(new JeliSerializer());
 
-        if(Route::current()->getName() == 'moments.index'){
+        // if(Route::current()->getName() == 'moments.index'){
             $this->fractal->parseExcludes(['schedules', 'members']); //exclude shedules and members data from moment index response
-        }
+        // }
 
-        $this->middleware('auth:api');
-        // $this->middleware('moment.creator')->only([
-        //     'update', 'destroy', 'end'
-        // ]);
+    	$this->middleware('auth:api');
+        $this->middleware('moment.creator')->only([
+            'update', 'destroy', 'end'
+        ]);
     }
 
     /**
@@ -129,7 +130,7 @@ class MomentController extends ApiController
 
         $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 
-        return $this->respondWithItem($moment, new MomentTransformer)->setStatusCode(201);
+    	return $this->respondWithItem($moment, new MomentTransformer)->setStatusCode(201);
     }
 
     /**
@@ -138,10 +139,8 @@ class MomentController extends ApiController
      * @param  \App\Moment  $moment
      * @return \Illuminate\Http\Response
      */
-    public function show(Moment $moment)
+    public function show(Request $request, Moment $moment)
     {
-        $moment = Moment::find(request()->route('moment'));
-
         return $this->respondWithItem($moment, new MomentTransformer);
     }
 
@@ -154,8 +153,6 @@ class MomentController extends ApiController
      */
     public function update(Request $request, Moment $moment)
     {
-        $moment = Moment::find(request()->route('moment'));
-        
         //Validate the request
         $input = $request->except(['place_id', 'place_name', 'place_image']);
         $place = $request->filled(['place_id', 'place_name']);

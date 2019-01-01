@@ -98,8 +98,14 @@ Route::group([
 });
 
 Route::apiResources([
-	'customers' => 'API\CustomerController',
-	'moments' => 'API\MomentController'
+	'customers' => 'API\CustomerController'
+]);
+
+Route::get('moments/{moment}', 'API\MomentController@show')->name('moments.show');
+Route::put('moments/{moment}', 'API\MomentController@update')->name('moments.update');
+
+Route::apiResource('moments', 'API\MomentController')->only([
+	'index', 'store', 'destroy'
 ]);
 
 Route::apiResource('businesses', 'API\BusinessController')->only([
