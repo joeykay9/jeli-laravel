@@ -44,6 +44,6 @@ class MomentTransformer extends TransformerAbstract
     public function includePlace(Moment $moment) {
     	$place = $moment->place;
 
-    	return $place ? $this->item($place, new PlaceTransformer) : $this->null();
+    	return $place ? $this->item($place, new PlaceTransformer) : null;
     }
 }
