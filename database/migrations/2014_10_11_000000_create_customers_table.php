@@ -39,17 +39,6 @@ class CreateCustomersTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('customers')->onDelete('cascade');
         });
-
-        Schema::create('business_customer', function (Blueprint $table) {
-            $table->integer('business_id');
-            $table->integer('customer_id');
-            $table->string('role');
-            $table->primary(['business_id', 'customer_id']);
-            $table->timestamps();
-
-            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-        });
     }
 
     /**

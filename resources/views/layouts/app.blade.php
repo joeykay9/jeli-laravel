@@ -36,14 +36,12 @@
                         @guest
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Login as <span class="caret"></span>
+                                    Login to <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('login') }}">Jeli Customer</a>
-                                    <a class="dropdown-item" href="{{ route('business.login') }}">Jeli Business</a>
-                                    <a class="dropdown-item" href="{{ route('vendor.login') }}">Jeli Vendor</a>
-                                    <a class="dropdown-item" href="{{ route('admin.login') }}">Jeli Admin</a>
+                                    <a class="dropdown-item" href="{{ route('login') }}">Jeli</a>
+                                    <a class="dropdown-item" href="{{ route('login') }}">Jeli Business</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
@@ -53,7 +51,6 @@
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('register') }}">Jeli Customer</a>
-                                    <a class="dropdown-item" href="{{ route('business.register') }}">Jeli Business</a>
                                 </div>
                             </li>
                         @else
@@ -63,41 +60,6 @@
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    @auth('admin')
-                                        <a class="dropdown-item" href="{{ route('admin.logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    @endauth
-
-                                    @auth('business')
-                                        <a class="dropdown-item" href="{{ route('business.logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('business.logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    @endauth
-
-                                    @auth('vendor')
-                                        <a class="dropdown-item" href="{{ route('vendor.logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('vendor.logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    @endauth
 
                                     @auth('web')
                                         <a class="dropdown-item" href="{{ route('customerLogout') }}"

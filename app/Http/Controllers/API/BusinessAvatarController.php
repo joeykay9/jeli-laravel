@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\ApiController;
 use App\Business;
 use Illuminate\Support\Facades\Storage;
 
-class BusinessAvatarController extends Controller
+class BusinessAvatarController extends ApiController
 {
     /**
      * Update the avatar for the user.

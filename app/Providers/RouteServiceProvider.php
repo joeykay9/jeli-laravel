@@ -28,6 +28,15 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
     }
 
+    private function baseDomain(string $subdomain = ''): string
+    {
+        if (strlen($subdomain) > 0) {
+            $subdomain = "{$subdomain}.";
+        }
+
+        return $subdomain . config('app.base_domain');
+    }
+
     /**
      * Define the routes for the application.
      *
@@ -51,7 +60,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::domain('jeli.test')
+        Route::domain($this->baseDomain())
              ->middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
@@ -66,7 +75,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::domain('api.jeli.test')
+        Route::domain($this->baseDomain('api'))
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
@@ -74,7 +83,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapBusinessRoutes()
     {
-        Route::domain('business.jeli.test')
+        Route::domain($this->baseDomain('business'))
              ->middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/business.php'));

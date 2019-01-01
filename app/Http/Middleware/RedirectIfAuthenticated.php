@@ -18,23 +18,6 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         switch ($guard) {
-            case 'admin':
-                if (Auth::guard($guard)->check()) {
-                    return redirect('admin/home');
-                }
-                break;
-
-            case 'business':
-                if (Auth::guard($guard)->check()) {
-                    return redirect('business/home');
-                }
-                break;
-
-            case 'vendor':
-                if (Auth::guard($guard)->check()) {
-                    return redirect('vendor/home');
-                }
-                break;
             
             default:
                 if (Auth::guard($guard)->check()) {

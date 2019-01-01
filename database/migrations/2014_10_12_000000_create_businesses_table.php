@@ -15,6 +15,7 @@ class CreateBusinessesTable extends Migration
     {
         Schema::create('businesses', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('customer_id')->unsigned();
             $table->string('name');
             $table->string('category');
             $table->string('country');
@@ -23,6 +24,19 @@ class CreateBusinessesTable extends Migration
             $table->string('email')->unique();
             $table->string('logo')->nullable();
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+        });
+
+        Schema::create('business_customer', function (Blueprint $table) {
+            $table->integer('business_id');
+            $table->integer('customer_id');
+            $table->string('role');
+            $table->primary(['business_id', 'customer_id']);
+            $table->timestamps();
+
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 

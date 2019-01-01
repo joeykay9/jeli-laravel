@@ -29,7 +29,7 @@ class Business extends Model
         return $this->hasMany(Service::class);
     }
 
-    public function collaborators()
+    public function associates()
     {
         return $this->belongsToMany(Customer::class)
                 ->withPivot('role')

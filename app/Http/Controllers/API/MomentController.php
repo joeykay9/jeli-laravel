@@ -29,9 +29,9 @@ class MomentController extends ApiController
         $this->fractal = $fractal;
         $this->fractal->setSerializer(new JeliSerializer());
 
-        if(Route::current()->getName() == 'moments.index'){
+        // if(Route::current()->getName() == 'moments.index'){
             $this->fractal->parseExcludes(['schedules', 'members']); //exclude shedules and members data from moment index response
-        }
+        // }
 
     	$this->middleware('auth:api');
         $this->middleware('moment.creator')->only([

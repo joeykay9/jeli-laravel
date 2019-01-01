@@ -54,6 +54,8 @@ return [
 
     'url' => env('APP_URL', 'https://jeligh.herokuapp.com'),
 
+    'base_domain' => env('APP_BASE_DOMAIN', 'jeligh.herokuapp.com'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

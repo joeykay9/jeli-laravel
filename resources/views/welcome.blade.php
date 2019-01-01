@@ -76,13 +76,11 @@
                     @else
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Login as
+                                    Login to
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="{{ route('login') }}">Jeli Customer</a>
+                                    <a class="dropdown-item" href="{{ route('login') }}">Jeli</a>
                                     <a class="dropdown-item" href="{{ route('business.login') }}">Jeli Business</a>
-                                    <a class="dropdown-item" href="{{ route('vendor.login') }}">Jeli Vendor</a>
-                                    <a class="dropdown-item" href="{{ route('admin.login') }}">Jeli Admin</a>
                                 </div>
                             </div>
                             <div class="dropdown show">
@@ -91,7 +89,6 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="{{ route('register') }}">Jeli Customer</a>
-                                    <a class="dropdown-item" href="{{ route('business.register') }}">Jeli Business</a>
                                 </div>
                             </div>
                             
