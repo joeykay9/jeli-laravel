@@ -173,7 +173,7 @@ class CustomerController extends ApiController
                     $customer->save();
                 }
 
-                event(new AccountActivated($customer));
+                // event(new AccountActivated($customer));
 
                 return response()->json([
                     'success' => true,
