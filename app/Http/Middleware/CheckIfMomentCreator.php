@@ -16,7 +16,7 @@ class CheckIfMomentCreator
     public function handle($request, Closure $next)
     {
         if(! auth('api')->user()->createdMoments()
-                ->find($request->route('moment'))) {
+                ->find($request->route('moment')->id)) {
 
             return response()->json([
                 'success' => false,

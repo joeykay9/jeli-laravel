@@ -17,25 +17,25 @@ class BusinessesTableSeeder extends Seeder
 
         $faker = Factory::create();
 
+        $password = Hash::make('business');
+
         Business::create([
        		'name' => 'Phronesis Ventures',
-            'category' => 'Sound',
        		'country' => 'Ghana',
        		'location' => 'Accra',
         	'email' => 'phronesis@example.com',
         	'phone' => '0202821451',
-            'logo' => $faker->imageUrl
+        	'password' => $password,
         ]);
 
         for($i = 0; $i < 50; $i++) {
         	Business::create([
         		'name' => $faker->company,
-                'category' => $faker->word,
         		'country' => $faker->country,
         		'location' => $faker->address,
         		'email' => $faker->email,
         		'phone' => $faker->phoneNumber,
-                'logo' => $faker->imageUrl
+        		'password' => $password,
         	]);
         }
     }

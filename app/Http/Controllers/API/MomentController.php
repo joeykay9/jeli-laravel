@@ -140,8 +140,6 @@ class MomentController extends ApiController
      */
     public function show(Moment $moment)
     {
-        $moment = Moment::find(request()->route('moment'));
-
         return $this->respondWithItem($moment, new MomentTransformer);
     }
 
@@ -153,9 +151,7 @@ class MomentController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Moment $moment)
-    {
-        $moment = Moment::find(request()->route('moment'));
-        
+    {   
         //Validate the request
         $input = $request->except(['place_id', 'place_name', 'place_image']);
         $place = $request->filled(['place_id', 'place_name']);

@@ -37,7 +37,8 @@ class SendOTPNotification extends Notification
     {
         return (new HubtelMessage)
                     ->from('Jeli')
-                    ->content('<#> Your Jeli verification code is ' . $this->otp . '\\n LuRTvMBAktx')
+                    ->content('<#> Your Jeli verification code is ' . $this->otp . '
+                     LuRTvMBAktx ')
                     ->registeredDelivery(true);
     }
 }
