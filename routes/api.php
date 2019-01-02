@@ -48,7 +48,7 @@ Route::group([
 Route::group([
 	'prefix' => 'customers'
 ], function () {
-	//Request new otp
+	//Request otp
 	Route::get('/{customer}/otp', 'API\OtpController@requestOTP');
 	//Verify otp
 	Route::post('/{customer}/otp', 'API\OtpController@verifyOTP');

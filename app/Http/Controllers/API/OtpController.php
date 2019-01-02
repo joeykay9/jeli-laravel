@@ -91,6 +91,7 @@ class OtpController extends ApiController
             ], 200);
         }
 
+        dd($customer);
         //Create otp entry in database
         $customer->otp()->save($otp);
 

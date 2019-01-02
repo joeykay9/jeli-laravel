@@ -88,7 +88,12 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapBusinessRoutes()
     {
-        Route::domain($this->baseDomain('business'))
+        // Route::domain($this->baseDomain('business'))
+        //      ->middleware('web')
+        //      ->namespace($this->namespace)
+        //      ->group(base_path('routes/business.php'));
+
+        Route::prefix('business')
              ->middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/business.php'));

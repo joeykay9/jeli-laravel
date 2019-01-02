@@ -94,7 +94,7 @@ class CustomerController extends ApiController
         $customer->settings()->save(new Settings);
         $customer->otp()->save(new Otp);
 
-        event(new AccountCreated($customer));
+        // event(new AccountCreated($customer));
 
         try {
 
