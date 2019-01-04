@@ -68,7 +68,7 @@ class MomentController extends ApiController
             'place_id' => 'nullable|string',
             'place_name' => 'nullable|string',
             'schedule' => 'required|array|min:1',
-            '*.*.start_date' => 'required|date_format:"d-M-Y"|before:*.*.end_date',
+            '*.*.start_date' => 'required|date_format:"d-M-Y"',
             '*.*.end_date' => 'nullable|date_format:"d-M-Y"|after:*.*.start_date',
             '*.*.start_time' => 'nullable|date_format:"H:i"',
             '*.*.end_time' => 'nullable|date_format:"H:i"',
@@ -77,7 +77,6 @@ class MomentController extends ApiController
 
         $messages = [
             '*.*.start_date.date_format' => 'Please enter a valid date in the format dd-mmm-yyyy (e.g. 02-Feb-2032)',
-            '*.*.start_date.before' => 'The start date must be a date before the end date',
             '*.*.end_date.date_format' => 'Please enter a valid date in the format dd-mmm-yyyy (e.g. 02-Feb-2032)',
             '*.*.end_date.after' => 'The end date must be a date after the start date',
             '*.*.start_time.date_format' => 'Please enter a valid time in the format H:i (e.g. 16:43)',
