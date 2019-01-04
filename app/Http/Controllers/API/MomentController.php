@@ -45,7 +45,7 @@ class MomentController extends ApiController
      */
     public function index()
     {
-        $moments = auth('api')->user()->moments()->take(10)->get();
+        $moments = auth('api')->user()->moments()->get(); //will add take(10) later
 
         return $this->respondWithCollection($moments, new MomentTransformer);
     }

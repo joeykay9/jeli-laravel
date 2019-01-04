@@ -17,7 +17,7 @@ class MomentMemberController extends ApiController
      */
     public function index(Moment $moment)
     {
-        $members = $moment->members()->take(10)->get();
+        $members = $moment->members()->get(); //will add take(10) later
 
         return $this->respondWithCollection($members, new MembersTransformer);
     }
