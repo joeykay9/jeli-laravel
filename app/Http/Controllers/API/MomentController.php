@@ -174,7 +174,7 @@ class MomentController extends ApiController
 
     public function updateSchedules(Request $request, Moment $moment)
     {
-        $schedules = $request->all();
+        $input = $request->all();
 
         $rules = [
             '*.start_date' => 'required|date_format:"d-M-Y"',
@@ -191,7 +191,7 @@ class MomentController extends ApiController
             '*.end_time.date_format' => 'Please enter a valid time in the format H:i (e.g. 16:43)',
         ];
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($input, $rules, $messages);
 
         if($validator->fails()){
             return response()->json([
@@ -200,19 +200,19 @@ class MomentController extends ApiController
             ], 422);
         }
 
-        foreach($schedules as $scheduleUpdate) {
-            // dd($schedule['id']);
-            $schedule = Schedule::where('moment_id', $moment->id)
+        foreach($input as $scheduleUpdate) {
+
+            if(! array_key_exists('id', $scheduleUpdate)) {
+
+                $newSchedule = Schedule::make($scheduleUpdate);
+                $moment->schedules()->save($newSchedule);
+            } else {
+                
+                $schedule = Schedule::where('moment_id', $moment->id)
                                 ->where('id', $scheduleUpdate['id'])->first();
-
-            if(! $schedule){
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['Schedule does not exist on this moment']
-                ], 401);
+            
+                $schedule->update($scheduleUpdate);
             }
-
-            $schedule->update($scheduleUpdate);
         }
 
         return $this->respondWithCollection($moment->schedules()->get(), new ScheduleTransformer);
