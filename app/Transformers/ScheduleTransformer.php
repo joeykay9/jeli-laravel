@@ -15,7 +15,7 @@ class ScheduleTransformer extends TransformerAbstract
      */
     public function transform(Schedule $schedule)
     {
-        return [
+        return [    
             'start_date' => Carbon::parse($schedule->start_date)->format('d-M-Y'),
             'end_date' => $schedule->end_date ? Carbon::parse($schedule->end_date)->format('d-M-Y') : null,
             'start_time' => $schedule->start_time,

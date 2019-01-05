@@ -25,7 +25,7 @@ class MomentTransformer extends TransformerAbstract
             "title" => $moment->title,
             "icon" => $moment->icon,
             "budget" => $moment->budget,
-            "is_memory" => $moment->is_memory,
+            "is_memory" => (boolean) $moment->is_memory,
 		];
 	}
 
