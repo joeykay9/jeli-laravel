@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use App\Events\Customer\MomentCreated;
 use App\Http\Controllers\API\ApiController;
 use App\Transformers\MomentTransformer;
+use App\Transformers\ScheduleTransformer;
 use App\Serializers\JeliSerializer;
 use League\Fractal\Manager;
 use League\Fractal\Serializer\ArraySerializer;
@@ -169,6 +170,52 @@ class MomentController extends ApiController
 
         //Return the updated moment
         return $this->respondWithItem($moment, new MomentTransformer);
+    }
+
+    public function updateSchedules(Request $request, Moment $moment)
+    {
+        $schedules = $request->all();
+
+        $rules = [
+            '*.start_date' => 'required|date_format:"d-M-Y"',
+            '*.end_date' => 'nullable|date_format:"d-M-Y"|after:*.start_date',
+            '*.start_time' => 'nullable|date_format:"H:i"',
+            '*.end_time' => 'nullable|date_format:"H:i"',
+        ];
+
+        $messages = [
+            '*.start_date.date_format' => 'Please enter a valid date in the format dd-mmm-yyyy (e.g. 02-Feb-2032)',
+            '*.end_date.date_format' => 'Please enter a valid date in the format dd-mmm-yyyy (e.g. 02-Feb-2032)',
+            '*.end_date.after' => 'The end date must be a date after the start date',
+            '*.start_time.date_format' => 'Please enter a valid time in the format H:i (e.g. 16:43)',
+            '*.end_time.date_format' => 'Please enter a valid time in the format H:i (e.g. 16:43)',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all(),
+            ], 422);
+        }
+
+        foreach($schedules as $scheduleUpdate) {
+            // dd($schedule['id']);
+            $schedule = Schedule::where('moment_id', $moment->id)
+                                ->where('id', $scheduleUpdate['id'])->first();
+
+            if(! $schedule){
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['Schedule does not exist on this moment']
+                ], 401);
+            }
+
+            $schedule->update($scheduleUpdate);
+        }
+
+        return $this->respondWithCollection($moment->schedules()->get(), new ScheduleTransformer);
     }
 
     public function end(Request $request, Moment $moment)

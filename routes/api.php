@@ -73,6 +73,8 @@ Route::group([
 	Route::post('/{moment}/icon', 'API\MomentImageController@update');
 	Route::delete('/{moment}/icon', 'API\MomentImageController@destroy');
 
+	Route::put('/{moment}/schedules', 'API\MomentController@updateSchedules');
+
 	Route::get('/{moment}/members', 'API\MomentMemberController@index');
 
 	//Organisers
@@ -90,7 +92,7 @@ Route::group([
 	Route::delete('/{moment}/guests/{customer}', 'API\MomentGuestController@removeGuest'); //Remove a customer from guest list [You need to be a moment admin to do that]
 
 	//To do list
-	Route::post('moments/{moment}/todos', 'API\TodoController@store'); //Create list items
+	Route::post('/{moment}/todos', 'API\TodoController@store'); //Create list items
 });
 
 Route::apiResources([
