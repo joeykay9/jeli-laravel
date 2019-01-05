@@ -92,7 +92,7 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="{{ route('login') }}">Jeli</a>
-                                    <a class="dropdown-item" href="{{ route('business.login') }}">Jeli Business</a>
+                                    <a class="dropdown-item" href="{{ route('login') }}">Jeli Business</a>
                                 </div>
                             </div>
                             <div class="dropdown show">
