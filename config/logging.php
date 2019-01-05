@@ -36,8 +36,8 @@ return [
         ],
 
         'single' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'driver' => 'errorlog',
+            // 'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
         ],
 
