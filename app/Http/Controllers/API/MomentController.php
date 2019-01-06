@@ -154,14 +154,34 @@ class MomentController extends ApiController
     {   
         //Validate the request
         $input = $request->except(['place_id', 'place_name', 'place_image']);
-        $place = $request->filled(['place_id', 'place_name']);
+        $placeExists = $request->filled([
+            'place_id', 'place_name'
+        ]);
+        $placeData = $request->only([
+            'place_id', 'place_name', 'place_image' 
+        ]);
 
         //Update the moment
         if($input) {
             $moment->update($input);
         }
 
-        if($place) {
+        if($placeExists) {
+            if(! $moment->place()->first()){ //If moment does not have place
+                //Check if place data already exists in db
+                $place = Place::where('place_id', $placeData['place_id'])->first();
+
+                if($place) { //If place data already exists in db
+                    // Assign place to moment
+                    $place->moments()->save($moment);
+                }
+
+                //Else create new place from place data and assign to moment
+                $newPlace = Place::create($placeData);
+                $newPlace->moments()->save($newPlace);
+            }
+
+            //If moment already has place
             $moment->place->place_id = $request->input('place_id');
             $moment->place->place_name = $request->input('place_name');
             $moment->place->place_image = $request->input('place_image');
