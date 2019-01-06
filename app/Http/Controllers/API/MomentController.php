@@ -176,7 +176,9 @@ class MomentController extends ApiController
                     $place->moments()->save($moment);
                 } else { //create new place from place data and assign to moment
                     $newPlace = Place::create($placeData);
-                    $newPlace->moments()->save($newPlace);
+                    $moment->update([
+                        'place_id' => $newPlace->id,
+                    ]);
                 }
 
             } else { //If moment already has place
