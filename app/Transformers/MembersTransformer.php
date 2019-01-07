@@ -23,6 +23,7 @@ class MembersTransformer extends TransformerAbstract
 		$myself = ($member->id == auth('api')->user()->id);
 
 		return [
+			'uuid' => $member->uuid,
 			'contact_name' => (is_null($user) 
 							? (
 								($myself) 
