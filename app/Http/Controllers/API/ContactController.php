@@ -14,7 +14,7 @@ use App\Customer;
 class ContactController extends ApiController
 {
     protected $fractal;
-    
+
     function __construct(Manager $fractal)
     {
         $this->fractal = $fractal;
@@ -37,9 +37,8 @@ class ContactController extends ApiController
         $contactList = array();
 
         $rules = [
-            'data' => 'required|array|min:1', 
-            '*.*.contact_name' => 'required|string',
-            '*.*.contact_phone' => 'bail|phone:AUTO,GH|required|string',
+            '*.contact_name' => 'required|string',
+            '*.contact_phone' => 'bail|phone:AUTO,GH|required|string',
         ];
 
         $validator = Validator::make($credentials, $rules);
@@ -52,26 +51,24 @@ class ContactController extends ApiController
         }
 
         //Extract phone numbers from request
-        foreach ($credentials as $data => $array) {
-            foreach ($array as $index => $contacts){
+        foreach ($credentials as $index => $contacts){
 
-                if(! (array_key_exists('contact_name', $contacts) && array_key_exists('contact_phone', $contacts))) {
-                    return response()->json([
-                        'success' => false,
-                        'errors' => ['contact_name & contact_phone fields are both required']
-                    ], 422);
-                }
+            if(! (array_key_exists('contact_name', $contacts) && array_key_exists('contact_phone', $contacts))) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['contact_name & contact_phone fields are both required']
+                ], 422);
+            }
 
-            	$name = $contacts['contact_name'];
-            	$phone = (string) PhoneNumber::make($contacts['contact_phone'], 'GH');
-            	$jeliCustomer = Customer::where('phone', $phone)
-                                        ->where('phone', '<>', $customer->phone)
-                                        ->first();
+        	$name = $contacts['contact_name'];
+        	$phone = (string) PhoneNumber::make($contacts['contact_phone'], 'GH');
+        	$jeliCustomer = Customer::where('phone', $phone)
+                                    ->where('phone', '<>', $customer->phone)
+                                    ->first();
 
-            	if($jeliCustomer) {
-                    $contactList[$jeliCustomer->id] = ['contact_name' => $name];
-                }
-        	}
+        	if($jeliCustomer) {
+                $contactList[$jeliCustomer->id] = ['contact_name' => $name];
+            }
     	}
 
         $customer->contacts()->sync($contactList);
@@ -79,9 +76,5 @@ class ContactController extends ApiController
         $jeliContacts = $customer->contacts()->take(20)->get();
 
         return $this->respondWithCollection($jeliContacts, new ContactTransformer);
-    	// return response()->json([
-    	// 	'success' => true,
-    	// 	'message' => 'Your contacts have been successfully synced'
-    	// ], 201);
     }
 }
