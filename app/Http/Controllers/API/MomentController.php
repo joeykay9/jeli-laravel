@@ -223,7 +223,9 @@ class MomentController extends ApiController
 
         //Delete schedule records whose ids are not in request body
         $ids = array_column($input, 'id'); //ids in request body
-        Schedule::whereNotIn('id', $ids)->delete();
+        Schedule::where('moment_id', $moment->id)
+                ->whereNotIn('id', $ids)
+                ->delete();
 
         foreach($input as $scheduleUpdate) { //for each schedule
             if(! array_key_exists('id', $scheduleUpdate)) { //if id doesn't exist, it means a new schedule is being added
