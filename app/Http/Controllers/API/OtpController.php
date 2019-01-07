@@ -83,7 +83,7 @@ class OtpController extends ApiController
             $customer->otp->verified = false;
             $customer->otp->save();
 
-            // $customer->notify(new SendOTPNotification($otp));
+            $customer->notify(new SendOTPNotification($otp));
 
             return response()->json([
                 'success' => true,
