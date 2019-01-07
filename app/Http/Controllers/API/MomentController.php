@@ -236,7 +236,7 @@ class MomentController extends ApiController
             }
         }
 
-        return $this->respondWithCollection($moment->schedules()->get(), new ScheduleTransformer);
+        return $this->respondWithItem($moment, new MomentTransformer);
     }
 
     public function end(Request $request, Moment $moment)
