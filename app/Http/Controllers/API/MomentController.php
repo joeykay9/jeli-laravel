@@ -19,7 +19,6 @@ use App\Transformers\MomentTransformer;
 use App\Transformers\ScheduleTransformer;
 use App\Serializers\JeliSerializer;
 use League\Fractal\Manager;
-use League\Fractal\Serializer\ArraySerializer;
 
 class MomentController extends ApiController
 {

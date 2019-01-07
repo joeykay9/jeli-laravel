@@ -7,10 +7,20 @@ use App\Http\Controllers\API\ApiController;
 use App\Transformers\ContactTransformer;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Validator;
+use App\Serializers\JeliSerializer;
+use League\Fractal\Manager;
 use App\Customer;
 
 class ContactController extends ApiController
 {
+    protected $fractal;
+    
+    function __construct(Manager $fractal)
+    {
+        $this->fractal = $fractal;
+        $this->fractal->setSerializer(new JeliSerializer());
+    }
+
     /**
      * Display a listing of the resource.
      *
