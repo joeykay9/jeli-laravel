@@ -221,13 +221,16 @@ class MomentController extends ApiController
             ], 422);
         }
 
-        foreach($input as $scheduleUpdate) {
+        //Delete schedule records whose ids are not in request body
+        $ids = array_column($input, 'id'); //ids in request body
+        Schedule::whereNotIn('id', $ids)->delete();
 
-            if(! array_key_exists('id', $scheduleUpdate)) {
+        foreach($input as $scheduleUpdate) { //for each schedule
+            if(! array_key_exists('id', $scheduleUpdate)) { //if id doesn't exist, it means a new schedule is being added
 
                 $newSchedule = Schedule::make($scheduleUpdate);
                 $moment->schedules()->save($newSchedule);
-            } else {
+            } else { //it's an existing schedule
                 
                 $schedule = Schedule::where('moment_id', $moment->id)
                                 ->where('id', $scheduleUpdate['id'])->first();
