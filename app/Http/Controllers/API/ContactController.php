@@ -28,7 +28,7 @@ class ContactController extends ApiController
 
         $rules = [
             '*.contact_name' => 'required|string',
-            '*.contact_phone' => 'bail|phone:AUTO,GH|required|string',
+            '*.contact_phone' => 'required|string',
         ];
 
         $validator = Validator::make($credentials, $rules);
