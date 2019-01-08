@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Manager;
-use League\Fractal\Serializer\ArraySerializer;
+use App\Serializers\JeliSerializer;
 
 class ApiController extends Controller
 {
@@ -17,7 +17,7 @@ class ApiController extends Controller
     function __construct(Manager $fractal)
     {
         $this->fractal = $fractal;
-        $this->fractal->setSerializer(new ArraySerializer());
+        $this->fractal->setSerializer(new JeliSerializer());
 
         if (isset($_GET['include'])) {
             $this->fractal->parseIncludes($_GET['include']);
