@@ -1,89 +1,65 @@
-@font-face {
-    font-family: TX_Jello;
-    src: url('jeli_font.ttf');
-    font-weight: bold;
+@font-face{
+    font-family: "mr";
+    src: url('fonts/MISTRAL.TTF')
 }
-@font-face {
-    font-family: Railway-italic;
-    src: url('Raleway-Italic.ttf');
-    font-weight: bold;
+body{
+    margin:0px;
+    padding: 0px;
 }
-
-@font-face {
-    font-family: Railway-bold;
-    src: url('Raleway-Light.ttf');
-    font-weight: bold;
+.main{
+    width: 100%;
+    height: 100vh;
+    background: url('images/ethan-hu-590349-unsplash.jpg');
+    background-size: 100% 100%;
+    position: absolute;
+    overflow: hidden;
 }
-
-/* .body .container
-{
-    background: #f1f1f1;
-} */
-
-.navbar {
-  background-color: rgb(74, 13, 143);
-  background: -moz-linear-gradient(135deg,#5C326E 0%, #D47EFA 100%);
-  background: -webkit-linear-gradient(135deg,#5C326E 0%, #D47EFA 100%);
-  background: linear-gradient(135deg,#5C326E 0%, #D47EFA 100%);
-  -webkit-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
+.wave1, .wave2, .wave3, .wave4, .wave5, .wave6{
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, .8);
+    border-radius: 50%;
+    z-index: 999;
 }
-  .card a
-  {
-      text-decoration: none;
-      color:black;
-
-  }
-  .navbar .navbar-brand h2
-  {
-    font-family: TX_Jello;
-    font-size: 50px;
-  }
-
-  .card
-  {
-      margin-top: 10%;
-      padding: 0;
-  }
-  .card h3
-  {
-      padding-top: 0%;
-      font-size: 20px;
-  }
-  .card li
-  {
-      font-family: Railway-bold;
-      font-size: 12px;
-      line-height: 20px;
-  }
-
-  h2
-  {
-    font-family: TX_Jello;
-    margin-top: 5%;
-  }
-
-  #newsfeed1 .card-body, #newsfeed2 .card-body:hover
-  {
-      box-shadow: none;
-  }
-
-  #downloadInstall
-  {
-      margin-top: 7%;
-  }
- .card-body:hover
-  {
-    -webkit-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 5px 23px 0px rgba(0, 0, 0, 0.1);
-  }
-
-  @media (max-width:768px)
-  {
-      #newsfeed1, #newsfeed2
-      {
-          display: none;
-      }
-  }
+.name{
+    font-family: mr;
+    font-size:  0px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    z-index: 9999;
+}
+.msg1, .msg2{
+    font-family: sans-serif;
+    font-size: 35px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* opacity: 0; */
+    z-index: 9999;;
+}
+.msg2{
+    letter-spacing: 8px;
+    top: 70%;
+}
+@media(max-width:768px){
+    .msg1, .msg2{
+        font-size: 20px;
+    }
+    .msg1{
+        letter-spacing: 3px;
+    }
+    .msg2{
+        letter-spacing: 5px;
+    }
+}
