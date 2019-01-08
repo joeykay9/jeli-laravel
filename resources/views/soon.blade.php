@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta property="og:title" content="Jeli - Making Moments Possible">
+    <meta property="og:title" content="Making Moments Possible | Jeli">
     <meta property="og:description" content="Collaborate with friends and family to make fun memories with ease.">
     <meta property="og:image" content="https://jeligh.herokuapp.com/css/images/ethan-hu-590349-unsplash.jpg">
     <meta property="og:image:type" content="image/jpg">
