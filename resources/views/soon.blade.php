@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta property="og:title" content="Making Moments Possible | Jeli">
     <meta property="og:description" content="Collaborate with friends and family to make fun memories with ease.">
-    <meta property="og:image" content="https://jeligh.herokuapp.com/css/images/ethan-hu-590349-unsplash.jpg">
+    <meta property="og:image" content="https://jeligh.herokuapp.com/css/images/feature_graphic.jpg">
     <meta property="og:image:type" content="image/jpg">
     <meta property="og:image:width" content="1500">
     <meta property="og:image:height" content="1500">
