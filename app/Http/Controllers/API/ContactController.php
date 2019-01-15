@@ -61,7 +61,7 @@ class ContactController extends ApiController
             }
     	}
 
-        $customer->contacts()->sync($contactList);
+        $customer->contacts()->syncWithoutDetaching($contactList);
 
         $jeliContacts = $customer->contacts()->take(20)->get();
 

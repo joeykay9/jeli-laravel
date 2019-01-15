@@ -92,7 +92,7 @@ class CustomerController extends ApiController
         $customer->settings()->save(new Settings);
         $customer->otp()->save(new Otp);
 
-        // event(new AccountCreated($customer));
+        event(new AccountCreated($customer));
 
         try {
 
@@ -171,7 +171,7 @@ class CustomerController extends ApiController
                     $customer->save();
                 }
 
-                // event(new AccountActivated($customer));
+                event(new AccountActivated($customer));
 
                 return response()->json([
                     'success' => true,
