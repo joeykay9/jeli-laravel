@@ -128,6 +128,8 @@ class MomentController extends ApiController
 
         $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 
+        dd($moment->chatGroup);
+
         return $this->respondWithItem($moment, new MomentTransformer)->setStatusCode(201);
     }
 

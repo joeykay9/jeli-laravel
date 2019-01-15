@@ -43,10 +43,16 @@ class MomentOrganiserController extends ApiController
     public function store(Request $request, Moment $moment)
     {
         $credentials = $request->all();
-        $array = $credentials['data'];
-        $uuids = array_values(array_dot($array));
+        $uuids = array_dot($credentials); //array_dot is a larave helper that flattens a multidimensional array into a single level array that uses 'dot' notation to indicate depth
 
         $organisers = Customer::whereIn('uuid', $uuids)->get(); //Get Customers from submitted uuids
+        
+        if($organisers->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => ['There are no organisers to add']
+            ], 422);
+        }
 
         //Increase the chat group size by the number of organisers added
         $size = $organisers->count();
@@ -54,8 +60,6 @@ class MomentOrganiserController extends ApiController
         $moment->chatGroup->save();
 
         $moment->members()->attach($organisers, ['is_organiser' => true]);
-
-        //Code to handle if customer is already an organiser on this moment or have Nathany do it at his end...On add particiapnts to a group Whatsapp replaces their status with 'Already added to the group' when the contact list loads
 
         event(new MomentOrganisersAdded(auth('api')->user(), $moment, $organisers));
 
