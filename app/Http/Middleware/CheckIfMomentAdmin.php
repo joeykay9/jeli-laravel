@@ -15,6 +15,7 @@ class CheckIfMomentAdmin
      */
     public function handle($request, Closure $next)
     {
+        // dd($request->route('moment')->id);
         if(! auth('api')->user()->moments()
                 ->find($request->route('moment')->id)
                 ->pivot

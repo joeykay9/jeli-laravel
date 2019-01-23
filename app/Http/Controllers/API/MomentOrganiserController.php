@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Http\Controllers\API\ApiController;
 use App\Events\Customer\MomentOrganisersAdded;
+use App\Transformers\MembersTransformer;
 
 class MomentOrganiserController extends ApiController
 {
@@ -46,6 +47,8 @@ class MomentOrganiserController extends ApiController
         $uuids = array_dot($credentials); //array_dot is a larave helper that flattens a multidimensional array into a single level array that uses 'dot' notation to indicate depth
 
         $organisers = Customer::whereIn('uuid', $uuids)->get(); //Get Customers from submitted uuids
+
+        // dd($organisers);
         
         if($organisers->isEmpty()) {
             return response()->json([
@@ -54,19 +57,34 @@ class MomentOrganiserController extends ApiController
             ], 422);
         }
 
+        if($organisers->isNotEmpty()){
+            foreach ($organisers as $organiser) {
+                $isOrganiser = $moment->members()
+                        ->where('id', $organiser->id)
+                        ->wherePivot('is_organiser', true)
+                        ->first();
+
+                if($isOrganiser) {
+                    $organisers = $organisers->except($organiser->id);
+                    continue;
+                }
+            }
+
+            $moment->members()->attach($organisers, ['is_organiser' => true]);
+        }
+        
         //Increase the chat group size by the number of organisers added
         $size = $organisers->count();
         $moment->chatGroup->size += $size;
         $moment->chatGroup->save();
 
-        $moment->members()->attach($organisers, ['is_organiser' => true]);
-
         event(new MomentOrganisersAdded(auth('api')->user(), $moment, $organisers));
 
-        return response()->json([
-            'success' => true,
-            'message' => "Organisers have been added",
-        ]);
+        $members = $moment->members()->get();
+
+        dd($members);
+
+        return $this->respondWithCollection($members, new MembersTransformer);
     }
 
     /**
