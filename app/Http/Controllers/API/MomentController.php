@@ -9,7 +9,6 @@ use App\Customer;
 use App\Place;
 use App\Schedule;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Route;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -22,15 +21,8 @@ use League\Fractal\Manager;
 
 class MomentController extends ApiController
 {
-    protected $fractal;
-
     public function __construct(Manager $fractal){
-        $this->fractal = $fractal;
-        $this->fractal->setSerializer(new JeliSerializer());
-
-        if(Route::current()->getName() == 'moments.index'){
-            $this->fractal->parseExcludes(['schedules', 'members']); //exclude shedules and members data from moment index response
-        }
+        parent::__construct($fractal);
 
         $this->middleware('auth:api');
         $this->middleware('moment.creator')->only([

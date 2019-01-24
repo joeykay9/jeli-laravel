@@ -10,11 +10,14 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Http\Controllers\API\ApiController;
 use App\Events\Customer\MomentOrganisersAdded;
 use App\Transformers\MembersTransformer;
+use League\Fractal\Manager;
 
 class MomentOrganiserController extends ApiController
 {
 
-    public function __construct(){
+    public function __construct(Manager $fractal){
+        
+        parent::__construct($fractal);
         $this->middleware('auth:api');
         $this->middleware('moment.organiser')->only([
             'index', 'destroy'
@@ -82,7 +85,7 @@ class MomentOrganiserController extends ApiController
 
         $members = $moment->members()->get();
 
-        dd($members);
+        // dd($members);
 
         return $this->respondWithCollection($members, new MembersTransformer);
     }

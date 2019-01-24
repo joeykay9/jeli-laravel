@@ -8,6 +8,7 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Manager;
 use App\Serializers\JeliSerializer;
+use Illuminate\Support\Facades\Route;
 
 class ApiController extends Controller
 {
@@ -19,8 +20,12 @@ class ApiController extends Controller
         $this->fractal = $fractal;
         $this->fractal->setSerializer(new JeliSerializer());
 
-        if (isset($_GET['include'])) {
-            $this->fractal->parseIncludes($_GET['include']);
+        // if (isset($_GET['include'])) {
+        //     $this->fractal->parseIncludes($_GET['include']);
+        // }
+
+        if(Route::current()->getName() == 'moments.index'){
+            $this->fractal->parseExcludes(['schedules', 'members']); //exclude shedules and members data from moment index response
         }
     }
 
