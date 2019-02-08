@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('soon');
+    return view('welcome');
 });
 
 Route::get('/faqs', 'HomeController@faqs')->name('faqs');
@@ -20,3 +20,8 @@ Route::get('/faqs', 'HomeController@faqs')->name('faqs');
 Auth::routes();
 Route::post('/logout', 'Auth\LoginController@customerLogout')->name('customerLogout');
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('test', function () {
+    event(new App\Events\StatusLiked('Someone'));
+    return "Event has been sent!";
+});
