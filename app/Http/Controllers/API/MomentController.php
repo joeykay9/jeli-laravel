@@ -86,10 +86,11 @@ class MomentController extends ApiController
 
         auth('api')->user()->createMoment($moment = 
             new Moment($credentials)
-        );
+        ); //User creates a moment
 
         //Storing place details
-        if($request->filled('place_id') && $request->filled('place_name')){
+        if($request->filled('place_id') && 
+            $request->filled('place_name')){
             //Create Place Object
             $place = Place::where('place_id', $request->place_id)                ->first();
 

@@ -28,5 +28,11 @@ class AccountActivatedListener implements ShouldQueue
     public function handle(AccountActivated $event)
     {
         $event->customer->notify(new WelcomeMessage($event->customer));
+
+        Log::channel('slack')->info('New Jeli Customer', [
+            'Name' => $event->customer->first_name ? $event->customer->first_name . ' ' . $event->customer->last_name : $event->customer->jelion,
+            'Phone' => $event->customer->phone,
+            'Email' => $event->customer->email,
+        ]);
     }
 }

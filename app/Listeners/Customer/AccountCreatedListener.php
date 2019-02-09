@@ -28,10 +28,6 @@ class AccountCreatedListener implements ShouldQueue
      */
     public function handle(AccountCreated $event)
     {
-        Log::channel('slack')->info('New Jeli Customer', [
-            'Name' => $event->customer->first_name . ' ' . $event->customer->last_name,
-            'Phone' => $event->customer->phone,
-            'Email' => $event->customer->email,
-        ]);
+        
     }
 }
