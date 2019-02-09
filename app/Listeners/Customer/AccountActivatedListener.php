@@ -6,6 +6,7 @@ use App\Notifications\Customer\WelcomeMessage;
 use App\Events\Customer\AccountActivated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 class AccountActivatedListener implements ShouldQueue
 {

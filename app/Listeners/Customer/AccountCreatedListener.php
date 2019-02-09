@@ -6,7 +6,6 @@ use App\Events\Customer\AccountCreated;
 use App\Notifications\Customer\WelcomeMessage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Log;
 
 class AccountCreatedListener implements ShouldQueue
 {
@@ -28,6 +27,6 @@ class AccountCreatedListener implements ShouldQueue
      */
     public function handle(AccountCreated $event)
     {
-        
+
     }
 }
