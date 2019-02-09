@@ -75,11 +75,6 @@ class MomentOrganiserController extends ApiController
 
             $moment->members()->attach($organisers, ['is_organiser' => true]);
         }
-        
-        //Increase the chat group size by the number of organisers added
-        // $size = $organisers->count();
-        // $moment->chatGroup->size += $size;
-        // $moment->chatGroup->save();
 
         event(new MomentOrganisersAdded(auth('api')->user(), $moment, $organisers));
 

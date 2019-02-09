@@ -117,8 +117,6 @@ class MomentController extends ApiController
         auth()->user()->moments()->attach($moment, ['is_organiser' => true, 'is_grp_admin' => true]);
 
         event(new MomentCreated($moment)); //Fire Moment Created event
-        
-        $moment->chatGroup()->save(new ChatGroup); //Create a chat group for the moment
 
         return $this->respondWithItem($moment, new MomentTransformer)->setStatusCode(201);
     }

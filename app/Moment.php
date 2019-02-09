@@ -47,11 +47,6 @@ class Moment extends Model
     	return $this->belongsToMany(Service::class);
     }
 
-    public function chatGroup() {
-
-    	return $this->hasOne(ChatGroup::class);
-    }
-
     public function place() {
         return $this->belongsTo(Place::class);
     }
