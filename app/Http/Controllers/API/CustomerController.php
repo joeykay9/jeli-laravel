@@ -46,12 +46,12 @@ class CustomerController extends ApiController
      */
     public function store(Request $request)
     {
-        //Validate Request with following rules
         $credentials = $request->all();
-            if($request->filled('phone')) {
-                $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
-            }
+        if($request->filled('phone')) {
+            $credentials['phone'] = (string) PhoneNumber::make($request->phone, 'GH');
+        }
 
+        //Validate Request with following rules
         $rules = [
             // 'first_name' => 'nullable|string|max:50',
             // 'last_name' => 'nullable|string|max:50',
@@ -125,7 +125,7 @@ class CustomerController extends ApiController
             'first_name' => 'nullable|string|max:50',
             'last_name' => 'nullable|string|max:50',
             'email' => 'bail|string|nullable|email|max:50|unique:customers', //Email already exists
-            'dob' => 'nullable|date',
+            'dob' => 'nullable|date_format:"d-M-Y',
             'jelion' => 'required|string|max:25',
         ];
 
