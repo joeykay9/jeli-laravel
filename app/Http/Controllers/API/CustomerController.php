@@ -125,7 +125,7 @@ class CustomerController extends ApiController
             'first_name' => 'nullable|string|max:50',
             'last_name' => 'nullable|string|max:50',
             'email' => 'bail|string|nullable|email|max:50|unique:customers', //Email already exists
-            'dob' => 'nullable|date_format:"d-M-Y',
+            'dob' => 'nullable|date',
             'jelion' => 'required|string|max:25',
         ];
 
