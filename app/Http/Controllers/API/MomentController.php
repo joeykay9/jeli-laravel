@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Moment;
-use App\ChatGroup;
 use App\Customer;
 use App\Place;
 use App\Schedule;
