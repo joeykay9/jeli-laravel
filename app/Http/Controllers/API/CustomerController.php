@@ -8,13 +8,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Customer;
-use App\Otp;
 use App\Settings;
 use App\OneSignalDevice;
 use Hash;
 use App\Events\Customer\AccountCreated;
 use App\Events\Customer\AccountActivated;
-use App\Notifications\SendOTPNotification;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use GuzzleHttp\Exception\ClientException;
 use App\Http\Controllers\API\ApiController;
@@ -90,7 +88,6 @@ class CustomerController extends ApiController
 
         //Create customer settings
         $customer->settings()->save(new Settings);
-        $customer->otp()->save(new Otp);
 
         event(new AccountCreated($customer));
 
@@ -240,8 +237,6 @@ class CustomerController extends ApiController
                 'errors' => $validator->messages()->all()
             ], 422);
         }
-
-        //TODO: Generate OTP and send to new number or email
         
         //Update Customer's details
         $customer->update($credentials);
