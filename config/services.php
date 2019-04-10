@@ -40,4 +40,8 @@ return [
         'rest_api_key' => env('ONESIGNAL_REST_API_KEY', 'MjQ3MGUyMmItYjgwMC00MjFmLThkZTgtMzJhNjlmNDA0NDJj')
     ],
 
+    'firebase' => [
+        'project_id' => env('FIREBASE_PROJECT_ID', 'jeliapp-v2'),
+    ],
+
 ];

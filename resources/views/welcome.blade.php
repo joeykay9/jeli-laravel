@@ -93,7 +93,7 @@
                 </div>
                 <div class="media-body">
                   <strong class="notification-title">`+data.moment.title+`</strong>
-                  <!--p class="notification-desc">Extra description can go here</p-->
+                  <!--p class="notification-desc">Extra description can go here</p
                   <div class="notification-meta">
                     <small class="timestamp">about a minute ago</small>
                   </div>
@@ -108,6 +108,37 @@
         notificationsWrapper.find('.notif-count').text(notificationsCount);
         notificationsWrapper.show();
       });
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+	    // Initialize Firebase
+	    var config = {
+	        apiKey: "AIzaSyAiXdc3g8UGKAT6f-C67dBF65n8IaozP6o",
+	        authDomain: "jeliapp-v2.firebaseapp.com",
+	        databaseURL: "https://jeliapp-v2.firebaseio.com",
+	        projectId: "jeliapp-v2",
+	        storageBucket: "jeliapp-v2.appspot.com",
+	        messagingSenderId: "522764896369"
+	    };
+
+	    firebase.initializeApp(config);
+
+	    async function signin() {
+	        console.log('signing in')
+	        let creds = await firebase.auth().signInWithEmailAndPassword('joeykay9@gmail.com', 'password')
+	        console.log({ creds })
+	        let token = await creds.user.getIdToken()
+	        console.log({ token })
+	        let headers = { Authorization: 'Bearer ' + token }
+	        let me = await axios.get('/api/auth/me', { headers })
+	        console.log({ me })
+	    }
+
+	    signin()
     </script>
   </body>
 </html>

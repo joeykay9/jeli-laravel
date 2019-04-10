@@ -36,7 +36,7 @@ $(document).ready(function () {
         });
     });
     var $element1 = $(".msg1");
-var $element2 = $(".msg2");   
+var $element2 = $(".msg2");
 
 $element1.show().arctext({radius:320});
 $element2.show().arctext({radius:280, dir :-1})

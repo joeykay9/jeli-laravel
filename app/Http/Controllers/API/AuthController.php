@@ -6,7 +6,6 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Validator, Hash;
 use App\Customer;
-use App\Otp;
 use App\OneSignalDevice;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use App\Notifications\SendOTPNotification;
@@ -16,8 +15,6 @@ use App\Http\Controllers\API\ApiController;
 
 class AuthController extends ApiController
 {
-
-    protected $OTP;
 
     /**
      * Create a new AuthController instance.
@@ -225,39 +222,6 @@ class AuthController extends ApiController
             ], 404);
         }
 
-        
-
-        //Send OTP via E-mail and or SMS to verify phone number
-        try {
-
-            //Generate OTP
-            $otp = new Otp;
-
-            $customer->otp()->update($otp->toArray());
-            $customer->otp->verified = false;
-            $customer->otp->save();
-
-            //Send email with OTP to customer
-            if($customer->email){
-                \Mail::to($customer)->send(new CustomerWelcome($otp));
-            }
-
-            $customer->notify(new SendOTPNotification($otp));
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Verification code has been sent.'
-            ], 200,
-            [ 
-                'Location' => $customer->uuid,
-            ]);
-
-        } catch (ClientException $e) {
-            return response()->json([
-                'success' => false,
-                'errors' => ['These your Jeli people havent\'t paid their SMS fees. Lmao. Send mobile money to 0274351093. Thank you']
-            ], 500);
-        }
     }
 
     public function resetPassword(Request $request) {
@@ -331,7 +295,6 @@ class AuthController extends ApiController
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'verified' => $details->otp->verified,
             //'expires_in' => auth()->factory()->getTTL(),
             'data' => $details
         ], $code);

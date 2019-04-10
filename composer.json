@@ -10,6 +10,7 @@
         "chess/laravel-chatkit-api": "^0.2.1",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "^6.3",
+        "kreait/firebase-tokens": "^1.7",
         "laravel-notification-channels/onesignal": "^1.2",
         "laravel/framework": "5.6.*",
         "laravel/socialite": "^3.1",
