@@ -24,7 +24,7 @@ class CreateCustomersTable extends Migration
             $table->string('jelion')->nullable();
             $table->string('avatar')->nullable();
             $table->string('password');
-            $table->string('verified')->default(0);
+            $table->boolean('verified')->default(0);
             $table->boolean('active')->default(0);
             $table->rememberToken();
             $table->timestamps();

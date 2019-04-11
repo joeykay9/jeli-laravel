@@ -49,6 +49,17 @@ class AuthController extends ApiController
         return $token;
     }
 
+    public function verify(Request $request)
+    {
+        auth('api')->user()->verified = 1;
+        auth('api')->user()->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Phone number successfully verified'
+        ]);
+    }
+
 
     /**
      * Get a JWT via given credentials.

@@ -36,10 +36,11 @@ Route::group([
     Route::post('login', 'API\AuthController@login');
     Route::post('logout', 'API\AuthController@logout');
     Route::post('refresh', 'API\AuthController@refresh');
-    // Route::post('me', 'API\AuthController@me');
-    Route::get('me', function(Request $request){
-    	return response()->json($request->user());
-    })->middleware('auth:api');
+    Route::post('me', 'API\AuthController@me');
+    Route::get('verify', 'API\AuthController@verify');
+    // Route::get('me', function(Request $request){
+    // 	return response()->json($request->user());
+    // })->middleware('auth:api');
     Route::post('forgot_password', 'API\AuthController@forgotPassword');
     Route::post('reset_password', 'API\AuthController@resetPassword');
 });

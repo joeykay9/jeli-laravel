@@ -34,7 +34,7 @@ class Customer extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $visible = [
-        'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'dob', 'avatar', 'active'
+        'uuid', 'first_name', 'last_name', 'phone', 'email', 'jelion', 'dob', 'avatar', 'verified', 'active'
     ];
 
     /**
