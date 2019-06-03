@@ -21,6 +21,7 @@ class User implements Authenticatable
     {
         $this->claims = $claims;
     }
+    
     /**
      * Get the name of the unique identifier for the user.
      *
