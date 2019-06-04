@@ -7,6 +7,7 @@ use App\Events\Customer\AccountActivated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
 
 class AccountActivatedListener implements ShouldQueue
 {
@@ -28,12 +29,14 @@ class AccountActivatedListener implements ShouldQueue
      */
     public function handle(AccountActivated $event)
     {
-        $event->customer->notify(new WelcomeMessage($event->customer));
+        if(App::environment('production')) {
+            $event->customer->notify(new WelcomeMessage($event->customer));
 
-        Log::channel('slack')->info('New Jeli Customer', [
-            'Name' => $event->customer->first_name ? $event->customer->first_name . ' ' . $event->customer->last_name : $event->customer->jelion,
-            'Phone' => $event->customer->phone,
-            'Email' => $event->customer->email,
-        ]);
+            Log::channel('slack')->info('New Jeli Customer', [
+                'Name' => $event->customer->first_name ? $event->customer->first_name . ' ' . $event->customer->last_name : $event->customer->jelion,
+                'Phone' => $event->customer->phone,
+                'Email' => $event->customer->email,
+            ]);
+        }
     }
 }

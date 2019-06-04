@@ -34,7 +34,7 @@ class MomentTransformer extends TransformerAbstract
 
         return $schedules ? $this->collection($schedules, new ScheduleTransformer) : $this->null();
     }
-P
+
     public function includeMembers(Moment $moment) {
     	$members = $moment->members;
 
