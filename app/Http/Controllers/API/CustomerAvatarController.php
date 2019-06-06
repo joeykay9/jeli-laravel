@@ -21,14 +21,11 @@ class CustomerAvatarController extends ApiController
      */
     public function update(Request $request, Customer $customer)
     {
-        dd($request->all('avatar'));
         if($request->hasFile('avatar')){
             $avatar = $request->file('avatar');
             $path = Storage::putFile(
                         'public/avatars', $avatar
                     ); //stores file in 'avatars' directory and returns the path
-
-            dd($path);
 
             $url = Storage::url($path); //returns full url of location of file
 
