@@ -24,7 +24,7 @@ class ApiController extends Controller
         //     $this->fractal->parseIncludes($_GET['include']);
         // }
 
-        if(Route::current()->getName() == 'moments.index'){
+        if(Route::currentRouteName() == 'moments.index'){
             $this->fractal->parseExcludes(['schedules', 'members']); //exclude schedules and members data from moment index response
         }
     }
