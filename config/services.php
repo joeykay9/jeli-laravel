@@ -15,13 +15,13 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN', 'sandbox7b947b140b9d49e08265870edbc65770.mailgun.org'),
-        'secret' => env('MAILGUN_SECRET', '2ebc9616534816329d63f31f225b7071-b892f62e-141e8035'),
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
     ],
 
     'ses' => [
-        'key' => env('SES_KEY', 'AKIAJQ6VJTITCDXGFKNQ'),
-        'secret' => env('SES_SECRET', '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'),
+        'key' => env('SES_KEY'),
+        'secret' => env('SES_SECRET'),
         'region' => 'us-east-1',
     ],
 
@@ -36,12 +36,12 @@ return [
     ],
 
     'onesignal' => [
-        'app_id' => env('ONESIGNAL_APP_ID', 'f805373a-41c5-4119-8fcb-d5f34a014d1d'),
-        'rest_api_key' => env('ONESIGNAL_REST_API_KEY', 'MjQ3MGUyMmItYjgwMC00MjFmLThkZTgtMzJhNjlmNDA0NDJj')
+        'app_id' => env('ONESIGNAL_APP_ID'),
+        'rest_api_key' => env('ONESIGNAL_REST_API_KEY')
     ],
 
     'firebase' => [
-        'project_id' => env('FIREBASE_PROJECT_ID', 'jeliapp-v2'),
+        'project_id' => env('FIREBASE_PROJECT_ID'),
     ],
 
 ];
